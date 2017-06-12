@@ -44,3 +44,8 @@ docs/_build
 
 # Virtualenvs
 env/
+
+
+/annotator/static/libs
+/dev.db
+*~
