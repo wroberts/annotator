@@ -1,0 +1,103 @@
+#+STARTUP: content hidestars odd
+
+* Data model
+
+  Annotator serves documents; a document is a verbal instance to
+  annotate, plus any annotations that have previously been done.
+
+  #+BEGIN_EXAMPLE
+  GET /instance/443
+  #+END_EXAMPLE
+
+  #+BEGIN_SRC json
+    {
+      "sentence-id": 443,
+      "sentence": ["The", "quick", "brown", "fox", "jumps", "happily", "over", "the", "lazy", "dog", "."],
+      "verb-index": 4,
+      "verb-comps": [["subj", 0, 4], ["ppobj", 6, 10]],
+      "aspectual-indicators": [["adv_happily", 5]],
+      "last-annotation-date": "Mon Jun 12 18:11:33 CEST 2017",
+      "annotations": {
+        "stative": "false",
+        "bounded": "true",
+        "change-of-state": "true",
+      }
+    }
+  #+END_SRC
+
+  Annotations are stored in the =annotations= dictionary.  These
+  properties are displayed and manipulated on the website, and the web
+  app takes care of updating this dictionary and sending it back to
+  the server.
+
+  #+BEGIN_EXAMPLE
+  PUT /instance/443
+  #+END_EXAMPLE
+
+  #+BEGIN_SRC json
+    "annotations": {
+      "stative": "true",
+      "bounded": "false",
+      "change-of-state": "false",
+    }
+  #+END_SRC
+
+  These properties are then stored into the database by the web app's
+  backend.
+
+  The database records snapshots of each annotation collection for
+  each verb instance.  When a user makes a change to the annotation
+  for a given instance, the database records a new version of the
+  annotation.
+
+  #+BEGIN_SRC python
+    import enum
+    class BooleanUnsure(enum.Enum):
+        true = 1
+        false = 2
+        uncertain = 3
+
+    class Annotation:
+        __tablename__ = 'annotations'
+        clause_id = reference_col('clauses', nullable=True)
+        clause = relationship('Clause', backref='annotations')
+        user_id = reference_col('users', nullable=True)
+        user = relationship('User', backref='annotations')
+        created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+        invalid = Column(db.Enum(BooleanUnsure), nullable=True, default=BooleanUnsure.false)
+        stative = Column(db.Enum(BooleanUnsure), nullable=True)
+        bounded = Column(db.Enum(BooleanUnsure), nullable=True)
+        change = Column(db.Enum(BooleanUnsure), nullable=True)
+
+    class SynArg:
+        __tablename__ = 'synargs'
+        type = Column(db.Unicode(30), nullable=True)
+        begin = Column(db.Integer, nullable=True)  # index of first word in the argument
+        end = Column(db.Integer, nullable=True)    # index of first word not in the argument
+        clause_id = reference_col('clauses', nullable=True)
+        clause = relationship('Clause', backref='synargs')
+
+    class AspInd:
+        __tablename__ = 'aspinds'
+        type = Column(db.Unicode(30), nullable=True)
+        begin = Column(db.Integer, nullable=True)  # index of first word in the argument
+        end = Column(db.Integer, nullable=True)    # index of first word not in the argument
+        clause_id = reference_col('clauses', nullable=True)
+        clause = relationship('Clause', backref='aspinds')
+
+    class Clause:
+        __tablename__ = 'clauses'
+        text = Column(db.Unicode(1000), nullable=True)  # space-separated UTF-8
+        verb_index = Column(db.Integer, nullable=True) # index of verb in sentence
+  #+END_SRC
+
+  When querying, we make sure to fetch the most recent annotation for
+  a given sentence id and user id:
+
+  #+BEGIN_SRC python
+    (session.query(Annotation)
+     .filter(Annotation.user_id == CURRENT_USER.id)
+     .filter(Annotation.clause_id == clause_id)
+     .order_by(Annotation.created_at)
+     .first())
+  #+END_SRC
