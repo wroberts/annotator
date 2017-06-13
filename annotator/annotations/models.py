@@ -4,7 +4,7 @@
 
 import datetime
 import enum
-from annotator.database import Column, Model, SurrogatePK, db, reference_col, relationship
+from annotator.database import Column, Model, SurrogatePK, backref, db, reference_col, relationship
 
 
 class BooleanUnsure(enum.Enum):
@@ -18,9 +18,9 @@ class Annotation(SurrogatePK, Model):
     """A snapshot of an annotation of a particular clause by a particular user."""
     __tablename__ = 'annotations'
     clause_id = reference_col('clauses', nullable=True)
-    clause = relationship('Clause', backref='annotations')
+    clause = relationship('Clause', backref=backref('annotations', order_by='Annotation.created_at.desc()'))
     user_id = reference_col('users', nullable=True)
-    user = relationship('User', backref='annotations')
+    user = relationship('User', backref=backref('annotations', order_by='Annotation.created_at.desc()'))
     created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     invalid = Column(db.Enum(BooleanUnsure), nullable=True, default=BooleanUnsure.false)
     stative = Column(db.Enum(BooleanUnsure), nullable=True)
@@ -47,7 +47,7 @@ class SynArg(SurrogatePK, Model):
     begin = Column(db.Integer, nullable=True)  # index of first word in the argument
     end = Column(db.Integer, nullable=True)    # index of first word not in the argument
     clause_id = reference_col('clauses', nullable=True)
-    clause = relationship('Clause', backref='synargs')
+    clause = relationship('Clause', backref=backref('synargs', order_by='SynArg.begin'))
 
     def __init__(self, type, begin, end, clause, **kwargs):
         """Create instance."""
@@ -67,7 +67,7 @@ class AspInd(SurrogatePK, Model):
     begin = Column(db.Integer, nullable=True)  # index of first word in the argument
     end = Column(db.Integer, nullable=True)    # index of first word not in the argument
     clause_id = reference_col('clauses', nullable=True)
-    clause = relationship('Clause', backref='aspinds')
+    clause = relationship('Clause', backref=backref('aspinds', order_by='AspInd.begin'))
 
     def __init__(self, type, begin, end, clause, **kwargs):
         """Create instance."""

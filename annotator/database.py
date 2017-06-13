@@ -6,7 +6,7 @@ from .extensions import db
 # Alias common SQLAlchemy names
 Column = db.Column
 relationship = db.relationship
-
+backref = db.backref
 
 class CRUDMixin(object):
     """Mixin that adds convenience methods for CRUD (create, read, update, delete) operations."""
