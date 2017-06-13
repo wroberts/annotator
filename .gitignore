@@ -49,3 +49,5 @@ env/
 /annotator/static/libs
 /dev.db
 *~
+/annotator/static/css/common.css
+/annotator/static/js/common.js
