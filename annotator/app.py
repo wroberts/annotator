@@ -2,7 +2,7 @@
 """The app module, containing the app factory function."""
 from flask import Flask, render_template
 
-from annotator import commands, public, user
+from annotator import annotations, commands, public, user
 from annotator.assets import assets
 from annotator.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
 from annotator.settings import ProdConfig
