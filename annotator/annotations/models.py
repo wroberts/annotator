@@ -27,6 +27,12 @@ class Annotation(SurrogatePK, Model):
     bounded = Column(db.Enum(BooleanUnsure), nullable=True)
     change = Column(db.Enum(BooleanUnsure), nullable=True)
 
+    def __init__(self, clause, user, invalid, stative, bounded, change, **kwargs):
+        """Create instance."""
+        db.Model.__init__(self, clause_id=clause.id, user_id=user.id,
+                          invalid=invalid, stative=stative, bounded=bounded, change=change,
+                          **kwargs)
+
     def __repr__(self):
         """Represent instance as a unique string."""
         return '<Annotation (sentence {clause_id}, user {user_id})>'.format(
@@ -42,6 +48,10 @@ class SynArg(SurrogatePK, Model):
     end = Column(db.Integer, nullable=True)    # index of first word not in the argument
     clause_id = reference_col('clauses', nullable=True)
     clause = relationship('Clause', backref='synargs')
+
+    def __init__(self, type, begin, end, clause, **kwargs):
+        """Create instance."""
+        db.Model.__init__(self, type=type, begin=begin, end=end, clause_id=clause.id, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""
@@ -59,6 +69,10 @@ class AspInd(SurrogatePK, Model):
     clause_id = reference_col('clauses', nullable=True)
     clause = relationship('Clause', backref='aspinds')
 
+    def __init__(self, type, begin, end, clause, **kwargs):
+        """Create instance."""
+        db.Model.__init__(self, type=type, begin=begin, end=end, clause_id=clause.id, **kwargs)
+
     def __repr__(self):
         """Represent instance as a unique string."""
         return '<AspInd (type {type}, clause_id {clause_id})>'.format(
@@ -71,6 +85,10 @@ class Clause(SurrogatePK, Model):
     __tablename__ = 'clauses'
     text = Column(db.Unicode(1000), nullable=True)  # space-separated UTF-8
     verb_index = Column(db.Integer, nullable=True)  # index of verb in sentence
+
+    def __init__(self, text, verb_index, **kwargs):
+        """Create instance."""
+        db.Model.__init__(self, text=text, verb_index=verb_index, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""
