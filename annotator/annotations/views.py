@@ -106,7 +106,7 @@ class ClauseRsc(Resource):
         except sqlalchemy.orm.exc.NoResultFound:
             abort(404, message='Clause {} not found'.format(clause_id))
         try:
-            data, _ = AnnoSchema(strict=True).load(request.values)
+            data, _ = AnnoSchema(strict=True).load(request.get_json())
         except ValidationError as e:
             abort(400, message=unicode(e))
         # create the new Annotation record

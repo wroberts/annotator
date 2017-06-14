@@ -148,20 +148,19 @@ def test_annotation_query_2(dummies):
 # test the REST backend
 
 
-def test_rest_auth_get(app, dummies):
-    with app.test_client() as client:
-        res = client.get('/api/clauses/2')
-        assert res.status_code == 401
+def test_rest_auth_get(testapp, dummies):
+    res = testapp.get('/api/clauses/2', expect_errors=True)
+    assert res.status_code == 401
 
 
-def test_rest_auth_put(app, dummies):
-    with app.test_client() as client:
-        res = client.put('/api/clauses/2',
-                         data={u'bounded': u'true',
-                               u'invalid': u'false',
-                               u'change': u'uncertain',
-                               u'stative': u'false'})
-        assert res.status_code == 401
+def test_rest_auth_put(testapp, dummies):
+    res = testapp.put_json('/api/clauses/2',
+                           {u'bounded': u'true',
+                            u'invalid': u'false',
+                            u'change': u'uncertain',
+                            u'stative': u'false'},
+                           expect_errors=True)
+    assert res.status_code == 401
 
 
 @pytest.fixture()
@@ -265,8 +264,8 @@ def test_rest_put_ok_1(testapp, dummies, logged_in_user):
                       u'invalid': u'false',
                       u'change': u'uncertain',
                       u'stative': u'false'}
-    res = testapp.put('/api/clauses/3',
-                      new_annotation)
+    res = testapp.put_json('/api/clauses/3',
+                           new_annotation)
     assert res.status_code == 200
     res = testapp.get('/api/clauses/3')
     assert res.status_code == 200
@@ -288,8 +287,8 @@ def test_rest_put_ok_2(testapp, dummies, logged_in_user):
                       u'change': u'uncertain',
                       u'stative': u'false'}
     assert new_annotation != response['annotation']
-    res = testapp.put('/api/clauses/2',
-                      new_annotation)
+    res = testapp.put_json('/api/clauses/2',
+                           new_annotation)
     assert res.status_code == 200
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
@@ -312,9 +311,9 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
                       u'change': u'unsure',
                       u'stative': u'false'}
     assert new_annotation != old_annotation
-    res = testapp.put('/api/clauses/2',
-                      new_annotation,
-                      expect_errors=True)
+    res = testapp.put_json('/api/clauses/2',
+                           new_annotation,
+                           expect_errors=True)
     assert res.status_code == 400
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
