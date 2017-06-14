@@ -1,0 +1,7 @@
+#+STARTUP: content hidestars odd
+
+* Dev list
+*** TODO webpack
+*** TODO angular
+*** TODO frontend
+*** TODO swap out flask-login for flask-security
