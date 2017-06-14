@@ -179,6 +179,7 @@ def logged_in_user(testapp, user):
 def test_rest_get_1(testapp, dummies, logged_in_user):
     """Test the REST GET verb's ability to get a clause record."""
     res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
     response = json.loads(res.body)
     # ignore 'last-annotation-date'
     if 'last-annotation-date' in response:
@@ -203,6 +204,7 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
 def test_rest_get_2(testapp, dummies, logged_in_user):
     """Test the REST GET verb's ability to get a clause record."""
     res = testapp.get('/api/clauses/3')
+    assert res.status_code == 200
     response = json.loads(res.body)
     assert response == {
         u'verb-index': 2,
@@ -217,9 +219,9 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
                       u'cannot', u'hook', u'these', u'scripts', u'into',
                       u'any', u'click', u'application', u'.'],
         u'id': 3,
-        u'aspectual-indicators': [{u"type": u"advp_for",
-                                   u"begin": 4,
-                                   u"end": 7}],
+        u'aspectual-indicators': [{u'type': u'advp_for',
+                                   u'begin': 4,
+                                   u'end': 7}],
         u'last-annotation-date': None,
         u'annotation': None}
 
@@ -251,3 +253,70 @@ def test_rest_validation_invalid():
                                       u'stative': u'unsure'})
     assert errors
     assert 'stative' in errors
+
+
+def test_rest_put_ok_1(testapp, dummies, logged_in_user):
+    """Test the REST PUT verb's ability to modify a clause record."""
+    res = testapp.get('/api/clauses/3')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    assert response['annotation'] is None
+    new_annotation = {u'bounded': u'true',
+                      u'invalid': u'false',
+                      u'change': u'uncertain',
+                      u'stative': u'false'}
+    res = testapp.put('/api/clauses/3',
+                      new_annotation)
+    assert res.status_code == 200
+    res = testapp.get('/api/clauses/3')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    assert response['annotation'] == new_annotation
+
+
+def test_rest_put_ok_2(testapp, dummies, logged_in_user):
+    """Test the REST PUT verb's ability to modify a clause record."""
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    assert response['annotation'] == {u'bounded': u'false',
+                                      u'invalid': u'false',
+                                      u'change': u'false',
+                                      u'stative': u'false'}
+    new_annotation = {u'bounded': u'true',
+                      u'invalid': u'false',
+                      u'change': u'uncertain',
+                      u'stative': u'false'}
+    assert new_annotation != response['annotation']
+    res = testapp.put('/api/clauses/2',
+                      new_annotation)
+    assert res.status_code == 200
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    assert response['annotation'] == new_annotation
+
+
+def test_rest_put_invalid(testapp, dummies, logged_in_user):
+    """Test what happens when an invalid PUT request is made."""
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    old_annotation = response['annotation']
+    assert old_annotation == {u'bounded': u'false',
+                              u'invalid': u'false',
+                              u'change': u'false',
+                              u'stative': u'false'}
+    new_annotation = {u'bounded': u'true',
+                      u'invalid': u'false',
+                      u'change': u'unsure',
+                      u'stative': u'false'}
+    assert new_annotation != old_annotation
+    res = testapp.put('/api/clauses/2',
+                      new_annotation,
+                      expect_errors=True)
+    assert res.status_code == 400
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = json.loads(res.body)
+    assert response['annotation'] == old_annotation
