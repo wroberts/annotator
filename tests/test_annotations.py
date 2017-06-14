@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Model unit tests."""
 
+import json
 import pytest
 
 from annotator.annotations.models import Annotation, AspInd, BooleanUnsure, Clause, SynArg
@@ -141,3 +142,60 @@ def test_annotation_query_2(dummies):
             .filter(Annotation.user_id == dummies.user.id)
             .order_by(Annotation.created_at.desc())
             .first()) == dummies.an3
+
+# test the REST backend
+
+
+def test_rest_get_1(app, dummies):
+    """Test the REST GET verb's ability to get a clause record."""
+    with app.test_client() as client:
+        rv = client.get('/api/clauses/2')
+        response = json.loads(rv.data)
+        # ignore 'last-annotation-date'
+        if 'last-annotation-date' in response:
+            del response['last-annotation-date']
+        assert response == {
+            u'verb-index': 13,
+            u'verb-comps': [{u'type': u'subj',
+                             u'begin': 12,
+                             u'end': 13}],
+            u'sentence': [u'While', u'the', u'most', u'common', u'way', u'is',
+                          u'to', u'use', u'the', u'flask', u'command', u',',
+                          u'you', u'can', u'also', u'make', u'your', u'own',
+                          u'"', u'driver', u'scripts', u'"', u'.'],
+            u'id': 2,
+            u'aspectual-indicators': [{u'type': u'subj',
+                                       u'begin': 12,
+                                       u'end': 13}],
+            u'annotation': {u'bounded': u'false',
+                            u'invalid': u'false',
+                            u'change': u'false',
+                            u'stative': u'false'}}
+
+
+def test_rest_get_2(app, dummies):
+    """Test the REST GET verb's ability to get a clause record."""
+    with app.test_client() as client:
+        rv = client.get('/api/clauses/3')
+        response = json.loads(rv.data)
+        assert response == {
+            u'verb-index': 2,
+            u'verb-comps': [{u'type': u'subj',
+                             u'begin': 1,
+                             u'end': 2},
+                            {u'type': u'obj',
+                             u'begin': 3,
+                             u'end': 4}],
+            u'sentence': [u'Since', u'Flask', u'uses', u'click', u'for', u'the',
+                          u'scripts', u'there', u'is', u'no', u'reason', u'you',
+                          u'cannot', u'hook', u'these', u'scripts', u'into',
+                          u'any', u'click', u'application', u'.'],
+            u'id': 3,
+            u'aspectual-indicators': [{u'type': u'subj',
+                                       u'begin': 1,
+                                       u'end': 2},
+                                      {u'type': u'obj',
+                                       u'begin': 3,
+                                       u'end': 4}],
+            u'last-annotation-date': None,
+            u'annotation': None}
