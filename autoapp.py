@@ -9,5 +9,7 @@ CONFIG = DevConfig if get_debug_flag() else ProdConfig
 
 app = create_app(CONFIG)
 
+# (setenv "FLASK_APP" "/Users/wroberts/dev/annotator/autoapp.py")
+# (setenv "FLASK_DEBUG" "1")
 # (setq python-shell-interpreter "flask")
 # (setq python-shell-interpreter-args "shell")
