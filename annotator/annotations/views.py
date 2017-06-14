@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template
-from flask_login import login_required
-from flask_restful import Api, Resource
-from marshmallow import Schema, fields
-from annotator.annotations.models import Annotation, Clause
+from flask import Blueprint, render_template, request
+from flask_login import current_user, login_required
+from flask_restful import Api, Resource, abort
+from marshmallow import Schema, ValidationError, fields, post_load
+import sqlalchemy.orm
+
+from annotator.annotations.models import Annotation, BooleanUnsure, Clause
 
 blueprint = Blueprint('annotation', __name__, url_prefix='/api', static_folder='../static')
 api = Api(blueprint)
+
 
 class CompSchema(Schema):
     """Marshmallow schema for SynArg and AspInd objects."""
@@ -17,13 +20,30 @@ class CompSchema(Schema):
     end = fields.Int()
 
 
+def validate_booleanunsure(value):
+    """Validate BooleanUnsure values."""
+    if value not in set(x.name for x in BooleanUnsure):
+        raise ValidationError('Value must be "true", "false", or "uncertain".')
+    return True
+
+
 class AnnoSchema(Schema):
     """Marshmallow schema for Annotation objects."""
 
-    invalid = fields.Function(lambda annotation: annotation.invalid.name)
-    stative = fields.Function(lambda annotation: annotation.stative.name)
-    bounded = fields.Function(lambda annotation: annotation.bounded.name)
-    change = fields.Function(lambda annotation: annotation.change.name)
+    invalid = fields.Function(lambda annotation: annotation.invalid.name,
+                              required=True, validate=validate_booleanunsure)
+    stative = fields.Function(lambda annotation: annotation.stative.name,
+                              required=True, validate=validate_booleanunsure)
+    bounded = fields.Function(lambda annotation: annotation.bounded.name,
+                              required=True, validate=validate_booleanunsure)
+    change = fields.Function(lambda annotation: annotation.change.name,
+                             required=True, validate=validate_booleanunsure)
+
+    @post_load
+    def convert_to_enums(self, data):
+        """Convert strings into BooleanUnsure values."""
+        return dict((key, BooleanUnsure.__members__[value])
+                    for (key, value) in data.items())
 
 
 class ClauseSchema(Schema):
@@ -44,8 +64,7 @@ class ClauseSchema(Schema):
 
 def marshal(clause, annotation):
     """
-    Use Marshmallow to generate a JSON representation of a
-    clause-annotation pair for a given user.
+    Generate a JSON representation of a clause-annotation pair for a given user.
     """
     clause.annotation = annotation
     clause.last_annotation_date = None
@@ -53,38 +72,48 @@ def marshal(clause, annotation):
         clause.last_annotation_date = annotation.created_at
     return ClauseSchema().dump(clause)
 
+
 class ClauseRsc(Resource):
     """REST API for interacting with clauses and annotations."""
 
+    @login_required
     def get(self, clause_id):
         """
         Returns the given Clause, with the most recent Annotation that
         this user made on it inserted.
         """
         # get the clause
-        clause = Clause.query.filter(Clause.id == clause_id).one()
-        annotation = (Annotation.query
-                      .filter(Annotation.clause_id == clause_id)
-                      .filter(Annotation.user_id == 2)
-                      .order_by(Annotation.created_at.desc())
-                      .first())
+        try:
+            clause = Clause.query.filter(Clause.id == clause_id).one()
+            annotation = (Annotation.query
+                          .filter(Annotation.clause_id == clause_id)
+                          .filter(Annotation.user_id == current_user.id)
+                          .order_by(Annotation.created_at.desc())
+                          .first())
+        except sqlalchemy.orm.exc.NoResultFound:
+            abort(404, message='Clause {} not found'.format(clause_id))
         return marshal(clause, annotation)
 
+    @login_required
     def put(self, clause_id):
         """
         Add a new annotation for the given clause, parsed out of the HTTP
         PUT request object.
         """
-        # parse the PUT body
-        #parser = reqparse.RequestParser()
-        #parser.add_argument('invalid')
-        #parser.add_argument('stative', type=int, help='Rate cannot be converted')
-        #parser.add_argument('bounded')
-        #parser.add_argument('change')
-        #args = parser.parse_args()
-        #todos[todo_id] = request.form['data']
-        #return {todo_id: todos[todo_id]}
-        pass
+        # get the clause
+        try:
+            clause = Clause.query.filter(Clause.id == clause_id).one()
+        except sqlalchemy.orm.exc.NoResultFound:
+            abort(404, message='Clause {} not found'.format(clause_id))
+        try:
+            data, _ = AnnoSchema(strict=True).load(request.values)
+        except ValidationError as e:
+            abort(400, message=unicode(e))
+        # create the new Annotation record
+        new_record = Annotation(clause, current_user, **data)
+        new_record.save()
+        # return to user
+        return marshal(clause, new_record)
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
 
