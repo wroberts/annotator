@@ -16,8 +16,3 @@ require("bootstrap");
 
 require('./js/plugins.js');
 require('./js/script.js');
-
-// CSS
-require('./node_modules/font-awesome/css/font-awesome.css');
-require('./node_modules/bootstrap/dist/css/bootstrap.css');
-require('./css/style.css');

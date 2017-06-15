@@ -1,7 +1,7 @@
 #+STARTUP: content hidestars odd
 
 * Dev list
-*** TODO webpack
+*** DONE webpack
     - [[https://github.com/felixzhengwei/Flask-Angular-ES6-Webpack-Boilerplate/blob/master/webpack.config.js][Flask-Angular-ES6-Webpack-Boilerplate/webpack.config.js at master · felixzhengwei/Flask-Angular-ES6-Webpack-Boilerplate]]
     - [[https://github.com/nickjj/manifest-revision-webpack-plugin][nickjj/manifest-revision-webpack-plugin: Write out a manifest file containing your versioned webpack chunks and assets.]]
 *** TODO angular

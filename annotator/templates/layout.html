@@ -20,7 +20,7 @@
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
 
-  <link rel="stylesheet" href="/static/build/styles.css">
+  {{ stylesheet_tag('app_css') | safe }}
 
   {% block css %}{% endblock %}
 
@@ -58,7 +58,7 @@
 {% include "footer.html" %}
 
 <!-- JavaScript at the bottom for fast page loading -->
-<script type="text/javascript" src="/static/build/bundle.js"></script>
+{{ javascript_tag('app_js') | safe }}
 {% block js %}{% endblock %}
 <!-- end scripts -->
 {% endblock %}
