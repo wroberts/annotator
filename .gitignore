@@ -46,9 +46,7 @@ docs/_build
 env/
 
 
-/annotator/static/libs
+/annotator/static/build
 /dev.db
 *~
-/annotator/static/css/common.css
-/annotator/static/js/common.js
 /node_modules/
