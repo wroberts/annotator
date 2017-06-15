@@ -26,7 +26,7 @@ Then run the following commands to bootstrap your environment ::
     git clone https://github.com/wroberts/annotator
     cd annotator
     pip install -r requirements/dev.txt
-    bower install
+    npm install
     flask run
 
 You will see a pretty welcome screen.
