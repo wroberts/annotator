@@ -1,0 +1,46 @@
+{
+  "name": "annotator",
+  "version": "1.0.0",
+  "description": "Web app for aspectual annotation.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "./node_modules/.bin/webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wroberts/annotator.git"
+  },
+  "author": "Will Roberts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wroberts/annotator/issues"
+  },
+  "homepage": "https://github.com/wroberts/annotator#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "file-loader": "^0.11.2",
+    "font-awesome-webpack": "0.0.5-beta.2",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.4",
+    "manifest-revision-webpack-plugin": "^0.4.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^2.6.1"
+  }
+}

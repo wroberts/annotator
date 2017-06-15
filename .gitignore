@@ -51,3 +51,4 @@ env/
 *~
 /annotator/static/css/common.css
 /annotator/static/js/common.js
+/node_modules/

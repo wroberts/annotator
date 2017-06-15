@@ -3,8 +3,7 @@
 from flask import Flask, render_template
 
 from annotator import annotations, commands, public, user
-from annotator.assets import assets
-from annotator.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
+from annotator.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate, webpack
 from annotator.settings import ProdConfig
 
 
@@ -25,7 +24,6 @@ def create_app(config_object=ProdConfig):
 
 def register_extensions(app):
     """Register Flask extensions."""
-    assets.init_app(app)
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
@@ -33,6 +31,7 @@ def register_extensions(app):
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
+    webpack.init_app(app)
     return None
 
 
