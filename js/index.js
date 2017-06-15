@@ -1,9 +1,9 @@
 /* Main Javascript file for annotator */
 
 // JS modules
-require("jquery");
-require("font-awesome-webpack");
-require("bootstrap");
+require('jquery');
+require('font-awesome-webpack');
+require('bootstrap');
+require('angular');
 
-require('./plugins.js');
-require('./script.js');
+require('./app.js');

@@ -4,7 +4,8 @@
 *** DONE webpack
     - [[https://github.com/felixzhengwei/Flask-Angular-ES6-Webpack-Boilerplate/blob/master/webpack.config.js][Flask-Angular-ES6-Webpack-Boilerplate/webpack.config.js at master · felixzhengwei/Flask-Angular-ES6-Webpack-Boilerplate]]
     - [[https://github.com/nickjj/manifest-revision-webpack-plugin][nickjj/manifest-revision-webpack-plugin: Write out a manifest file containing your versioned webpack chunks and assets.]]
-*** TODO angular
+    - [[https://github.com/nickjj/demo-for-chattanooga-python-user-group/blob/master/webpack.config.js][demo-for-chattanooga-python-user-group/webpack.config.js at master · nickjj/demo-for-chattanooga-python-user-group]]
+*** DONE angular
     - [[https://realpython.com/blog/python/flask-by-example-custom-angular-directive-with-D3/][Flask by Example - Custom Angular Directive with D3 - Real Python]]
 *** TODO frontend
 *** TODO swap out flask-login for flask-security
