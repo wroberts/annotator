@@ -24,6 +24,10 @@ class Config(object):
     SECURITY_CHANGEABLE = True
     SECURITY_REGISTER_USER_TEMPLATE = 'public/register.html'
     SECURITY_LOGIN_USER_TEMPLATE = 'public/login.html'
+    SECURITY_FORGOT_PASSWORD_TEMPLATE = 'public/forgot_password.html'
+    SECURITY_RESET_PASSWORD_TEMPLATE = 'public/reset_password.html'
+    SECURITY_CHANGE_PASSWORD_TEMPLATE = 'users/change_password.html'
+    SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/send_confirmation.html'
     MAIL_SERVER = 'localhost'
     MAIL_PORT = 25
     MAIL_USE_SSL = False
@@ -32,12 +36,6 @@ class Config(object):
     MAIL_SUPPRESS_SEND = True  # TODO
     WEBPACK_MANIFEST_PATH = 'static/build/manifest.json'
 
-
-    SECURITY_FORGOT_PASSWORD_TEMPLATE = 'users/blah.html'
-    SECURITY_RESET_PASSWORD_TEMPLATE = 'users/blah.html'
-    SECURITY_CHANGE_PASSWORD_TEMPLATE = 'users/change_password.html'
-    SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/blah.html'
-    SECURITY_SEND_LOGIN_TEMPLATE = 'users/blah.html'
 
 class ProdConfig(Config):
     """Production configuration."""

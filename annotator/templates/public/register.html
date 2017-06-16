@@ -1,35 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
+{% from "_macros.html" import render_form, render_field %}
 <div class="container-narrow">
-  <h1>Register</h1>
-  <form action="/register" method="POST" name="register_user_form">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+{% include "_messages.html" %}
 
-    <div class="form-group">
-      <label for="first_name">First Name</label>
-      <input id="first_name" class="form-control" name="first_name" type="text" value="" placeholder="First name">
-    </div>
-    <div class="form-group">
-      <label for="first_name">Last Name</label>
-      <input id="first_name" class="form-control" name="last_name" type="text" value="" placeholder="Last name">
-    </div>
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input id="email" class="form-control" name="email" type="email" value="" placeholder="Enter email">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input id="password" class="form-control" name="password" type="password" value="" placeholder="Password">
-    </div>
-    <div class="form-group">
-      <label for="password_confirm">Retype Password</label>
-      <input id="password_confirm" class="form-control"
-             name="password_confirm" type="password" value="" placeholder="Confirm password">
-    </div>
-    <button class="btn btn-primary" id="submit" name="submit" type="submit">Register</button>
-  </form>
-  <div class="register-post-form">
+  <h1>{{ _('Register') }}</h1>
+  {% call render_form(register_user_form,
+  btn_class='btn btn-primary',
+  action_url=url_for_security('register'),
+  action_text='Register',
+  name_='register_user_form',
+  class_='register-user') %}
+  {{ render_field(register_user_form.first_name) }}
+  {{ render_field(register_user_form.last_name) }}
+  {{ render_field(register_user_form.email) }}
+  {{ render_field(register_user_form.password) }}
+  {% if register_user_form.password_confirm %}
+  {{ render_field(register_user_form.password_confirm) }}
+  {% endif %}
+  {% endcall %}
+
+  <div class="security-menu">
     <p><em>Already registered?</em> Click <a href="/login">here</a> to login.</p>
     <p><em>Forgot your password?</em> Click <a href="/reset">here</a> to reset it.</p>
   </div>
