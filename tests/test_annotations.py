@@ -5,7 +5,7 @@ import json
 import pytest
 
 from annotator.annotations.models import Annotation, AspInd, BooleanUnsure, Clause, SynArg
-from annotator.annotations.views import AnnoSchema
+from annotator.annotations.rest import AnnoSchema
 
 
 class Bunch(object):

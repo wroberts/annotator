@@ -27,6 +27,7 @@ class Config(object):
     SECURITY_RESET_PASSWORD_TEMPLATE = 'public/reset_password.html'
     SECURITY_CHANGE_PASSWORD_TEMPLATE = 'users/change_password.html'
     SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/send_confirmation.html'
+    SECURITY_POST_LOGIN_VIEW = '/annotations/'
     SECURITY_POST_LOGOUT_VIEW = '/?logout'
     MAIL_SERVER = 'localhost'
     MAIL_PORT = 25

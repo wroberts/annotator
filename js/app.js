@@ -1,6 +1,6 @@
 angular.module('Annotator', [])
 
-  .directive('helloWorld', () => {
+  .directive('dashboard', () => {
     return {
       restrict: 'E',
       transclude: true,

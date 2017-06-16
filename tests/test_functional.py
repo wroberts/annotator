@@ -84,7 +84,7 @@ class TestRegistering:
         form['password_confirm'] = 'secret'
         # Submits
         res = form.submit().follow()
-        assert res.status_code == 200
+        assert res.status_code in [200, 302]
         # A new user was created
         assert len(User.query.all()) == old_count + 1
 

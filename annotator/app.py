@@ -7,7 +7,7 @@ from annotator import annotations, commands, public, user
 from annotator.extensions import cache, csrf_protect, db, debug_toolbar, mail, migrate, security, webpack
 from annotator.settings import ProdConfig
 from annotator.user.forms import ExtendedRegisterForm
-from annotator.user.models import User, Role
+from annotator.user.models import Role, User
 
 
 def create_app(config_object=ProdConfig):
@@ -44,6 +44,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(annotations.rest.blueprint)
     app.register_blueprint(annotations.views.blueprint)
     return None
 
