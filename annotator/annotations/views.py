@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, request
+import sqlalchemy.orm
+from flask import Blueprint, request
+from flask_restful import Api, Resource, abort
 from flask_security.core import current_user
 from flask_security.decorators import login_required
-from flask_restful import Api, Resource, abort
 from marshmallow import Schema, ValidationError, fields, post_load
-import sqlalchemy.orm
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
 
@@ -65,7 +65,7 @@ class ClauseSchema(Schema):
 
 def marshal(clause, annotation):
     """
-    Generate a JSON representation of a clause-annotation pair for a given user.
+    Generate JSON for a clause-annotation pair for a given user.
     """
     clause.annotation = annotation
     clause.last_annotation_date = None
@@ -117,9 +117,3 @@ class ClauseRsc(Resource):
         return marshal(clause, new_record)
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
-
-# @blueprint.route('/')
-# @login_required
-# def members():
-#     """List members."""
-#     return render_template('users/members.html')

@@ -29,7 +29,6 @@ flask-webpack==0.1.0
 # Auth
 flask-security==3.0.0
 Flask-Login==0.4.0
-Flask-Bcrypt==0.7.1
 Flask-Mail==0.9.1
 
 # Caching

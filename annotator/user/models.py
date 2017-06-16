@@ -5,7 +5,6 @@ import datetime as dt
 from flask_security import UserMixin
 
 from annotator.database import Column, Model, SurrogatePK, db, reference_col, relationship
-from annotator.extensions import bcrypt
 
 
 class Role(SurrogatePK, Model):
