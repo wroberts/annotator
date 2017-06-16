@@ -3,6 +3,7 @@
 import datetime as dt
 
 import pytest
+from flask_security.utils import verify_password
 
 from annotator.user.models import Role, User
 
@@ -23,14 +24,14 @@ class TestUser:
 
     def test_created_at_defaults_to_datetime(self):
         """Test creation date."""
-        user = User(username='foo', email='foo@bar.com')
+        user = User(first_name='foo', last_name='bar', email='foo@bar.com')
         user.save()
         assert bool(user.created_at)
         assert isinstance(user.created_at, dt.datetime)
 
     def test_password_is_nullable(self):
         """Test null password."""
-        user = User(username='foo', email='foo@bar.com')
+        user = User(first_name='foo', last_name='bar', email='foo@bar.com')
         user.save()
         assert user.password is None
 
@@ -38,19 +39,22 @@ class TestUser:
         """Test user factory."""
         user = UserFactory(password='myprecious')
         db.session.commit()
-        assert bool(user.username)
+        assert bool(user.first_name)
+        assert bool(user.last_name)
         assert bool(user.email)
         assert bool(user.created_at)
         assert user.is_admin is False
         assert user.active is True
-        assert user.check_password('myprecious')
+        assert verify_password('myprecious', user.password)
 
     def test_check_password(self):
         """Check password."""
-        user = User.create(username='foo', email='foo@bar.com',
+        user = User.create(first_name='foo',
+                           last_name='bar',
+                           email='foo@bar.com',
                            password='foobarbaz123')
-        assert user.check_password('foobarbaz123') is True
-        assert user.check_password('barfoobaz') is False
+        assert verify_password('foobarbaz123', user.password) is True
+        assert verify_password('barfoobaz', user.password) is False
 
     def test_full_name(self):
         """User full name."""

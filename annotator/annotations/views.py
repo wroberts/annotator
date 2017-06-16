@@ -4,7 +4,6 @@ import sqlalchemy.orm
 from flask import Blueprint, request
 from flask_restful import Api, Resource, abort
 from flask_security.core import current_user
-from flask_security.decorators import login_required
 from marshmallow import Schema, ValidationError, fields, post_load
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
@@ -77,12 +76,13 @@ def marshal(clause, annotation):
 class ClauseRsc(Resource):
     """REST API for interacting with clauses and annotations."""
 
-    @login_required
     def get(self, clause_id):
         """
         Returns the given Clause, with the most recent Annotation that
         this user made on it inserted.
         """
+        if not current_user.is_authenticated:
+            abort(401)
         # get the clause
         try:
             clause = Clause.query.filter(Clause.id == clause_id).one()
@@ -95,12 +95,13 @@ class ClauseRsc(Resource):
             abort(404, message='Clause {} not found'.format(clause_id))
         return marshal(clause, annotation)
 
-    @login_required
     def put(self, clause_id):
         """
         Add a new annotation for the given clause, parsed out of the HTTP
         PUT request object.
         """
+        if not current_user.is_authenticated:
+            abort(401)
         # get the clause
         try:
             clause = Clause.query.filter(Clause.id == clause_id).one()

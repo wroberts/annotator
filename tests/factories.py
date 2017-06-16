@@ -20,9 +20,10 @@ class BaseFactory(SQLAlchemyModelFactory):
 class UserFactory(BaseFactory):
     """User factory."""
 
-    username = Sequence(lambda n: 'user{0}'.format(n))
+    first_name = Sequence(lambda n: 'first{0}'.format(n))
+    last_name = Sequence(lambda n: 'last{0}'.format(n))
     email = Sequence(lambda n: 'user{0}@example.com'.format(n))
-    password = PostGenerationMethodCall('set_password', 'example')
+    password = 'example'
     active = True
 
     class Meta:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
-from flask import Blueprint, render_template
+from flask import Blueprint, flash, render_template, request
 
 blueprint = Blueprint('public', __name__, static_folder='../static')
 
@@ -8,6 +8,8 @@ blueprint = Blueprint('public', __name__, static_folder='../static')
 @blueprint.route('/')
 def home():
     """Home page."""
+    if 'logout' in request.args:
+        flash('You are logged out.', 'info')
     return render_template('public/home.html')
 
 

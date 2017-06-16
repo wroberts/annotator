@@ -6,7 +6,6 @@ import pytest
 
 from annotator.annotations.models import Annotation, AspInd, BooleanUnsure, Clause, SynArg
 from annotator.annotations.views import AnnoSchema
-from annotator.user.models import User
 
 
 class Bunch(object):
@@ -47,8 +46,6 @@ def dummies(db, user):
     bunch.a1.save()
 
     # we'll need a user to do this
-    #bunch.user = User('joe.blow', 'joe.blow@anywhere.com')
-    #bunch.user.save()
     bunch.user = user
 
     # now let's create some Annotations on the first clause
@@ -165,10 +162,10 @@ def test_rest_auth_put(testapp, dummies):
 
 @pytest.fixture()
 def logged_in_user(testapp, user):
-    res = testapp.get('/')
+    res = testapp.get('/login')
     # Fills out login form in navbar
-    form = res.forms['loginForm']
-    form['username'] = user.username
+    form = res.forms['login_user_form']
+    form['email'] = user.email
     form['password'] = 'myprecious'
     # Submits
     res = form.submit().follow()

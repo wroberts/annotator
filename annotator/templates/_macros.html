@@ -77,8 +77,8 @@
         action_text - text of submit button
         class_ - sets a class for form
     #}
-{% macro render_form(form, action_url='', action_text='Submit', class_='', name_='', btn_class='btn btn-default') -%}
-    <form method="POST" action="{{ action_url }}" role="form" name="{{ name_ }}" class="{{ class_ }}">
+{% macro render_form(form, action_url='', action_text='Submit', class_='', id_='', name_='', btn_class='btn btn-default') -%}
+    <form method="POST" action="{{ action_url }}" role="form" id="{{ id_ }}" name="{{ name_ }}" class="{{ class_ }}">
         {{ form.hidden_tag() if form.hidden_tag }}
         {% if caller %}
             {{ caller() }}

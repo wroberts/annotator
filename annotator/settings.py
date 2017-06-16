@@ -13,7 +13,7 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECURITY_PASSWORD_HASH = 'pbkdf2_sha256'
+    SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
     SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT', b'password-salt')  # TODO
     SECURITY_REGISTERABLE = True,
     SECURITY_RECOVERABLE = True
@@ -27,6 +27,7 @@ class Config(object):
     SECURITY_RESET_PASSWORD_TEMPLATE = 'public/reset_password.html'
     SECURITY_CHANGE_PASSWORD_TEMPLATE = 'users/change_password.html'
     SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/send_confirmation.html'
+    SECURITY_POST_LOGOUT_VIEW = '/?logout'
     MAIL_SERVER = 'localhost'
     MAIL_PORT = 25
     MAIL_USE_SSL = False
