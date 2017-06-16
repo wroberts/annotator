@@ -2,7 +2,7 @@
 """User models."""
 import datetime as dt
 
-from flask_login import UserMixin
+from flask_security import UserMixin
 
 from annotator.database import Column, Model, SurrogatePK, db, reference_col, relationship
 from annotator.extensions import bcrypt
@@ -29,31 +29,19 @@ class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = 'users'
-    username = Column(db.String(80), unique=True, nullable=False)
-    email = Column(db.String(80), unique=True, nullable=False)
+    email = Column(db.String(255), unique=True, nullable=False)
     #: The hashed password
-    password = Column(db.Binary(128), nullable=True)
+    password = Column(db.String(255), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
-    first_name = Column(db.String(30), nullable=True)
-    last_name = Column(db.String(30), nullable=True)
+    confirmed_at = Column(db.DateTime)
+    first_name = Column(db.String(255), nullable=True)
+    last_name = Column(db.String(255), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
 
-    def __init__(self, username, email, password=None, **kwargs):
+    def __init__(self, email, password=None, **kwargs):
         """Create instance."""
-        db.Model.__init__(self, username=username, email=email, **kwargs)
-        if password:
-            self.set_password(password)
-        else:
-            self.password = None
-
-    def set_password(self, password):
-        """Set password."""
-        self.password = bcrypt.generate_password_hash(password)
-
-    def check_password(self, value):
-        """Check password."""
-        return bcrypt.check_password_hash(self.password, value)
+        db.Model.__init__(self, email=email, password=password, **kwargs)
 
     @property
     def full_name(self):
@@ -62,4 +50,4 @@ class User(UserMixin, SurrogatePK, Model):
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return '<User({username!r})>'.format(username=self.username)
+        return '<User({full_name!r})>'.format(username=self.full_name)

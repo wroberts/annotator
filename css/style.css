@@ -33,6 +33,10 @@ textarea {
 }
 
 
+.register-post-form {
+    margin-top: 40px;
+}
+
 .form-register {
   width: 50%;
 }

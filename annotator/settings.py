@@ -14,8 +14,30 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECURITY_PASSWORD_HASH = 'pbkdf2_sha256'
+    SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT', b'password-salt') # TODO
+    SECURITY_REGISTERABLE = True,
+    SECURITY_RECOVERABLE = True
+    SECURITY_CONFIRMABLE = False
+    SECURITY_TRACKABLE = False
+    SECURITY_PASSWORDLESS = False
+    SECURITY_CHANGEABLE = True
+    SECURITY_REGISTER_USER_TEMPLATE = 'public/register.html'
+    SECURITY_LOGIN_USER_TEMPLATE = 'public/login.html'
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = None
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
+    MAIL_SUPPRESS_SEND = True  # TODO
     WEBPACK_MANIFEST_PATH = 'static/build/manifest.json'
 
+
+    SECURITY_FORGOT_PASSWORD_TEMPLATE = 'users/blah.html'
+    SECURITY_RESET_PASSWORD_TEMPLATE = 'users/blah.html'
+    SECURITY_CHANGE_PASSWORD_TEMPLATE = 'users/change_password.html'
+    SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/blah.html'
+    SECURITY_SEND_LOGIN_TEMPLATE = 'users/blah.html'
 
 class ProdConfig(Config):
     """Production configuration."""

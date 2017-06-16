@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """User views."""
 from flask import Blueprint, render_template, request
-from flask_login import current_user, login_required
+from flask_security.core import current_user
+from flask_security.decorators import login_required
 from flask_restful import Api, Resource, abort
 from marshmallow import Schema, ValidationError, fields, post_load
 import sqlalchemy.orm

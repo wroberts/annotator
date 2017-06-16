@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from flask import Flask, render_template
+from flask_security import SQLAlchemyUserDatastore
 
 from annotator import annotations, commands, public, user
-from annotator.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate, webpack
+from annotator.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, mail, migrate, security, webpack
 from annotator.settings import ProdConfig
+from annotator.user.forms import ExtendedRegisterForm
+from annotator.user.models import User, Role
 
 
 def create_app(config_object=ProdConfig):
@@ -28,8 +31,11 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     csrf_protect.init_app(app)
-    login_manager.init_app(app)
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, user_datastore,
+                      register_form=ExtendedRegisterForm)
     debug_toolbar.init_app(app)
+    mail.init_app(app)
     migrate.init_app(app, db)
     webpack.init_app(app)
     return None
