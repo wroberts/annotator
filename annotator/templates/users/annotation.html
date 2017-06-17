@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block css %}
+<base href="/annotations/interface/">
+{% endblock %}
+
+{% block content %}
+<div class="body-content">
+  <h1>Annotation Interface</h1>
+
+  <div ng-app="Annotator">
+    <div ng-view></div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+{{ javascript_tag('app_js') | safe }}
+{% endblock %}

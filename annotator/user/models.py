@@ -37,6 +37,12 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(255), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
+    # trackable fields
+    last_login_at = Column(db.DateTime, nullable=True)
+    current_login_at = Column(db.DateTime, nullable=True)
+    last_login_ip = Column(db.String(255), nullable=True)
+    current_login_ip = Column(db.String(255), nullable=True)
+    login_count = Column(db.Integer, default=0)
 
     def __init__(self, email, password=None, **kwargs):
         """Create instance."""
