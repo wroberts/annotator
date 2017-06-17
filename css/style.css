@@ -33,24 +33,48 @@ textarea {
 
 /* CSS classes for aspectual annotation interface */
 
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+.clause {
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 5px 20px 10px;
+    margin: 30px 0px;
+}
+
 .help { cursor: help; }
 
 .verb {
-    background-color: #c97479;
+    background-color: #e56a72;
 }
 
 .subj {
-    background-color: #eda874;
+    background-color: #84a1f7;
 }
 
 .obj {
-    background-color: #c999af;
+    background-color: #81d67c;
 }
 
 .advp_for {
-    background-color: #8d9be0;
-/* adb8db
-       https://coolors.co/eda874-c97479-c999af-8d9be0-adb8db
+    background-color: #ebd383;
+/*
+#c97479;
+#eda874;
+#c999af;
+#8d9be0;
+#adb8db
+https://coolors.co/eda874-c97479-c999af-8d9be0-adb8db
+
+#81d67c  green
+#e56a72  red
+#ebd383  yellow
+#da7afa  purple
+#84a1f7  blue
+#ffab72  orange
 */
 }
 

@@ -29,19 +29,25 @@ angular.module('Annotator', ['ngRoute', 'ngResource'])
           Clauses.get({ id: $routeParams.clauseId },
                       (clause) => {
                         const spanMap = clause.sentence.map(() => undefined);
+                        const spanMap2 = clause.sentence.map(() => undefined);
                         for (const comp of clause['aspectual-indicators']) {
                           for (let i = comp.begin; i < comp.end; i += 1)
                             spanMap[i] = comp.type;
+                            spanMap2[i] = 'aspind';
                         }
                         for (const comp of clause['verb-comps']) {
-                          for (let i = comp.begin; i < comp.end; i += 1)
+                          for (let i = comp.begin; i < comp.end; i += 1) {
                             spanMap[i] = comp.type;
+                            spanMap2[i] = 'synarg';
+                          }
                         }
                         spanMap[clause['verb-index']] = 'verb';
+                        spanMap2[clause['verb-index']] = undefined;
                         $scope.spanMap = spanMap;
+                        $scope.spanMap2 = spanMap2;
                         const spans = [];
                         let lastClass;
-                        let currentSpan = { wclass: undefined, words: [] };
+                        let currentSpan = { wclass: undefined, mclass: undefined, words: [] };
                         for (let i = 0; i < clause.sentence.length - 1; i += 1)
                         {
                           const word = clause.sentence[i];
@@ -57,7 +63,7 @@ angular.module('Annotator', ['ngRoute', 'ngResource'])
                               currentSpan.words = currentSpan.words.join(' ');
                               spans.push(currentSpan);
                             }
-                            currentSpan = { wclass, words: [word] };
+                            currentSpan = { wclass, mclass: spanMap2[i], words: [word] };
                           }
                         }
                         if (currentSpan.words) {
