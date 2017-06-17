@@ -1,5 +1,8 @@
-<dashboard></dashboard>
+<h1>Annotating Clause {{ cached.clause.id }}</h1>
 
-{{ name }} <br/>
-
-{{ params }} <br/>
+<h3>
+  <span ng-repeat="span in spans">
+    <span ng-if="span.idx"> </span>
+    <span title="{{span.title}}" class="{{span.wclass}} {{span.cclass}}">{{span.words}}</span>
+  </span>
+</h3>

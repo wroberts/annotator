@@ -5,24 +5,24 @@
 /* universal */
 
 html {
-  overflow-y: scroll;
+    overflow-y: scroll;
 }
 
 body {
-  padding-top: 60px;
+    padding-top: 60px;
 }
 
 section {
-  overflow: auto;
+    overflow: auto;
 }
 
 textarea {
-  resize: vertical;
+    resize: vertical;
 }
 
 .container-narrow{
-  margin: 0 auto;
-  max-width: 700px;
+    margin: 0 auto;
+    max-width: 700px;
 }
 
 /* space above the security menu */
@@ -31,40 +31,63 @@ textarea {
     margin-top: 40px;
 }
 
+/* CSS classes for aspectual annotation interface */
+
+.help { cursor: help; }
+
+.verb {
+    background-color: #c97479;
+}
+
+.subj {
+    background-color: #eda874;
+}
+
+.obj {
+    background-color: #c999af;
+}
+
+.advp_for {
+    background-color: #8d9be0;
+/* adb8db
+       https://coolors.co/eda874-c97479-c999af-8d9be0-adb8db
+*/
+}
+
 /* footer */
 
 footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #999999;
+    margin-top: 45px;
+    padding-top: 5px;
+    border-top: 1px solid #eaeaea;
+    color: #999999;
 }
 
 footer a {
-  color: #999999;
+    color: #999999;
 }
 
 footer p {
-  float: right;
-  margin-right: 25px;
+    float: right;
+    margin-right: 25px;
 }
 
 footer ul {
-  list-style: none;
+    list-style: none;
 }
 
 footer ul li {
-  float: left;
-  margin-left: 10px;
+    float: left;
+    margin-left: 10px;
 }
 
 footer .company {
-  float: left;
-  margin-left: 25px;
+    float: left;
+    margin-left: 25px;
 }
 
 footer .footer-nav {
-  float: right;
-  margin-right: 25px;
-  list-style: none;
+    float: right;
+    margin-right: 25px;
+    list-style: none;
 }
