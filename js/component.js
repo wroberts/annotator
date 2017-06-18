@@ -76,7 +76,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
                 }
                 $scope.annotation = Clauses.cache.clause.annotation;
               },
-              () => { location = '/'; });
+              () => { location = '/annotations/'; });
   // we use the Clause service's cache to access the clause
   // object in the page
   $scope.cached = Clauses.cache;
