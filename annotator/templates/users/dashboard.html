@@ -8,14 +8,17 @@
     {{ number_total_clauses }} clauses.</p>
 
   {% if first_unannotated_clause %}
-  <p>First unannotated clause: {{ first_unannotated_clause[0] }}</p>
-  <p><a href="/annotations/interface/#!/{{ first_unannotated_clause[0] }}">Link</a></p>
+  <p><a class="btn btn-lg btn-default"
+        href="/annotations/interface/#!/{{ first_unannotated_clause[0] }}">
+      Go to first unannotated clause ({{ first_unannotated_clause[0] }})</a></p>
   {% else %}
   <p>No unannotated clauses.</p>
   {% endif %}
 
   {% if last_annotated_clause %}
-  <p>Last annotated clause: {{ last_annotated_clause[0] }}</p>
+  <p><a class="btn btn-lg btn-default"
+        href="/annotations/interface/#!/{{ last_annotated_clause[0] }}">
+      Go to last annotated clause ({{ last_annotated_clause[0] }})</a></p>
   {% else %}
   <p>No annotated clauses.</p>
   {% endif %}

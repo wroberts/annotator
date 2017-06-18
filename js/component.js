@@ -75,7 +75,8 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
                   };
                 }
                 $scope.annotation = Clauses.cache.clause.annotation;
-              });
+              },
+              () => { location = '/'; });
   // we use the Clause service's cache to access the clause
   // object in the page
   $scope.cached = Clauses.cache;
@@ -103,35 +104,45 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   this.changeChanged = () => {
     // nothing to do here
   };
+  this.shouldSave = () =>
+    (!Clauses.isClean() &&
+     !($scope.annotation.invalid ===
+       $scope.annotation.stative ===
+       $scope.annotation.bounded ===
+       $scope.annotation.change === 'uncertain'));
   this.left = () => {
-    if ($routeParams.clauseId !== 1) {
+    if (Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
-      if (!Clauses.isClean()) {
+      if (this.shouldSave()) {
         Clauses.save(() => {
-          $location.url(newUrl);
+          $rootScope.$evalAsync(() => { $location.url(newUrl) });
         });
       } else {
-        $location.url(newUrl);
+        $rootScope.$evalAsync(() => { $location.url(newUrl) });
       }
     }
   };
   this.right = () => {
     if (!Clauses.cache.clause.last) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
-      if (!Clauses.isClean()) {
+      if (this.shouldSave()) {
         Clauses.save(() => {
-          $location.url(newUrl);
+          $rootScope.$evalAsync(() => { $location.url(newUrl) });
         });
       } else {
-        $location.url(newUrl);
+        $rootScope.$evalAsync(() => { $location.url(newUrl) });
       }
     }
   };
   this.keyDown = (broadcast, event) => {
     console.log('keyDown');
     console.log(event); /* key event is here */
-    // event.which === 37 // left
-    // event.which === 39 // right
+    if (event.which == 37) {
+      this.left();   // left
+    }
+    if (event.which == 39) {
+      this.right();  // right
+    }
     // event.which === 73 // i
     // event.which === 86 // v
     // event.which === 83 // s

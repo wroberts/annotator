@@ -8,7 +8,7 @@ export default ($resource) => {
   ClauseService.cache = { clause: undefined, original: undefined };
 
   const oldGet = ClauseService.get;
-  ClauseService.get = (params, cb) => {
+  ClauseService.get = (params, cb, cb2) => {
     ClauseService.cache.clause = undefined;
     ClauseService.cache.original = undefined;
     return oldGet(params, (clause) => {
@@ -17,7 +17,7 @@ export default ($resource) => {
       if (cb) {
         cb(clause);
       }
-    });
+    }, (args) => { if (cb2) { cb2(args); } });
   };
 
   ClauseService.save = (cb) => {
