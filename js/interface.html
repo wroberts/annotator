@@ -12,52 +12,40 @@
     </div>
   </div>
 </div>
+{{ annotation }}
 <div class="row vertical-center">
   <div class="col-md-3 text-left">
     <button class="btn btn-default btn-lg">&laquo; Previous clause</button>
   </div>
   <div class="col-md-6 text-center">
     <h4>Annotations</h4>
-    <form>
+    <form name="iface">
       <div>
-        <div class="btn-group btn-group-lg" data-toggle="buttons" role="group" id="invgrp" aria-label="invalid vs. valid">
-          <label class="btn btn-default">
-            <input type="radio" name="pvalid" id="invalid">Invalid
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="pvalid" id="valid">Valid
-          </label>
+        <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">
+          <label class="btn btn-default" ng-model="annotation.invalid" uib-btn-radio="'true'">Invalid</label>
+          <label class="btn btn-default" ng-model="annotation.invalid" uib-btn-radio="'uncertain'">Uncertain</label>
+          <label class="btn btn-default" ng-model="annotation.invalid" uib-btn-radio="'false'">Valid</label>
         </div>
       </div>
       <div>
-        <div class="btn-group btn-group-lg" data-toggle="buttons" role="group" id="svdgrp" aria-label="stative vs. dynamic">
-          <label class="btn btn-default">
-            <input type="radio" name="pstative" id="stative">Stative
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="pstative" id="dynamic">Dynamic
-          </label>
+        <div class="btn-group btn-group-lg" aria-label="stative vs. dynamic">
+          <label class="btn btn-default" ng-model="annotation.stative" uib-btn-radio="'true'">Stative</label>
+          <label class="btn btn-default" ng-model="annotation.stative" uib-btn-radio="'uncertain'">Uncertain</label>
+          <label class="btn btn-default" ng-model="annotation.stative" uib-btn-radio="'false'">Dynamic</label>
         </div>
       </div>
       <div>
-        <div class="btn-group btn-group-lg" data-toggle="buttons" role="group" id="boundgrp" aria-label="bounded vs. unbounded">
-          <label class="btn btn-default">
-            <input type="radio" name="pbounded" id="stative">Unbounded
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="pbounded" id="dynamic">Bounded
-          </label>
+        <div class="btn-group btn-group-lg" aria-label="bounded vs. unbounded">
+          <label class="btn btn-default" ng-model="annotation.bounded" uib-btn-radio="'false'">Unbounded</label>
+          <label class="btn btn-default" ng-model="annotation.bounded" uib-btn-radio="'uncertain'">Uncertain</label>
+          <label class="btn btn-default" ng-model="annotation.bounded" uib-btn-radio="'true'">Bounded</label>
         </div>
       </div>
       <div>
-        <div class="btn-group btn-group-lg" data-toggle="buttons" role="group" id="changegrp" aria-label="change-of-state vs. no change-of-state">
-          <label class="btn btn-default">
-            <input type="radio" name="pchange" id="change">Change of State
-          </label>
-          <label class="btn btn-default">
-            <input type="radio" name="pchange" id="nochange">No Change
-            of State
-          </label>
+        <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
+          <label class="btn btn-default" ng-model="annotation.change" uib-btn-radio="'true'">Change of State</label>
+          <label class="btn btn-default" ng-model="annotation.change" uib-btn-radio="'uncertain'">Uncertain</label>
+          <label class="btn btn-default" ng-model="annotation.change" uib-btn-radio="'false'">No Change</label>
         </div>
       </div>
     </form>
