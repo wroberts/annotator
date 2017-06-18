@@ -7,7 +7,7 @@ from flask_security.core import current_user
 from marshmallow import Schema, ValidationError, fields, post_load
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
-from annotator.extensions import csrf_protect
+from annotator.extensions import csrf_protect, db
 
 blueprint = Blueprint('api', __name__, url_prefix='/api', static_folder='../static')
 csrf_protect.exempt(blueprint)
@@ -61,12 +61,14 @@ class ClauseSchema(Schema):
                                            load_from='last-annotation-date',
                                            dump_to='last-annotation-date')
     annotation = fields.Nested(AnnoSchema, missing=None)
+    last = fields.Boolean()
 
 
-def marshal(clause, annotation):
+def marshal(clause, max_id, annotation):
     """
     Generate JSON for a clause-annotation pair for a given user.
     """
+    clause.last = (clause.id == max_id)
     clause.annotation = annotation
     clause.last_annotation_date = None
     if annotation is not None:
@@ -87,6 +89,8 @@ class ClauseRsc(Resource):
         # get the clause
         try:
             clause = Clause.query.filter(Clause.id == clause_id).one()
+            max_id = db.session.query(Clause.id).order_by(Clause.id.desc()).first()
+            max_id = max_id[0] if max_id else -1
             annotation = (Annotation.query
                           .filter(Annotation.clause_id == clause_id)
                           .filter(Annotation.user_id == current_user.id)
@@ -94,7 +98,7 @@ class ClauseRsc(Resource):
                           .first())
         except sqlalchemy.orm.exc.NoResultFound:
             abort(404, message='Clause {} not found'.format(clause_id))
-        return marshal(clause, annotation)
+        return marshal(clause, max_id, annotation)
 
     def put(self, clause_id):
         """
@@ -106,6 +110,8 @@ class ClauseRsc(Resource):
         # get the clause
         try:
             clause = Clause.query.filter(Clause.id == clause_id).one()
+            max_id = db.session.query(Clause.id).order_by(Clause.id.desc()).first()
+            max_id = max_id[0] if max_id else -1
         except sqlalchemy.orm.exc.NoResultFound:
             abort(404, message='Clause {} not found'.format(clause_id))
         try:
@@ -116,6 +122,6 @@ class ClauseRsc(Resource):
         new_record = Annotation(clause, current_user, **data)
         new_record.save()
         # return to user
-        return marshal(clause, new_record)
+        return marshal(clause, max_id, new_record)
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
