@@ -81,6 +81,28 @@ function controller($scope, $routeParams, Clauses) {
   $scope.cached = Clauses.cache;
   $scope.isClean = Clauses.isClean;
   $scope.save = Clauses.save;
+
+  this.invalidChanged = () => {
+    if ($scope.annotation.invalid == 'true') {
+      $scope.annotation.stative = 'uncertain';
+      $scope.annotation.bounded = 'uncertain';
+      $scope.annotation.change = 'uncertain';
+    }
+  };
+  this.stativeChanged = () => {
+    if ($scope.annotation.stative == 'true') {
+      $scope.annotation.bounded = 'false';
+      $scope.annotation.change = 'false';
+    }
+  };
+  this.boundedChanged = () => {
+    if ($scope.annotation.bounded == 'false') {
+      /* maybe set change to FALSE? */
+    }
+  };
+  this.changeChanged = () => {
+    // nothing to do here
+  };
 }
 
 export default {

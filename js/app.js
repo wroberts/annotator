@@ -4,16 +4,18 @@ import 'angular-route';
 import 'angular-ui-bootstrap';
 
 import ClauseService from './service';
-import InterfaceController from './controller';
+import InterfaceComponent from './component';
 
 angular.module('Annotator', ['ngRoute', 'ngResource', 'ui.bootstrap'])
 
   .factory('Clauses', ClauseService)
+
+  .component('interface', InterfaceComponent)
 
   .config(($locationProvider, $routeProvider) => {
     $locationProvider
       .html5Mode(false)
       .hashPrefix('!');
     $routeProvider
-      .when('/:clauseId', InterfaceController);
+      .when('/:clauseId', { template: '<interface></interface>' });
   });
