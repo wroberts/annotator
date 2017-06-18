@@ -194,7 +194,8 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
         u'annotation': {u'bounded': u'false',
                         u'invalid': u'false',
                         u'change': u'false',
-                        u'stative': u'false'}}
+                        u'stative': u'false'},
+        u'last': False}
 
 
 def test_rest_get_2(testapp, dummies, logged_in_user):
@@ -219,7 +220,8 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
                                    u'begin': 4,
                                    u'end': 7}],
         u'last-annotation-date': None,
-        u'annotation': None}
+        u'annotation': None,
+        u'last': False}
 
 
 def test_rest_validation_ok():
