@@ -115,10 +115,10 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
       if (this.shouldSave()) {
         Clauses.save(() => {
-          $rootScope.$evalAsync(() => { $location.url(newUrl) });
+          $location.url(newUrl);
         });
       } else {
-        $rootScope.$evalAsync(() => { $location.url(newUrl) });
+        $location.url(newUrl);
       }
     }
   };
@@ -127,10 +127,10 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
       if (this.shouldSave()) {
         Clauses.save(() => {
-          $rootScope.$evalAsync(() => { $location.url(newUrl) });
+          $location.url(newUrl);
         });
       } else {
-        $rootScope.$evalAsync(() => { $location.url(newUrl) });
+        $location.url(newUrl);
       }
     }
   };
@@ -138,10 +138,10 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     console.log('keyDown');
     console.log(event); /* key event is here */
     if (event.which == 37) {
-      this.left();   // left
+      $rootScope.$evalAsync(() => { this.left(); });   // left
     }
     if (event.which == 39) {
-      this.right();  // right
+      $rootScope.$evalAsync(() => { this.right(); });  // right
     }
     // event.which === 73 // i
     // event.which === 86 // v
