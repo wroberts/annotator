@@ -59,7 +59,7 @@ function getSpans(clause) {
   return spans;
 }
 
-function controller($scope, $routeParams, Clauses) {
+function controller($scope, $rootScope, $routeParams, Clauses) {
   // make the call to the REST API to fetch the clause object
   $scope.spans = [];
   $scope.annotation = {};
@@ -103,6 +103,21 @@ function controller($scope, $routeParams, Clauses) {
   this.changeChanged = () => {
     // nothing to do here
   };
+  this.keyDown = (broadcast, event) => {
+    console.log('keyDown');
+    console.log(event); /* key event is here */
+    // event.which === 37 // left
+    // event.which === 39 // right
+    // event.which === 73 // i
+    // event.which === 86 // v
+    // event.which === 83 // s
+    // event.which === 68 // d
+    // event.which === 85 // u
+    // event.which === 66 // b
+    // event.which === 67 // c
+    // event.which === 78 // n
+  }
+  $rootScope.$on('bodySendsKeyDown', this.keyDown);
 }
 
 export default {

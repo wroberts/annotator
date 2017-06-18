@@ -4,9 +4,11 @@
 <base href="/annotations/interface/">
 {% endblock %}
 
+{% block body_attrs %} key-handler="$ctrl.keyDown($event)" {% endblock %}
+
 {% block content %}
 <div class="body-content">
-  <div ng-app="Annotator">
+  <div>
     <div ng-view></div>
   </div>
 </div>

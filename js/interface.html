@@ -1,102 +1,107 @@
-<h1>Annotating Clause {{ cached.clause.id }}</h1>
+<div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-8 col-md-offset-2">
-    <div class="clause">
-      <h3>
-        <span ng-repeat="span in spans">
-          <span ng-if="span.idx"> </span>
-          <span title="{{span.title}}" class="{{span.wclass}} {{span.cclass}} {{span.mclass}}">{{span.words}}</span>
-        </span>
-      </h3>
+  <h1>Annotating Clause {{ cached.clause.id }}</h1>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <div class="clause">
+        <h3>
+          <span ng-repeat="span in spans">
+            <span ng-if="span.idx"> </span>
+            <span title="{{span.title}}" class="{{span.wclass}} {{span.cclass}} {{span.mclass}}">{{span.words}}</span>
+          </span>
+        </h3>
+      </div>
     </div>
   </div>
-</div>
-{{ annotation }}
-<div class="row vertical-center">
-  <div class="col-md-3 text-left">
-    <button class="btn btn-default btn-lg">&laquo; Previous clause</button>
+  {{ annotation }}
+  <div class="row vertical-center">
+    <div class="col-md-3 text-left">
+      <button class="btn btn-default btn-lg">&laquo; Previous clause</button>
+    </div>
+    <div class="col-md-6 text-center">
+      <h4>Annotations</h4>
+      <form name="iface">
+        <div>
+          <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">
+            <label class="btn btn-default"
+                   ng-model="annotation.invalid"
+                   ng-change="$ctrl.invalidChanged()"
+                   uib-btn-radio="'true'">Invalid</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.invalid"
+                   ng-change="$ctrl.invalidChanged()"
+                   uib-btn-radio="'uncertain'">Uncertain</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.invalid"
+                   ng-change="$ctrl.invalidChanged()"
+                   uib-btn-radio="'false'">Valid</label>
+          </div>
+        </div>
+        <div>
+          <div class="btn-group btn-group-lg" aria-label="stative vs. dynamic">
+            <label class="btn btn-default"
+                   ng-model="annotation.stative"
+                   ng-change="$ctrl.stativeChanged()"
+                   ng-disabled="annotation.invalid == 'true'"
+                   uib-btn-radio="'true'">Stative</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.stative"
+                   ng-change="$ctrl.stativeChanged()"
+                   ng-disabled="annotation.invalid == 'true'"
+                   uib-btn-radio="'uncertain'">Uncertain</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.stative"
+                   ng-change="$ctrl.stativeChanged()"
+                   ng-disabled="annotation.invalid == 'true'"
+                   uib-btn-radio="'false'">Dynamic</label>
+          </div>
+        </div>
+        <div>
+          <div class="btn-group btn-group-lg" aria-label="bounded vs. unbounded">
+            <label class="btn btn-default"
+                   ng-model="annotation.bounded"
+                   ng-change="$ctrl.boundedChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'false'">Unbounded</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.bounded"
+                   ng-change="$ctrl.boundedChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'uncertain'">Uncertain</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.bounded"
+                   ng-change="$ctrl.boundedChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'true'">Bounded</label>
+          </div>
+        </div>
+        <div>
+          <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
+            <label class="btn btn-default"
+                   ng-model="annotation.change"
+                   ng-change="$ctrl.changeChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'true'">Change of State</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.change"
+                   ng-change="$ctrl.changeChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'uncertain'">Uncertain</label>
+            <label class="btn btn-default"
+                   ng-model="annotation.change"
+                   ng-change="$ctrl.changeChanged()"
+                   ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                   uib-btn-radio="'false'">No
+              Change</label>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-3 text-right">
+      <button class="btn btn-default btn-lg">Next clause &raquo;</button>
+    </div>
   </div>
-  <div class="col-md-6 text-center">
-    <h4>Annotations</h4>
-    <form name="iface">
-      <div>
-        <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">
-          <label class="btn btn-default"
-                 ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
-                 uib-btn-radio="'true'">Invalid</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
-                 uib-btn-radio="'false'">Valid</label>
-        </div>
-      </div>
-      <div>
-        <div class="btn-group btn-group-lg" aria-label="stative vs. dynamic">
-          <label class="btn btn-default"
-                 ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
-                 ng-disabled="annotation.invalid == 'true'"
-                 uib-btn-radio="'true'">Stative</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
-                 ng-disabled="annotation.invalid == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
-                 ng-disabled="annotation.invalid == 'true'"
-                 uib-btn-radio="'false'">Dynamic</label>
-        </div>
-      </div>
-      <div>
-        <div class="btn-group btn-group-lg" aria-label="bounded vs. unbounded">
-          <label class="btn btn-default"
-                 ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'false'">Unbounded</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'true'">Bounded</label>
-        </div>
-      </div>
-      <div>
-        <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
-          <label class="btn btn-default"
-                 ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'true'">Change of State</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
-          <label class="btn btn-default"
-                 ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'false'">No
-            Change</label>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-md-3 text-right">
-    <button class="btn btn-default btn-lg">Next clause &raquo;</button>
-  </div>
+
+
 </div>
