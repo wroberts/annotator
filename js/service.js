@@ -39,7 +39,7 @@ export default ($resource) => {
   };
 
   ClauseService.prototype.$update = function (cb) {  // eslint-disable-line
-    return ClauseService.update({ id: this._id }, this, cb);  // eslint-disable-line
+    return ClauseService.update({ id: this.id }, this.annotation, cb);  // eslint-disable-line
   };
 
   return ClauseService;

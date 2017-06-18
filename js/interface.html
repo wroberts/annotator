@@ -15,7 +15,9 @@
 {{ annotation }}
 <div class="row vertical-center">
   <div class="col-md-3 text-left">
-    <button class="btn btn-default btn-lg">&laquo; Previous clause</button>
+    <button class="btn btn-default btn-lg"
+            ng-click="$ctrl.left()"
+            ng-disabled="cached.clause.id == 1">&laquo; Previous clause</button>
   </div>
   <div class="col-md-6 text-center">
     <h4>Annotations</h4>
@@ -97,6 +99,8 @@
     </form>
   </div>
   <div class="col-md-3 text-right">
-    <button class="btn btn-default btn-lg">Next clause &raquo;</button>
+    <button class="btn btn-default btn-lg"
+            ng-click="$ctrl.right()"
+            ng-disabled="cached.clause.last">Next clause &raquo;</button>
   </div>
 </div>

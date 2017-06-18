@@ -7,8 +7,10 @@ from flask_security.core import current_user
 from marshmallow import Schema, ValidationError, fields, post_load
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
+from annotator.extensions import csrf_protect
 
 blueprint = Blueprint('api', __name__, url_prefix='/api', static_folder='../static')
+csrf_protect.exempt(blueprint)
 api = Api(blueprint)
 
 class CompSchema(Schema):

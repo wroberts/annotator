@@ -59,7 +59,7 @@ function getSpans(clause) {
   return spans;
 }
 
-function controller($scope, $rootScope, $routeParams, Clauses) {
+function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   // make the call to the REST API to fetch the clause object
   $scope.spans = [];
   $scope.annotation = {};
@@ -102,6 +102,30 @@ function controller($scope, $rootScope, $routeParams, Clauses) {
   };
   this.changeChanged = () => {
     // nothing to do here
+  };
+  this.left = () => {
+    if ($routeParams.clauseId !== 1) {
+      const newUrl = `/${Clauses.cache.clause.id - 1}`;
+      if (!Clauses.isClean()) {
+        Clauses.save(() => {
+          $location.url(newUrl);
+        });
+      } else {
+        $location.url(newUrl);
+      }
+    }
+  };
+  this.right = () => {
+    if (!Clauses.cache.clause.last) {
+      const newUrl = `/${Clauses.cache.clause.id + 1}`;
+      if (!Clauses.isClean()) {
+        Clauses.save(() => {
+          $location.url(newUrl);
+        });
+      } else {
+        $location.url(newUrl);
+      }
+    }
   };
   this.keyDown = (broadcast, event) => {
     console.log('keyDown');
