@@ -44,7 +44,7 @@ module.exports = {
       { test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
-      { test: /\.(png|jpe?g|gif)(\?\S*)?$/, loader: 'url?limit=100000' },
+      { test: /\.(png|jpe?g|gif|ico)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['es2015'], cacheDirectory: true, compact: true } },
     ]
   },
@@ -55,12 +55,12 @@ module.exports = {
     new ManifestRevisionPlugin(__dirname + '/annotator/static/build/manifest.json', {
       rootAssetPath: './annotator/static',
       ignorePaths: ['build']
-    })
-  ].concat(debug ? [] : [
-    //new webpack.optimize.OccurrenceOrderPlugin(),
-    //new webpack.HotModuleReplacementPlugin(),
+    }),
     //new CopyWebpackPlugin([
     //  { from: 'annotator/static/img', to: `${__dirname}/annotator/static/build/img` },
     //]),
+  ].concat(debug ? [] : [
+    //new webpack.optimize.OccurrenceOrderPlugin(),
+    //new webpack.HotModuleReplacementPlugin(),
   ])
 };
