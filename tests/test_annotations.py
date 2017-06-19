@@ -55,12 +55,14 @@ def dummies(db, user):
                            BooleanUnsure.false,
                            BooleanUnsure.true,
                            BooleanUnsure.false,
+                           BooleanUnsure.false,
                            BooleanUnsure.false)
     bunch.an1.save()
 
     # now create a new annotation to overwrite this; this contains an
     # annotation error
     bunch.an2 = Annotation(bunch.c1, bunch.user,
+                           BooleanUnsure.false,
                            BooleanUnsure.false,
                            BooleanUnsure.false,
                            BooleanUnsure.false,
@@ -72,11 +74,13 @@ def dummies(db, user):
                            BooleanUnsure.false,
                            BooleanUnsure.true,
                            BooleanUnsure.false,
+                           BooleanUnsure.false,
                            BooleanUnsure.false)
     bunch.an3.save()
 
     # finally, let's create an Annotation on the second clause
     bunch.an4 = Annotation(bunch.c2, bunch.user,
+                           BooleanUnsure.false,
                            BooleanUnsure.false,
                            BooleanUnsure.false,
                            BooleanUnsure.false,
@@ -154,6 +158,7 @@ def test_rest_auth_put(testapp, dummies):
     res = testapp.put_json('/api/clauses/2',
                            {u'bounded': u'true',
                             u'invalid': u'false',
+                            u'extended': u'uncertain',
                             u'change': u'uncertain',
                             u'stative': u'false'},
                            expect_errors=True)
@@ -193,6 +198,7 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
         u'aspectual-indicators': [],
         u'annotation': {u'bounded': u'false',
                         u'invalid': u'false',
+                        u'extended': u'false',
                         u'change': u'false',
                         u'stative': u'false'},
         u'last': False}
@@ -227,11 +233,13 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
 def test_rest_validation_ok():
     data, errors = AnnoSchema().load({u'bounded': u'true',
                                       u'invalid': u'false',
+                                      u'extended': u'uncertain',
                                       u'change': u'uncertain',
                                       u'stative': u'false'})
     assert not errors
     assert data == {'bounded': BooleanUnsure.true,
                     'invalid': BooleanUnsure.false,
+                    'extended': BooleanUnsure.uncertain,
                     'change': BooleanUnsure.uncertain,
                     'stative': BooleanUnsure.false}
 
@@ -239,6 +247,7 @@ def test_rest_validation_ok():
 def test_rest_validation_missing():
     data, errors = AnnoSchema().load({u'bounded': u'false',
                                       u'invalid': u'false',
+                                      u'extended': u'false',
                                       u'change': u'false'})
     assert errors
     assert 'stative' in errors
@@ -247,6 +256,7 @@ def test_rest_validation_missing():
 def test_rest_validation_invalid():
     data, errors = AnnoSchema().load({u'bounded': u'uncertain',
                                       u'invalid': u'false',
+                                      u'extended': u'true',
                                       u'change': u'true',
                                       u'stative': u'unsure'})
     assert errors
@@ -261,6 +271,7 @@ def test_rest_put_ok_1(testapp, dummies, logged_in_user):
     assert response['annotation'] is None
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
+                      u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false'}
     res = testapp.put_json('/api/clauses/3',
@@ -279,10 +290,12 @@ def test_rest_put_ok_2(testapp, dummies, logged_in_user):
     response = json.loads(res.body)
     assert response['annotation'] == {u'bounded': u'false',
                                       u'invalid': u'false',
+                                      u'extended': u'false',
                                       u'change': u'false',
                                       u'stative': u'false'}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
+                      u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false'}
     assert new_annotation != response['annotation']
@@ -303,10 +316,12 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
     old_annotation = response['annotation']
     assert old_annotation == {u'bounded': u'false',
                               u'invalid': u'false',
+                              u'extended': u'false',
                               u'change': u'false',
                               u'stative': u'false'}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
+                      u'extended': u'unsure',
                       u'change': u'unsure',
                       u'stative': u'false'}
     assert new_annotation != old_annotation

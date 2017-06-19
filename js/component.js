@@ -71,6 +71,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
                     invalid: 'uncertain',
                     stative: 'uncertain',
                     bounded: 'uncertain',
+                    extended: 'uncertain',
                     change: 'uncertain'
                   };
                 }
@@ -87,12 +88,14 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     if ($scope.annotation.invalid == 'true') {
       $scope.annotation.stative = 'uncertain';
       $scope.annotation.bounded = 'uncertain';
+      $scope.annotation.extended = 'uncertain';
       $scope.annotation.change = 'uncertain';
     }
   };
   this.stativeChanged = () => {
     if ($scope.annotation.stative == 'true') {
       $scope.annotation.bounded = 'false';
+      $scope.annotation.extended = 'false';
       $scope.annotation.change = 'false';
     }
   };
@@ -100,6 +103,9 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     if ($scope.annotation.bounded == 'false') {
       /* maybe set change to FALSE? */
     }
+  };
+  this.extendedChanged = () => {
+    // nothing to do here
   };
   this.changeChanged = () => {
     // nothing to do here
@@ -110,6 +116,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
      !(Clauses.cache.clause.annotation.invalid == 'uncertain' &&
        Clauses.cache.clause.annotation.stative == 'uncertain' &&
        Clauses.cache.clause.annotation.bounded == 'uncertain' &&
+       Clauses.cache.clause.annotation.extended == 'uncertain' &&
        Clauses.cache.clause.annotation.change == 'uncertain'));
   this.left = () => {
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {

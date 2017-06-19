@@ -100,6 +100,25 @@
         </div>
       </div>
       <div>
+        <div class="btn-group btn-group-lg" aria-label="extended vs. punctual">
+          <label class="btn btn-default"
+                 ng-model="annotation.extended"
+                 ng-change="$ctrl.extendedChanged()"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 uib-btn-radio="'false'">Punctual</label>
+          <label class="btn btn-default"
+                 ng-model="annotation.extended"
+                 ng-change="$ctrl.extendedChanged()"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 uib-btn-radio="'uncertain'">?</label>
+          <label class="btn btn-default"
+                 ng-model="annotation.extended"
+                 ng-change="$ctrl.extendedChanged()"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 uib-btn-radio="'true'">Extended</label>
+        </div>
+      </div>
+      <div>
         <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
           <label class="btn btn-default"
                  ng-model="annotation.change"

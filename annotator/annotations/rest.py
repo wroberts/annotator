@@ -37,6 +37,8 @@ class AnnoSchema(Schema):
                               required=True, validate=validate_booleanunsure)
     bounded = fields.Function(lambda annotation: annotation.bounded.name,
                               required=True, validate=validate_booleanunsure)
+    extended = fields.Function(lambda annotation: annotation.extended.name,
+                               required=True, validate=validate_booleanunsure)
     change = fields.Function(lambda annotation: annotation.change.name,
                              required=True, validate=validate_booleanunsure)
 

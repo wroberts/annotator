@@ -25,12 +25,19 @@ class Annotation(SurrogatePK, Model):
     invalid = Column(db.Enum(BooleanUnsure), nullable=True, default=BooleanUnsure.false)
     stative = Column(db.Enum(BooleanUnsure), nullable=True)
     bounded = Column(db.Enum(BooleanUnsure), nullable=True)
+    extended = Column(db.Enum(BooleanUnsure), nullable=True)
     change = Column(db.Enum(BooleanUnsure), nullable=True)
 
-    def __init__(self, clause, user, invalid, stative, bounded, change, **kwargs):
+    def __init__(self, clause, user, invalid, stative, bounded, extended, change, **kwargs):
         """Create instance."""
-        db.Model.__init__(self, clause_id=clause.id, user_id=user.id,
-                          invalid=invalid, stative=stative, bounded=bounded, change=change,
+        db.Model.__init__(self,
+                          clause_id=clause.id,
+                          user_id=user.id,
+                          invalid=invalid,
+                          stative=stative,
+                          bounded=bounded,
+                          extended=extended,
+                          change=change,
                           **kwargs)
 
     def __repr__(self):
