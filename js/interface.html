@@ -45,7 +45,10 @@
 </div>
 <div class="row vertical-center">
   <div class="col-md-6 col-md-push-3 col-xs-12 text-center annotation-div">
-    <h4>Annotations</h4>
+    <h4>Annotations
+      <span ng-show="shouldSave()">
+        <a ng-click="reset()"><i class="fa fa-undo" aria-hidden="true"></i></a>
+    </span></h4>
     <form>
       <div>
         <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">

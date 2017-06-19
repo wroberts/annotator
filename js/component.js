@@ -59,6 +59,19 @@ function getSpans(clause) {
   return spans;
 }
 
+function initAnnotation(clause, $scope) {
+  if (!clause.annotation) {
+    clause.annotation = {
+      invalid: 'uncertain',
+      stative: 'uncertain',
+      bounded: 'uncertain',
+      extended: 'uncertain',
+      change: 'uncertain'
+    };
+  }
+  $scope.annotation = clause.annotation;
+}
+
 function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   // make the call to the REST API to fetch the clause object
   $scope.spans = [];
@@ -66,16 +79,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   Clauses.get({ id: $routeParams.clauseId },
               (clause) => {
                 $scope.spans = getSpans(clause);
-                if (!Clauses.cache.clause.annotation) {
-                  Clauses.cache.clause.annotation = {
-                    invalid: 'uncertain',
-                    stative: 'uncertain',
-                    bounded: 'uncertain',
-                    extended: 'uncertain',
-                    change: 'uncertain'
-                  };
-                }
-                $scope.annotation = Clauses.cache.clause.annotation;
+                initAnnotation(Clauses.cache.clause, $scope);
               },
               () => { location = '/annotations/'; });
   // we use the Clause service's cache to access the clause
@@ -84,6 +88,11 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   $scope.isClean = Clauses.isClean;
   $scope.save = Clauses.save;
 
+  this.reset = () => {
+    Clauses.cache.clause = angular.copy(Clauses.cache.original);
+    initAnnotation(Clauses.cache.clause, $scope);
+  };
+  $scope.reset = this.reset;
   this.invalidChanged = () => {
     if ($scope.annotation.invalid == 'true') {
       $scope.annotation.stative = 'uncertain';
@@ -118,6 +127,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
        Clauses.cache.clause.annotation.bounded == 'uncertain' &&
        Clauses.cache.clause.annotation.extended == 'uncertain' &&
        Clauses.cache.clause.annotation.change == 'uncertain'));
+  $scope.shouldSave = this.shouldSave;
   this.left = () => {
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
