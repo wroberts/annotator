@@ -1,5 +1,27 @@
 #+STARTUP: content hidestars odd
 
+* Corpus composition
+
+  /meetings/2014-08-07 aspect/derived/indicator_counts_1-50_50.verb_counts.tsv.gz
+
+  these are counts of verbs
+
+  /meetings/2014-08-07 aspect/derived/indicator_counts_1-50_50.ss.tsv.gz
+
+  these are the raw aspectual indicator outputs (with parameterised
+  SCFs)
+
+  derived/indicator_counts_1-50_50.ss_noscf.tsv.gz
+
+  these are aspectual indicator counts without SCF information
+
+  output_indicator_count_lines(scf_tagged_mate_sdewac_verbs
+
+  - scf_tagged_mate_sdewac_verbs
+    - not verb.modp or verb.auxp
+    - assert verb.scf
+  - not modal_in_govchain
+
 * Data model
 
   Annotator serves documents; a document is a verbal instance to
