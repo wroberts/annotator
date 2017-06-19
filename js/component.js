@@ -112,7 +112,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
        Clauses.cache.clause.annotation.bounded == 'uncertain' &&
        Clauses.cache.clause.annotation.change == 'uncertain'));
   this.left = () => {
-    if (Clauses.cache.clause.id !== 1) {
+    if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
       if (this.shouldSave()) {
         Clauses.save(() => {
@@ -124,7 +124,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     }
   };
   this.right = () => {
-    if (!Clauses.cache.clause.last) {
+    if (Clauses.cache.clause && !Clauses.cache.clause.last) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
       if (this.shouldSave()) {
         Clauses.save(() => {
@@ -136,8 +136,8 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     }
   };
   this.keyDown = (broadcast, event) => {
-    console.log('keyDown');
-    console.log(event); /* key event is here */
+    //console.log('keyDown');
+    //console.log(event); /* key event is here */
     if (event.which == 37) {
       $rootScope.$evalAsync(() => { this.left(); });   // left
     }
