@@ -29,11 +29,11 @@ class Config(object):
     SECURITY_SEND_CONFIRMATION_TEMPLATE = 'users/send_confirmation.html'
     SECURITY_POST_LOGIN_VIEW = '/annotations/'
     SECURITY_POST_LOGOUT_VIEW = '/?logout'
-    MAIL_SERVER = 'localhost'
-    MAIL_PORT = 25
+    MAIL_SERVER = 'mail.wkroberts.com'
+    MAIL_PORT = 587
     MAIL_USE_TLS = False
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = None
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'admin@annotate.wkroberts.com'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
     MAIL_DEFAULT_SENDER = 'Aspectual Annotator'
     MAIL_SUPPRESS_SEND = False
