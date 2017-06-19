@@ -7,6 +7,7 @@ from flask_security.core import current_user
 from marshmallow import Schema, ValidationError, fields, post_load
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
+from annotator.compat import text_type
 from annotator.extensions import csrf_protect, db
 
 blueprint = Blueprint('api', __name__, url_prefix='/api', static_folder='../static')
@@ -119,7 +120,7 @@ class ClauseRsc(Resource):
         try:
             data, _ = AnnoSchema(strict=True).load(request.get_json())
         except ValidationError as e:
-            abort(400, message=unicode(e))
+            abort(400, message=text_type(e))
         # create the new Annotation record
         new_record = Annotation(clause, current_user, **data)
         new_record.save()
