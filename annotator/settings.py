@@ -31,9 +31,11 @@ class Config(object):
     SECURITY_POST_LOGOUT_VIEW = '/?logout'
     MAIL_SERVER = 'localhost'
     MAIL_PORT = 25
+    MAIL_USE_TLS = False
     MAIL_USE_SSL = False
     MAIL_USERNAME = None
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
+    MAIL_DEFAULT_SENDER = 'Aspectual Annotator'
     MAIL_SUPPRESS_SEND = True  # TODO
     WEBPACK_MANIFEST_PATH = 'static/build/manifest.json'
 
