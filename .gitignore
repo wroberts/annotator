@@ -50,3 +50,4 @@ env/
 /dev.db
 *~
 /node_modules/
+/passenger_wsgi.py
