@@ -36,7 +36,7 @@ class Config(object):
     MAIL_USERNAME = None
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
     MAIL_DEFAULT_SENDER = 'Aspectual Annotator'
-    MAIL_SUPPRESS_SEND = True  # TODO
+    MAIL_SUPPRESS_SEND = False
     WEBPACK_MANIFEST_PATH = 'static/build/manifest.json'
 
 
