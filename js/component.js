@@ -171,20 +171,67 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   this.keyDown = (event) => {
     // console.log('keyDown');
     // console.log(event); /* key event is here */
-    if (event.which == 37) {
-      this.left();   // left
+    if (Clauses.cache.clause) {
+      if (event.which == 37) {
+        this.left();   // left
+      }
+      if (event.which == 39) {
+        this.right();  // right
+      }
+      if (event.which == 27) {
+        this.reset();  // ESCAPE
+      }
+      if (event.which === 73) {
+        // i
+        $scope.annotation.invalid = 'true';
+        this.invalidChanged();
+      }
+      if (event.which === 86) {
+        // v
+        $scope.annotation.invalid = 'false';
+        this.invalidChanged();
+      }
+      if (event.which === 83) {
+        // s
+        $scope.annotation.stative = 'true';
+        this.stativeChanged();
+      }
+      if (event.which === 68) {
+        // d
+        $scope.annotation.stative = 'false';
+        this.stativeChanged();
+      }
+      if (event.which === 85) {
+        // u
+        $scope.annotation.bounded = 'false';
+        this.boundedChanged();
+      }
+      if (event.which === 66) {
+        // b
+        $scope.annotation.bounded = 'true';
+        this.boundedChanged();
+      }
+      if (event.which === 69) {
+        // e
+        $scope.annotation.extended = 'true';
+        this.extendedChanged();
+      }
+      if (event.which === 80) {
+        // p
+        $scope.annotation.extended = 'false';
+        this.extendedChanged();
+      }
+      if (event.which === 67) {
+        // c
+        $scope.annotation.change = 'true';
+        this.changeChanged();
+      }
+      if (event.which === 78) {
+        // n
+        $scope.annotation.change = 'false';
+        this.changeChanged();
+      }
     }
-    if (event.which == 39) {
-      this.right();  // right
-    }
-    // event.which === 73 // i
-    // event.which === 86 // v
-    // event.which === 83 // s
-    // event.which === 68 // d
-    // event.which === 85 // u
-    // event.which === 66 // b
-    // event.which === 67 // c
-    // event.which === 78 // n
   };
   $rootScope.$on('bodySendsKeyDown',
                  (broadcastEvt, keyEvt) => { $rootScope.$evalAsync(() => { this.keyDown(keyEvt); }); });
