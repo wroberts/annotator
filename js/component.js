@@ -152,14 +152,14 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       }
     }
   };
-  this.keyDown = (broadcast, event) => {
-    //console.log('keyDown');
-    //console.log(event); /* key event is here */
+  this.keyDown = (event) => {
+    // console.log('keyDown');
+    // console.log(event); /* key event is here */
     if (event.which == 37) {
-      $rootScope.$evalAsync(() => { this.left(); });   // left
+      this.left();   // left
     }
     if (event.which == 39) {
-      $rootScope.$evalAsync(() => { this.right(); });  // right
+      this.right();  // right
     }
     // event.which === 73 // i
     // event.which === 86 // v
@@ -169,8 +169,9 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     // event.which === 66 // b
     // event.which === 67 // c
     // event.which === 78 // n
-  }
-  $rootScope.$on('bodySendsKeyDown', this.keyDown);
+  };
+  $rootScope.$on('bodySendsKeyDown',
+                 (broadcastEvt, keyEvt) => { $rootScope.$evalAsync(() => { this.keyDown(keyEvt); }); });
 }
 
 export default {
