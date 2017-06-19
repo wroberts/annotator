@@ -27,13 +27,13 @@
         <li>
             <p class="navbar-text"><a class="navbar-link" href="/change">Logged in as {{ current_user.full_name }}</a></p>
         </li>
-        <li><a class="navbar-link" href="/logout"><i class="fa fa-sign-out"></i>Logout</a></li>
+        <li><a class="navbar-link" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
 
     </ul>
     {% else %}
     <ul class="nav navbar-nav navbar-right">
       <li><a href="/register">Create account</a></li>
-      <li><a href="/login"><i class="fa fa-sign-in"></i>Login</a></li>
+      <li><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
     </ul>
     {% endif %}
   </div><!-- /.navbar-collapse -->
