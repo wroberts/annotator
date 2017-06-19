@@ -109,17 +109,17 @@
           <label class="btn btn-default"
                  ng-model="annotation.extended"
                  ng-change="$ctrl.extendedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'false'">Punctual</label>
           <label class="btn btn-default"
                  ng-model="annotation.extended"
                  ng-change="$ctrl.extendedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.extended"
                  ng-change="$ctrl.extendedChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'true'">Extended</label>
         </div>
       </div>
@@ -128,17 +128,17 @@
           <label class="btn btn-default"
                  ng-model="annotation.change"
                  ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'true'">Change of State</label>
           <label class="btn btn-default"
                  ng-model="annotation.change"
                  ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.change"
                  ng-change="$ctrl.changeChanged()"
-                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
+                 ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'false'">No
             Change</label>
         </div>

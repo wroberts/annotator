@@ -102,22 +102,38 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     }
   };
   this.stativeChanged = () => {
+    if ($scope.annotation.stative == 'false' || $scope.annotation.stative == 'true') {
+      $scope.annotation.invalid = 'false';
+    }
     if ($scope.annotation.stative == 'true') {
       $scope.annotation.bounded = 'false';
-      $scope.annotation.extended = 'false';
+      $scope.annotation.extended = 'true';
       $scope.annotation.change = 'false';
     }
   };
   this.boundedChanged = () => {
+    if ($scope.annotation.bounded == 'false' || $scope.annotation.bounded == 'true') {
+      $scope.annotation.invalid = 'false';
+      $scope.annotation.stative = 'false';
+    }
     if ($scope.annotation.bounded == 'false') {
-      /* maybe set change to FALSE? */
+      $scope.annotation.extended = 'true';
+      $scope.annotation.change = 'false';
     }
   };
   this.extendedChanged = () => {
-    // nothing to do here
+    if ($scope.annotation.extended == 'false' || $scope.annotation.extended == 'true') {
+      $scope.annotation.invalid = 'false';
+      $scope.annotation.stative = 'false';
+      $scope.annotation.bounded = 'true';
+    }
   };
   this.changeChanged = () => {
-    // nothing to do here
+    if ($scope.annotation.change == 'false' || $scope.annotation.change == 'true') {
+      $scope.annotation.invalid = 'false';
+      $scope.annotation.stative = 'false';
+      $scope.annotation.bounded = 'true';
+    }
   };
   this.shouldSave = () =>
     (Clauses.cache.original &&
