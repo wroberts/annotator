@@ -33,9 +33,15 @@ textarea {
 
 /* CSS classes for aspectual annotation interface */
 
-.vertical-center {
-    display: flex;
-    align-items: center;
+@media (min-width:992px) {
+    .vertical-center {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.annotation-div {
+    margin-bottom: 20px;
 }
 
 .clause {

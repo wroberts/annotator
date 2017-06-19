@@ -105,11 +105,12 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     // nothing to do here
   };
   this.shouldSave = () =>
-    (!Clauses.isClean() &&
-     !($scope.annotation.invalid ===
-       $scope.annotation.stative ===
-       $scope.annotation.bounded ===
-       $scope.annotation.change === 'uncertain'));
+    (Clauses.cache.original &&
+     !Clauses.isClean() &&
+     !(Clauses.cache.clause.annotation.invalid == 'uncertain' &&
+       Clauses.cache.clause.annotation.stative == 'uncertain' &&
+       Clauses.cache.clause.annotation.bounded == 'uncertain' &&
+       Clauses.cache.clause.annotation.change == 'uncertain'));
   this.left = () => {
     if (Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;

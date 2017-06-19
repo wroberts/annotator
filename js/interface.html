@@ -13,12 +13,7 @@
   </div>
 </div>
 <div class="row vertical-center">
-  <div class="col-md-3 text-left">
-    <button class="btn btn-default btn-lg"
-            ng-click="$ctrl.left()"
-            ng-disabled="cached.clause.id == 1">&laquo; Previous clause</button>
-  </div>
-  <div class="col-md-6 text-center">
+  <div class="col-md-6 col-md-push-3 col-xs-12 text-center annotation-div">
     <h4>Annotations</h4>
     <form>
       <div>
@@ -30,7 +25,7 @@
           <label class="btn btn-default"
                  ng-model="annotation.invalid"
                  ng-change="$ctrl.invalidChanged()"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
+                 uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.invalid"
                  ng-change="$ctrl.invalidChanged()"
@@ -48,7 +43,7 @@
                  ng-model="annotation.stative"
                  ng-change="$ctrl.stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
+                 uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.stative"
                  ng-change="$ctrl.stativeChanged()"
@@ -67,7 +62,7 @@
                  ng-model="annotation.bounded"
                  ng-change="$ctrl.boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
+                 uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.bounded"
                  ng-change="$ctrl.boundedChanged()"
@@ -86,7 +81,7 @@
                  ng-model="annotation.change"
                  ng-change="$ctrl.changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
-                 uib-btn-radio="'uncertain'">Uncertain</label>
+                 uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.change"
                  ng-change="$ctrl.changeChanged()"
@@ -97,7 +92,12 @@
       </div>
     </form>
   </div>
-  <div class="col-md-3 text-right">
+  <div class="col-md-3 text-left col-md-pull-6 col-xs-6">
+    <button class="btn btn-default btn-lg"
+            ng-click="$ctrl.left()"
+            ng-disabled="cached.clause.id == 1">&laquo; Previous clause</button>
+  </div>
+  <div class="col-md-3 text-right col-xs-6">
     <button class="btn btn-default btn-lg"
             ng-click="$ctrl.right()"
             ng-disabled="cached.clause.last">Next clause &raquo;</button>
