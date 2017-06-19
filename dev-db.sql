@@ -1,0 +1,20 @@
+BEGIN TRANSACTION;
+INSERT INTO users VALUES(2000,'joe.blow@anywhere.com',NULL,'2017-06-13 15:29:42.114265','2017-06-13 15:29:42.114265','Joe','Blow',1,0,NULL,NULL,NULL,NULL,0);
+INSERT INTO clauses VALUES(1,'While the most common way is to use the flask command , you can also make your own " driver scripts " .',5);
+INSERT INTO clauses VALUES(2,'While the most common way is to use the flask command , you can also make your own " driver scripts " .',13);
+INSERT INTO clauses VALUES(3,'Since Flask uses click for the scripts there is no reason you cannot hook these scripts into any click application .',2);
+INSERT INTO clauses VALUES(4,'Since Flask uses click for the scripts there is no reason you cannot hook these scripts into any click application .',8);
+INSERT INTO clauses VALUES(5,'Since Flask uses click for the scripts there is no reason you cannot hook these scripts into any click application .',12);
+INSERT INTO annotations VALUES(1,1,2000,'2017-06-13 15:30:00.468096','false','true','false','false','false');
+INSERT INTO annotations VALUES(2,1,2000,'2017-06-13 15:31:25.195165','false','false','false','false','false');
+INSERT INTO annotations VALUES(3,1,2000,'2017-06-13 15:31:25.272268','false','true','false','false','false');
+INSERT INTO annotations VALUES(4,2,2000,'2017-06-13 15:31:25.555555','false','false','false','false','false');
+INSERT INTO aspinds VALUES(1,'advp_for',4,7,3);
+INSERT INTO synargs VALUES(1,'subj',1,5,1);
+INSERT INTO synargs VALUES(2,'subj',12,13,2);
+INSERT INTO synargs VALUES(3,'subj',1,2,3);
+INSERT INTO synargs VALUES(4,'obj',3,4,3);
+INSERT INTO synargs VALUES(5,'subj',7,8,4);
+INSERT INTO synargs VALUES(6,'subj',11,12,5);
+COMMIT;
+
