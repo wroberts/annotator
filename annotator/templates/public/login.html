@@ -2,8 +2,6 @@
 {% block content %}
 {% from "_macros.html" import render_form, render_field, render_checkbox_field %}
 <div class="container-narrow">
-  {% include "_messages.html" %}
-
   <h1>{{ _('Login') }}</h1>
   {% call render_form(login_user_form,
   btn_class='btn btn-primary',
