@@ -30,9 +30,9 @@ class Config(object):
     SECURITY_POST_LOGIN_VIEW = '/annotations/'
     SECURITY_POST_LOGOUT_VIEW = '/?logout'
     MAIL_SERVER = 'mail.annotate.wkroberts.com'
-    MAIL_PORT = 587
+    MAIL_PORT = 25
     MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
+    MAIL_USE_SSL = False
     MAIL_USERNAME = 'admin@annotate.wkroberts.com'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
     MAIL_DEFAULT_SENDER = 'Aspectual Annotator'
