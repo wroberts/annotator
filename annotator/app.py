@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from flask_security import SQLAlchemyUserDatastore
 
 from annotator import annotations, commands, public, user
-from annotator.extensions import cache, csrf_protect, db, debug_toolbar, mail, migrate, security, webpack
+from annotator.extensions import babel, cache, csrf_protect, db, debug_toolbar, mail, migrate, security, webpack
 from annotator.settings import ProdConfig
 from annotator.user.forms import ExtendedRegisterForm
 from annotator.user.models import Role, User
@@ -27,6 +27,7 @@ def create_app(config_object=ProdConfig):
 
 def register_extensions(app):
     """Register Flask extensions."""
+    babel.init_app(app)
     cache.init_app(app)
     db.init_app(app)
     csrf_protect.init_app(app)
