@@ -6,7 +6,7 @@ from flask_security import SQLAlchemyUserDatastore
 from annotator import annotations, commands, public, user
 from annotator.extensions import babel, cache, csrf_protect, db, debug_toolbar, mail, migrate, security, webpack
 from annotator.settings import ProdConfig
-from annotator.user.forms import ExtendedRegisterForm
+from annotator.user.forms import ExtendedConfirmRegisterForm, ExtendedRegisterForm
 from annotator.user.models import Role, User
 
 
@@ -33,6 +33,7 @@ def register_extensions(app):
     csrf_protect.init_app(app)
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore,
+                      confirm_register_form=ExtendedConfirmRegisterForm,
                       register_form=ExtendedRegisterForm)
     debug_toolbar.init_app(app)
     mail.init_app(app)
