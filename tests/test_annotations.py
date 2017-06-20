@@ -2,6 +2,7 @@
 """Model unit tests."""
 
 import json
+
 import pytest
 
 from annotator.annotations.models import Annotation, AspInd, BooleanUnsure, Clause, SynArg

@@ -3,7 +3,9 @@
 """Annotation models."""
 
 import datetime
+
 import enum
+
 from annotator.database import Column, Model, SurrogatePK, backref, db, reference_col, relationship
 
 
