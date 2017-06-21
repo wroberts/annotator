@@ -34,6 +34,9 @@ Flask-Mail==0.9.1
 # Caching
 Flask-Caching>=1.0.0
 
+# gzip compression
+Flask-Compress==1.4.0
+
 # Debug toolbar
 Flask-DebugToolbar==0.10.1
 
