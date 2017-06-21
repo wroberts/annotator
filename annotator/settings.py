@@ -38,6 +38,8 @@ class Config(object):
     MAIL_DEFAULT_SENDER = ('Aspectual Annotator', 'admin@annotate.wkroberts.com')
     MAIL_SUPPRESS_SEND = False
     WEBPACK_MANIFEST_PATH = 'webpack/manifest.json'
+    # ask web browsers to cache static assets for a year
+    SEND_FILE_MAX_AGE_DEFAULT = 31556926
 
 
 class ProdConfig(Config):

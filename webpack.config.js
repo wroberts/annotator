@@ -17,17 +17,18 @@ module.exports = {
   // configuration
   context: __dirname,
   entry: {
-    main_js: './js/index',
-    app_js: './js/app',
+    favicon_ico: './assets/img/favicon.ico',
+    main_js: './assets/js/index',
+    app_js: './assets/js/app',
     app_css: [
       './node_modules/font-awesome/css/font-awesome.css',
       './node_modules/bootstrap/dist/css/bootstrap.css',
-      './css/style.css'
+      './assets/css/style.css'
     ]
   },
   output: {
-    path: __dirname + '/annotator/static/build',
-    publicPath: publicHost + '/static/build/',
+    path: __dirname + '/annotator/static',
+    publicPath: publicHost + '/static/',
     filename: '[name].[hash].js',
     chunkFilename: '[id].[hash].js'
   },
@@ -43,8 +44,8 @@ module.exports = {
       { test: /\.less$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!less-loader'}) },
       { test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
-      { test: /\.(png|jpe?g|gif|ico)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
+      { test: /\.(ttf|eot|svg|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
+      { test: /\.(png|jpe?g|gif)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['es2015'], cacheDirectory: true, compact: true } },
     ]
   },
@@ -53,12 +54,8 @@ module.exports = {
     new webpack.ProvidePlugin({ $: 'jquery',
                                 jQuery: 'jquery' }),
     new ManifestRevisionPlugin(__dirname + '/annotator/webpack/manifest.json', {
-      rootAssetPath: './annotator/static',
-      ignorePaths: ['build']
+      rootAssetPath: './assets/'
     }),
-    //new CopyWebpackPlugin([
-    //  { from: 'annotator/static/img', to: `${__dirname}/annotator/static/build/img` },
-    //]),
   ].concat(debug ? [] : [
     //new webpack.optimize.OccurrenceOrderPlugin(),
     //new webpack.HotModuleReplacementPlugin(),

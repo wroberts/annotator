@@ -46,7 +46,8 @@ docs/_build
 env/
 
 
-/annotator/static/build
+/annotator/static
+/annotator/webpack
 /dev.db
 *~
 /node_modules/
