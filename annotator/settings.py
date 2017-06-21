@@ -37,7 +37,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
     MAIL_DEFAULT_SENDER = ('Aspectual Annotator', 'admin@annotate.wkroberts.com')
     MAIL_SUPPRESS_SEND = False
-    WEBPACK_MANIFEST_PATH = 'static/build/manifest.json'
+    WEBPACK_MANIFEST_PATH = 'webpack/manifest.json'
 
 
 class ProdConfig(Config):

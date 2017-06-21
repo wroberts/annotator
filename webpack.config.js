@@ -52,7 +52,7 @@ module.exports = {
     new ExtractTextPlugin('[name].[hash].css'),
     new webpack.ProvidePlugin({ $: 'jquery',
                                 jQuery: 'jquery' }),
-    new ManifestRevisionPlugin(__dirname + '/annotator/static/build/manifest.json', {
+    new ManifestRevisionPlugin(__dirname + '/annotator/webpack/manifest.json', {
       rootAssetPath: './annotator/static',
       ignorePaths: ['build']
     }),
