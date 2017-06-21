@@ -13,6 +13,8 @@ const debug = (process.env.NODE_ENV !== 'prod');
 // Development asset host (webpack dev server)
 const publicHost = debug ? 'http://localhost:2992' : '';
 
+const rootAssetPath = './assets/';
+
 module.exports = {
   // configuration
   context: __dirname,
@@ -36,7 +38,8 @@ module.exports = {
     extensions: ['.js', '.jsx', '.css']
   },
   devServer: {
-    headers: {'Access-Control-Allow-Origin': '*'}
+    headers: {'Access-Control-Allow-Origin': '*'},
+    publicPath: '/static/'
   },
   module: {
     loaders: [
@@ -44,7 +47,7 @@ module.exports = {
       { test: /\.less$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!less-loader'}) },
       { test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}) },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.(ttf|eot|svg|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
+      { test: /\.(ttf|eot|svg|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?context=' + rootAssetPath + '&name=[path][name].[hash].[ext]' },
       { test: /\.(png|jpe?g|gif)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['es2015'], cacheDirectory: true, compact: true } },
     ]
@@ -54,7 +57,7 @@ module.exports = {
     new webpack.ProvidePlugin({ $: 'jquery',
                                 jQuery: 'jquery' }),
     new ManifestRevisionPlugin(__dirname + '/annotator/webpack/manifest.json', {
-      rootAssetPath: './assets/'
+      rootAssetPath
     }),
   ].concat(debug ? [] : [
     //new webpack.optimize.OccurrenceOrderPlugin(),
