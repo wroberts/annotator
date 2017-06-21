@@ -19,7 +19,6 @@ module.exports = {
   // configuration
   context: __dirname,
   entry: {
-    favicon_ico: './assets/img/favicon.ico',
     main_js: './assets/js/index',
     app_js: './assets/js/app',
     app_css: [
@@ -57,7 +56,8 @@ module.exports = {
     new webpack.ProvidePlugin({ $: 'jquery',
                                 jQuery: 'jquery' }),
     new ManifestRevisionPlugin(__dirname + '/annotator/webpack/manifest.json', {
-      rootAssetPath
+      rootAssetPath,
+      ignorePaths: ['/js', '/css']
     }),
   ].concat(debug ? [] : [
     //new webpack.optimize.OccurrenceOrderPlugin(),
