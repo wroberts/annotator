@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Factories to help in tests."""
-from factory import PostGenerationMethodCall, Sequence
+from datetime import datetime
+
+from factory import LazyFunction, Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 
 from annotator.database import db
@@ -25,6 +27,8 @@ class UserFactory(BaseFactory):
     email = Sequence(lambda n: 'user{0}@example.com'.format(n))
     password = 'example'
     active = True
+    created_at = datetime.now()
+    confirmed_at = LazyFunction(datetime.now)
 
     class Meta:
         """Factory configuration."""

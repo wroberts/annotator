@@ -63,6 +63,7 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
     DEBUG_TB_ENABLED = True
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
+    MAIL_SUPPRESS_SEND = True
 
 
 class TestConfig(Config):
@@ -72,3 +73,4 @@ class TestConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     WTF_CSRF_ENABLED = False  # Allows form testing
+    MAIL_SUPPRESS_SEND = True
