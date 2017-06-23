@@ -2,6 +2,9 @@
 Aspectual Annotator
 ===============================
 
+.. image:: https://travis-ci.org/wroberts/annotator.svg?branch=master
+    :target: https://travis-ci.org/wroberts/annotator
+
 Web app for aspectual annotation.
 
 
