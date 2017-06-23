@@ -129,4 +129,5 @@ class ClauseRsc(Resource):
         # return to user
         return marshal(clause, max_id, new_record)
 
+
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
