@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 from flask_security.core import current_user
 
-from annotator.annotations.models import Annotation, BooleanUnsure, Clause
+from annotator.annotations.models import Annotation, Clause
 from annotator.extensions import db
 
 blueprint = Blueprint('annotations', __name__, url_prefix='/annotations', static_folder='../static')

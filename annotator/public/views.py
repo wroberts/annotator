@@ -14,7 +14,7 @@ def home():
             flash('You are logged out.', 'info')
         return render_template('public/home.html')
     else:
-        return redirect("/annotations/")
+        return redirect('/annotations/')
 
 
 @blueprint.route('/about/')

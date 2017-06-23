@@ -11,6 +11,7 @@ from annotator.database import Column, Model, SurrogatePK, backref, db, referenc
 
 class BooleanUnsure(enum.Enum):
     """Annotation decisions that can be taken by a user."""
+
     true = 1
     false = 2
     uncertain = 3
@@ -18,6 +19,7 @@ class BooleanUnsure(enum.Enum):
 
 class Annotation(SurrogatePK, Model):
     """A snapshot of an annotation of a particular clause by a particular user."""
+
     __tablename__ = 'annotations'
     clause_id = reference_col('clauses', nullable=True)
     clause = relationship('Clause', backref=backref('annotations', order_by='Annotation.created_at.desc()'))
@@ -51,6 +53,7 @@ class Annotation(SurrogatePK, Model):
 
 class SynArg(SurrogatePK, Model):
     """A syntactic argument to a verb in a particular clause."""
+
     __tablename__ = 'synargs'
     type = Column(db.Unicode(30), nullable=True)
     begin = Column(db.Integer, nullable=True)  # index of first word in the argument
@@ -71,6 +74,7 @@ class SynArg(SurrogatePK, Model):
 
 class AspInd(SurrogatePK, Model):
     """An aspectual indicator co-occurring with a verb in a particular clause."""
+
     __tablename__ = 'aspinds'
     type = Column(db.Unicode(30), nullable=True)
     begin = Column(db.Integer, nullable=True)  # index of first word in the argument
@@ -91,6 +95,7 @@ class AspInd(SurrogatePK, Model):
 
 class Clause(SurrogatePK, Model):
     """A clause to be annotated."""
+
     __tablename__ = 'clauses'
     text = Column(db.Unicode(1000), nullable=True)  # space-separated UTF-8
     verb_index = Column(db.Integer, nullable=True)  # index of verb in sentence

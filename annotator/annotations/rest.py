@@ -14,6 +14,7 @@ blueprint = Blueprint('api', __name__, url_prefix='/api', static_folder='../stat
 csrf_protect.exempt(blueprint)
 api = Api(blueprint)
 
+
 class CompSchema(Schema):
     """Marshmallow schema for SynArg and AspInd objects."""
 
@@ -68,9 +69,7 @@ class ClauseSchema(Schema):
 
 
 def marshal(clause, max_id, annotation):
-    """
-    Generate JSON for a clause-annotation pair for a given user.
-    """
+    """Generate JSON for a clause-annotation pair for a given user."""
     clause.last = (clause.id == max_id)
     clause.annotation = annotation
     clause.last_annotation_date = None
@@ -84,8 +83,10 @@ class ClauseRsc(Resource):
 
     def get(self, clause_id):
         """
-        Returns the given Clause, with the most recent Annotation that
-        this user made on it inserted.
+        Returns the given Clause.
+
+        This method ensures that the returned object contains the most
+        recent Annotation that this user made on it.
         """
         if not current_user.is_authenticated:
             abort(401)
@@ -105,8 +106,9 @@ class ClauseRsc(Resource):
 
     def put(self, clause_id):
         """
-        Add a new annotation for the given clause, parsed out of the HTTP
-        PUT request object.
+        Add a new annotation for the given clause.
+
+        Parses the updated object out of the HTTP PUT request object.
         """
         if not current_user.is_authenticated:
             abort(401)

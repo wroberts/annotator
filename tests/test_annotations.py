@@ -151,11 +151,13 @@ def test_annotation_query_2(dummies):
 
 
 def test_rest_auth_get(testapp, dummies):
+    """Tests that REST returns 401 on unauthorised GET."""
     res = testapp.get('/api/clauses/2', expect_errors=True)
     assert res.status_code == 401
 
 
 def test_rest_auth_put(testapp, dummies):
+    """Tests that REST returns 401 on unauthorised PUT."""
     res = testapp.put_json('/api/clauses/2',
                            {u'bounded': u'true',
                             u'invalid': u'false',
@@ -168,6 +170,7 @@ def test_rest_auth_put(testapp, dummies):
 
 @pytest.fixture()
 def logged_in_user(testapp, user):
+    """Pytest fixture to produce a user that is correctly logged in."""
     res = testapp.get('/login')
     # Fills out login form in navbar
     form = res.forms['login_user_form']
@@ -232,6 +235,7 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
 
 
 def test_rest_validation_ok():
+    """Test validation of a good Annotation record."""
     data, errors = AnnoSchema().load({u'bounded': u'true',
                                       u'invalid': u'false',
                                       u'extended': u'uncertain',
@@ -246,6 +250,7 @@ def test_rest_validation_ok():
 
 
 def test_rest_validation_missing():
+    """Test validation of an Annotation record missing a field."""
     data, errors = AnnoSchema().load({u'bounded': u'false',
                                       u'invalid': u'false',
                                       u'extended': u'false',
@@ -255,6 +260,7 @@ def test_rest_validation_missing():
 
 
 def test_rest_validation_invalid():
+    """Test validation of an Annotation record with an invalid value."""
     data, errors = AnnoSchema().load({u'bounded': u'uncertain',
                                       u'invalid': u'false',
                                       u'extended': u'true',
