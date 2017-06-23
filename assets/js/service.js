@@ -1,5 +1,4 @@
 export default ($resource) => {
-
   const ClauseService = $resource(
     '/api/clauses/:id',
     {},
@@ -33,15 +32,14 @@ export default ($resource) => {
     }
   };
 
-  ClauseService.isClean = () => {
-    return ClauseService.cache.original && angular.equals(ClauseService.cache.original,
-                                                          ClauseService.cache.clause);
-  };
+  ClauseService.isClean = () => (
+    ClauseService.cache.original && angular.equals(ClauseService.cache.original,
+                                                   ClauseService.cache.clause)
+  );
 
   ClauseService.prototype.$update = function (cb) {  // eslint-disable-line
     return ClauseService.update({ id: this.id }, this.annotation, cb);  // eslint-disable-line
   };
 
   return ClauseService;
-
-}
+};

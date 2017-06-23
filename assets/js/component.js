@@ -10,18 +10,18 @@ const SPAN_TITLES = {
 function getSpanMaps(clause) {
   const spanMap = clause.sentence.map(() => undefined);
   const spanMap2 = clause.sentence.map(() => undefined);
-  for (const comp of clause['aspectual-indicators']) {
+  clause['aspectual-indicators'].forEach((comp) => {
     for (let i = comp.begin; i < comp.end; i += 1) {
       spanMap[i] = comp.type;
       spanMap2[i] = 'aspind';
     }
-  }
-  for (const comp of clause['verb-comps']) {
+  });
+  clause['verb-comps'].forEach((comp) => {
     for (let i = comp.begin; i < comp.end; i += 1) {
       spanMap[i] = comp.type;
       spanMap2[i] = 'synarg';
     }
-  }
+  });
   spanMap[clause['verb-index']] = 'verb';
   spanMap2[clause['verb-index']] = undefined;
   return { spanMap, spanMap2 };
@@ -66,7 +66,7 @@ function initAnnotation(clause, $scope) {
       stative: 'uncertain',
       bounded: 'uncertain',
       extended: 'uncertain',
-      change: 'uncertain'
+      change: 'uncertain',
     };
   }
   $scope.annotation = clause.annotation;
@@ -81,7 +81,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
                 $scope.spans = getSpans(clause);
                 initAnnotation(Clauses.cache.clause, $scope);
               },
-              () => { location = '/annotations/'; });
+              () => { location.href = '/annotations/'; });
   // we use the Clause service's cache to access the clause
   // object in the page
   $scope.cached = Clauses.cache;
@@ -94,7 +94,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   };
   $scope.reset = this.reset;
   this.invalidChanged = () => {
-    if ($scope.annotation.invalid == 'true') {
+    if ($scope.annotation.invalid === 'true') {
       $scope.annotation.stative = 'uncertain';
       $scope.annotation.bounded = 'uncertain';
       $scope.annotation.extended = 'uncertain';
@@ -102,34 +102,34 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     }
   };
   this.stativeChanged = () => {
-    if ($scope.annotation.stative == 'false' || $scope.annotation.stative == 'true') {
+    if ($scope.annotation.stative === 'false' || $scope.annotation.stative === 'true') {
       $scope.annotation.invalid = 'false';
     }
-    if ($scope.annotation.stative == 'true') {
+    if ($scope.annotation.stative === 'true') {
       $scope.annotation.bounded = 'false';
       $scope.annotation.extended = 'true';
       $scope.annotation.change = 'false';
     }
   };
   this.boundedChanged = () => {
-    if ($scope.annotation.bounded == 'false' || $scope.annotation.bounded == 'true') {
+    if ($scope.annotation.bounded === 'false' || $scope.annotation.bounded === 'true') {
       $scope.annotation.invalid = 'false';
       $scope.annotation.stative = 'false';
     }
-    if ($scope.annotation.bounded == 'false') {
+    if ($scope.annotation.bounded === 'false') {
       $scope.annotation.extended = 'true';
       $scope.annotation.change = 'false';
     }
   };
   this.extendedChanged = () => {
-    if ($scope.annotation.extended == 'false' || $scope.annotation.extended == 'true') {
+    if ($scope.annotation.extended === 'false' || $scope.annotation.extended === 'true') {
       $scope.annotation.invalid = 'false';
       $scope.annotation.stative = 'false';
       $scope.annotation.bounded = 'true';
     }
   };
   this.changeChanged = () => {
-    if ($scope.annotation.change == 'false' || $scope.annotation.change == 'true') {
+    if ($scope.annotation.change === 'false' || $scope.annotation.change === 'true') {
       $scope.annotation.invalid = 'false';
       $scope.annotation.stative = 'false';
       $scope.annotation.bounded = 'true';
@@ -138,11 +138,11 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   this.shouldSave = () =>
     (Clauses.cache.original &&
      !Clauses.isClean() &&
-     !(Clauses.cache.clause.annotation.invalid == 'uncertain' &&
-       Clauses.cache.clause.annotation.stative == 'uncertain' &&
-       Clauses.cache.clause.annotation.bounded == 'uncertain' &&
-       Clauses.cache.clause.annotation.extended == 'uncertain' &&
-       Clauses.cache.clause.annotation.change == 'uncertain'));
+     !(Clauses.cache.clause.annotation.invalid === 'uncertain' &&
+       Clauses.cache.clause.annotation.stative === 'uncertain' &&
+       Clauses.cache.clause.annotation.bounded === 'uncertain' &&
+       Clauses.cache.clause.annotation.extended === 'uncertain' &&
+       Clauses.cache.clause.annotation.change === 'uncertain'));
   $scope.shouldSave = this.shouldSave;
   this.left = () => {
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
@@ -172,13 +172,13 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     // console.log('keyDown');
     // console.log(event); /* key event is here */
     if (Clauses.cache.clause) {
-      if (event.which == 37) {
+      if (event.which === 37) {
         this.left();   // left
       }
-      if (event.which == 39) {
+      if (event.which === 39) {
         this.right();  // right
       }
-      if (event.which == 27) {
+      if (event.which === 27) {
         this.reset();  // ESCAPE
       }
       if (event.which === 73) {
@@ -234,7 +234,9 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     }
   };
   $rootScope.$on('bodySendsKeyDown',
-                 (broadcastEvt, keyEvt) => { $rootScope.$evalAsync(() => { this.keyDown(keyEvt); }); });
+                 (broadcastEvt, keyEvt) => {
+                   $rootScope.$evalAsync(() => { this.keyDown(keyEvt); });
+                 });
 }
 
 export default {

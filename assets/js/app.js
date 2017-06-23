@@ -8,11 +8,11 @@ import InterfaceComponent from './component';
 
 angular.module('Annotator', ['ngRoute', 'ngResource', 'ui.bootstrap'])
 
-  .directive('keyHandler', ($rootScope) => {
-    return (scope, element) => {
+  .directive('keyHandler', $rootScope => (
+    (scope, element) => {
       element.bind('keydown', (event) => { $rootScope.$broadcast('bodySendsKeyDown', event); });
-    };
-  })
+    }
+  ))
 
   .factory('Clauses', ClauseService)
 
