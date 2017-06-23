@@ -14,7 +14,7 @@ install:
   - nvm use 6.10
   - npm install
 before_script:
-  - flask lint
   - npm run lint
   - npm run build
+  - flask lint
 script: flask test
