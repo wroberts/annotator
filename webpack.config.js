@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestRevisionPlugin = require('manifest-revision-webpack-plugin');
 
 // take debug mode from the environment
-const debug = (process.env.NODE_ENV !== 'prod');
+const debug = (process.env.NODE_ENV !== 'production');
 
 // Development asset host (webpack dev server)
 const publicHost = debug ? 'http://localhost:2992' : '';
@@ -35,7 +35,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.css']
   },
-  devtool: debug ? '#inline-sourcemap' : false,
+  devtool: debug ? 'inline-sourcemap' : 'source-map',
   devServer: {
     headers: { 'Access-Control-Allow-Origin': '*' }
   },
@@ -60,5 +60,10 @@ module.exports = {
     }),
   ].concat(debug ? [] : [
     // production webpack plugins go here
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
   ])
 };
