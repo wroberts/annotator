@@ -2,6 +2,10 @@
 Aspectual Annotator
 ===============================
 
+.. image:: https://badges.greenkeeper.io/wroberts/annotator.svg
+   :alt: Greenkeeper badge
+   :target: https://greenkeeper.io/
+
 .. image:: https://travis-ci.org/wroberts/annotator.svg?branch=master
     :target: https://travis-ci.org/wroberts/annotator
 
