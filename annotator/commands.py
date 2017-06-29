@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Click commands."""
+import json
 import os
 from glob import glob
 from subprocess import call
@@ -8,6 +9,9 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 from werkzeug.exceptions import MethodNotAllowed, NotFound
+
+import wkr
+from annotator.annotations.models import AspInd, Clause, SynArg
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(HERE, os.pardir)
@@ -124,3 +128,37 @@ def urls(url, order):
 
     for row in rows:
         click.echo(str_template.format(*row[:column_length]))
+
+
+@click.command()
+@click.argument('jsonfile', type=click.Path(exists=True))
+@with_appcontext
+def create_corpus(jsonfile):
+    """
+    Write a description of a corpus from file to the DB.
+
+    :param str jsonfile: the path to the JSON-formatted corpus
+        description
+    """
+    for line in wkr.lines(jsonfile):
+        # recover the object dump from the line
+        item = json.loads(line.strip())
+        # create a Clause object from the item
+        text = u' '.join(item['words'])
+        verb_index = item['windex']
+        # can also pass additional kwargs, e.g. "id"
+        clause = Clause(text, verb_index)
+        clause.save()
+        print(clause)
+        # create AspInds
+        for aitem in item['aspinds']:
+            atype, begin, end = aitem
+            aspind = AspInd(atype, begin, end, clause)
+            aspind.save()
+            print(aspind)
+        # create SynArgs
+        for sitem in item['synargs']:
+            stype, begin, end = sitem
+            synarg = SynArg(stype, begin, end, clause)
+            synarg.save()
+            print(synarg)
