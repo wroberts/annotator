@@ -46,4 +46,4 @@ marshmallow==2.13.5
 
 # wkr
 #wkr>=1.0.0
--e git+git://github.com/wroberts/wkr.py#egg=wkr
+-e git+git://github.com/wroberts/wkr.py.git#egg=wkr
