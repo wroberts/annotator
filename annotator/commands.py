@@ -6,11 +6,11 @@ from glob import glob
 from subprocess import call
 
 import click
+import wkr
 from flask import current_app
 from flask.cli import with_appcontext
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 
-import wkr
 from annotator.annotations.models import AspInd, Clause, SynArg
 
 HERE = os.path.abspath(os.path.dirname(__file__))
