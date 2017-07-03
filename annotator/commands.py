@@ -135,10 +135,11 @@ def urls(url, order):
 def drop_db():
     """Drop all databases, except for user information."""
     if click.confirm('Are you sure you want to continue?', abort=True):
-        AspInd.query.delete(False)
-        SynArg.query.delete(False)
-        Annotation.query.delete(False)
-        Clause.query.delete(False)
+        AspInd.query.delete()
+        SynArg.query.delete()
+        Annotation.query.delete()
+        Clause.query.delete()
+        current_app.extensions['sqlalchemy'].db.session.commit()
 
 
 @click.command()
