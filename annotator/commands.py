@@ -6,6 +6,7 @@ from glob import glob
 from subprocess import call
 
 import click
+import tqdm
 import wkr
 from flask import current_app
 from flask.cli import with_appcontext
@@ -152,7 +153,10 @@ def create_corpus(jsonfile):
     :param str jsonfile: the path to the JSON-formatted corpus
         description
     """
-    for line in wkr.lines(jsonfile):
+    iterator = tqdm.tqdm(wkr.lines(jsonfile),
+                         unit='clause',
+                         total=wkr.io.count_lines(jsonfile))
+    for line in iterator:
         # recover the object dump from the line
         item = json.loads(line.strip())
         # create a Clause object from the item
@@ -161,16 +165,15 @@ def create_corpus(jsonfile):
         # can also pass additional kwargs, e.g. "id"
         clause = Clause(text, verb_index)
         clause.save()
-        print(clause)
+        postfix = {'Cl.:': clause.id}
         # create AspInds
         for aitem in item['aspinds']:
             atype, begin, end = aitem
             aspind = AspInd(atype, begin, end, clause)
             aspind.save()
-            print(aspind)
         # create SynArgs
         for sitem in item['synargs']:
             stype, begin, end = sitem
             synarg = SynArg(stype, begin, end, clause)
             synarg.save()
-            print(synarg)
+        iterator.set_postfix(**postfix)
