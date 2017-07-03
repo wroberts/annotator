@@ -11,7 +11,7 @@ from flask import current_app
 from flask.cli import with_appcontext
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 
-from annotator.annotations.models import AspInd, Clause, SynArg
+from annotator.annotations.models import Annotation, AspInd, Clause, SynArg
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(HERE, os.pardir)
@@ -128,6 +128,17 @@ def urls(url, order):
 
     for row in rows:
         click.echo(str_template.format(*row[:column_length]))
+
+
+@click.command()
+@with_appcontext
+def drop_db():
+    """Drop all databases, except for user information."""
+    if click.confirm('Are you sure you want to continue?', abort=True):
+        AspInd.query.delete(False)
+        SynArg.query.delete(False)
+        Annotation.query.delete(False)
+        Clause.query.delete(False)
 
 
 @click.command()
