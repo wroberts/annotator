@@ -32,7 +32,7 @@ function getSpans(clause) {
   const spans = [];
   let lastClass;
   let currentSpan = { wclass: undefined, mclass: undefined, words: [] };
-  for (let i = 0; i < clause.sentence.length - 1; i += 1) {
+  for (let i = 0; i < clause.sentence.length; i += 1) {
     const word = clause.sentence[i];
     const wclass = spanMaps.spanMap[i];
     if (wclass === lastClass) {
