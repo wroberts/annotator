@@ -24,6 +24,10 @@ function getSpanMaps(clause) {
   });
   spanMap[clause['verb-index']] = 'verb';
   spanMap2[clause['verb-index']] = undefined;
+  if (clause['prefix-index']) {
+    spanMap[clause['prefix-index']] = 'verb';
+    spanMap2[clause['prefix-index']] = undefined;
+  }
   return { spanMap, spanMap2 };
 }
 

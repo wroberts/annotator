@@ -162,8 +162,9 @@ def create_corpus(jsonfile):
         # create a Clause object from the item
         text = u' '.join(item['words'])
         verb_index = item['windex']
+        prefix_index = item['pwindex']
         # can also pass additional kwargs, e.g. "id"
-        clause = Clause(text, verb_index)
+        clause = Clause(text, verb_index, prefix_index)
         clause.save()
         postfix = {'Cl.:': clause.id}
         # create AspInds

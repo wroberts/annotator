@@ -98,10 +98,12 @@ class Clause(SurrogatePK, Model):
     __tablename__ = 'clauses'
     text = Column(db.Unicode(1000), nullable=True)  # space-separated UTF-8
     verb_index = Column(db.Integer, nullable=True)  # index of verb in sentence
+    prefix_index = Column(db.Integer, nullable=True)  # index of verb prefix in sentence
 
-    def __init__(self, text, verb_index, **kwargs):
+    def __init__(self, text, verb_index, prefix_index=None, **kwargs):
         """Create instance."""
-        db.Model.__init__(self, text=text, verb_index=verb_index, **kwargs)
+        db.Model.__init__(self, text=text, verb_index=verb_index,
+                          prefix_index=prefix_index, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""

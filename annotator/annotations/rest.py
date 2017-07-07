@@ -57,6 +57,7 @@ class ClauseSchema(Schema):
     id = fields.Integer()
     sentence = fields.Function(lambda clause: clause.text.split())
     verb_index = fields.Int(load_from='verb-index', dump_to='verb-index')
+    prefix_index = fields.Int(load_from='prefix-index', dump_to='prefix-index')
     synargs = fields.List(fields.Nested(CompSchema),
                           load_from='verb-comps', dump_to='verb-comps')
     aspinds = fields.List(fields.Nested(CompSchema),

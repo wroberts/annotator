@@ -189,6 +189,7 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
         del response['last-annotation-date']
     assert response == {
         u'verb-index': 13,
+        u'prefix-index': None,
         u'verb-comps': [{u'type': u'subj',
                          u'begin': 12,
                          u'end': 13}],
@@ -213,6 +214,7 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
     response = res.json
     assert response == {
         u'verb-index': 2,
+        u'prefix-index': None,
         u'verb-comps': [{u'type': u'subj',
                          u'begin': 1,
                          u'end': 2},
