@@ -7,6 +7,13 @@
   <p>You have annotated {{ number_annotated_clauses }} of
     {{ number_total_clauses }} clauses.</p>
 
+  {% if number_total_clauses %}
+  <p>
+    <a class="btn btn-lg btn-default" href="/annotations/interface/#!/1"> Go to first clause (1)</a>
+    <a class="btn btn-lg btn-default" href="/annotations/interface/#!/{{ number_total_clauses }}"> Go to last clause ({{ number_total_clauses }})</a>
+  </p>
+  {% endif %}
+
   {% if first_unannotated_clause %}
   <p><a class="btn btn-lg btn-default"
         href="/annotations/interface/#!/{{ first_unannotated_clause[0] }}">
