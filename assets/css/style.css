@@ -54,19 +54,22 @@ textarea {
 .help { cursor: help; }
 
 .verb {
-    background-color: #e56a72;
-}
-
-.subj {
-    background-color: #84a1f7;
+    background-color: #e56a72; /* red */
 }
 
 .obj {
-    background-color: #81d67c;
+    background-color: #81d67c; /* green */
 }
 
-.advp_for {
-    background-color: #ebd383;
+/* assorted syntactic arguments */
+.subj, .prep, .vcomp, .refl, .iobj, .pred {
+    background-color: #84a1f7; /* blue */
+}
+
+/* all aspectual indicators */
+.aspind {
+    background-color: #ebd383; /* yellow */
+}
 /*
 #c97479;
 #eda874;
@@ -75,14 +78,14 @@ textarea {
 #adb8db
 https://coolors.co/eda874-c97479-c999af-8d9be0-adb8db
 
-#81d67c  green
 #e56a72  red
+#81d67c  green
 #ebd383  yellow
 #da7afa  purple
 #84a1f7  blue
 #ffab72  orange
 */
-}
+
 
 /* footer */
 
