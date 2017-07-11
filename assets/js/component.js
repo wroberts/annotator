@@ -1,11 +1,5 @@
 import template from './interface.html';
-
-const SPAN_TITLES = {
-  verb: 'Main verb of the clause',
-  subj: 'Subject',
-  obj: 'Direct object',
-  advp_for: 'Aspectual (for)',
-};
+import SPAN_TITLES from './labels';
 
 function getSpanMaps(clause) {
   const spanMap = clause.sentence.map(() => undefined);
