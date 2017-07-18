@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Click commands."""
+import csv
 import json
 import os
 from glob import glob
@@ -10,9 +11,11 @@ import tqdm
 import wkr
 from flask import current_app
 from flask.cli import with_appcontext
+from sqlalchemy.sql import func
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 
 from annotator.annotations.models import Annotation, AspInd, Clause, SynArg
+from annotator.user.models import User
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(HERE, os.pardir)
@@ -178,3 +181,46 @@ def create_corpus(jsonfile):
             synarg = SynArg(stype, begin, end, clause)
             synarg.save()
         iterator.set_postfix(**postfix)
+
+
+@click.command()
+@with_appcontext
+def export():
+    """
+    Export the annotations currently stored in the database to CSV format.
+
+    Writes the CSV data out on standard output.
+    """
+    session = current_app.extensions['sqlalchemy'].db.session
+    with wkr.open('-', 'wb') as csvfile:
+        csvwriter = csv.writer(csvfile, dialect='excel', quoting=csv.QUOTE_MINIMAL)
+        # header
+        csvwriter.writerow(['id',
+                            'clause_id',
+                            'user_email',
+                            'invalid',
+                            'stative',
+                            'bounded',
+                            'extended',
+                            'change'])
+        # https://stackoverflow.com/a/1313140/1062499
+        #
+        # subquery: find the largest (most recent) annotations for each clause
+        # and user combination
+        subq = (session.query(func.max(Annotation.id).label('max_id'))
+                .group_by(Annotation.clause_id, Annotation.user_id)
+                .subquery())
+        # inner join Annotation on these id values
+        for annotation, clause, user in (session.query(Annotation, Clause, User)
+                                         .join(subq, Annotation.id == subq.c.max_id)
+                                         .join(Clause)
+                                         .join(User)
+                                         .order_by(Annotation.clause_id).all()):
+            csvwriter.writerow([annotation.id,
+                                clause.id,
+                                user.email,
+                                annotation.invalid.name,
+                                annotation.stative.name,
+                                annotation.bounded.name,
+                                annotation.extended.name,
+                                annotation.change.name])

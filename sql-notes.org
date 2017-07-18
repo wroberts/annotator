@@ -1,0 +1,83 @@
+* SQL Notes: joins and subqueries
+
+  #+BEGIN_SRC python
+  #+END_SRC
+
+  # select * from Annotations inner join ...
+
+  # Annotation.query.join(Clause)
+
+  # db.session.query(Annotation).join(Clause).join(User).all()
+  
+  # we want all annotation objects; group by clause and user id
+  #
+  #+BEGIN_SRC sql
+  select * from clause, user, annotation
+     where annotation.clause_id == clause.id and
+     annotation.user_id == user.id;
+  #+END_SRC
+
+  #+BEGIN_SRC python
+    Annotation.query.order_by(Annotation.created_at.desc())[0]
+  #+END_SRC
+  
+  #+BEGIN_SRC sql
+   (select a.id from annotations where a.clause_id = c.id and a.user_id = u.id order by a.created_at desc limit 1)
+
+  select max(id),clause_id,user_id,created_at,invalid,stative,bounded,extended,change
+     from annotations group by clause_id,user_id order by clause_id;
+
+
+  select max(annotations.id),annotations.clause_id,annotations.user_id,users.email,annotations.created_at,
+     annotations.invalid,annotations.stative,annotations.bounded,annotations.extended,annotations.change
+     from annotations
+     join users on (annotations.user_id = users.id)
+     group by annotations.clause_id,annotations.user_id
+     order by annotations.clause_id;
+  #+END_SRC
+
+  This one may not work deterministically:
+
+  #+BEGIN_SRC python
+  from sqlalchemy.sql import func
+
+  # https://stackoverflow.com/a/8757062/1062499
+  (db.session.query(func.max(Annotation.id).label('max_id'),Annotation,Clause,User)
+   .join(Clause)
+   .join(User)
+   .group_by(Annotation.clause_id, Annotation.user_id)
+   .order_by(Annotation.clause_id)).all()
+  #+END_SRC
+
+  This one won't fetch any annotations that don't have duplicates:
+
+  #+BEGIN_SRC python
+    from sqlalchemy.orm import aliased
+    from sqlalchemy import and_
+
+    # https://stackoverflow.com/a/8757062/1062499
+    alias = aliased(Annotation)
+    db.session.query(Annotation).join(alias,
+                                      and_(Annotation.user_id == alias.user_id,
+                                           Annotation.clause_id == alias.clause_id,
+                                           Annotation.id > alias.id))
+  #+END_SRC
+
+  Working solution:
+
+  #+BEGIN_SRC python
+    # https://stackoverflow.com/a/1313140/1062499
+    #
+    # subquery: find the largest (most recent) annotations for each clause
+    # and user combination
+    subq = (db.session.query(func.max(Annotation.id).label('max_id'))
+            .group_by(Annotation.clause_id, Annotation.user_id)
+            .subquery())
+    # inner join Annotation on these id values
+    for annotation, clause, user in (db.session.query(Annotation, Clause, User)
+                                     .join(subq, Annotation.id == subq.c.max_id)
+                                     .join(Clause)
+                                     .join(User)
+                                     .order_by(Annotation.clause_id).all()):
+        print(annotation.id)
+  #+END_SRC
