@@ -167,7 +167,10 @@ def create_corpus(jsonfile):
         verb_index = item['windex']
         prefix_index = item['pwindex']
         # can also pass additional kwargs, e.g. "id"
-        clause = Clause(text, verb_index, prefix_index)
+        clause = Clause(text, verb_index, prefix_index,
+                        sindex=item['sindex'],
+                        windex=item['orig_windex'],
+                        verb=item['verb'])
         clause.save()
         postfix = {'Cl.:': clause.id}
         # create AspInds
@@ -228,6 +231,7 @@ def export():
         csvwriter = csv.writer(csvfile, dialect='excel', quoting=csv.QUOTE_MINIMAL)
         # header
         csvwriter.writerow(['id',
+                            'verb',
                             'clause_sindex',
                             'clause_windex',
                             'user_email',
@@ -250,6 +254,7 @@ def export():
                                          .join(User)
                                          .order_by(Annotation.clause_id).all()):
             csvwriter.writerow([annotation.id,
+                                clause.verb,
                                 clause.sindex,
                                 clause.windex,
                                 user.email,
