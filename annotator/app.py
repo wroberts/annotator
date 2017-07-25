@@ -84,4 +84,5 @@ def register_commands(app):
     app.cli.add_command(commands.urls)
     app.cli.add_command(commands.drop_db)
     app.cli.add_command(commands.create_corpus)
+    app.cli.add_command(commands.upgrade_corpus_v2)
     app.cli.add_command(commands.export)

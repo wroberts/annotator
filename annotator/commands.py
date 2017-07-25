@@ -184,6 +184,38 @@ def create_corpus(jsonfile):
 
 
 @click.command()
+@click.argument('jsonfile', type=click.Path(exists=True))
+@with_appcontext
+def upgrade_corpus_v2(jsonfile):
+    """
+    Upgrade a corpus created with create_corpus to DB v2.
+
+    v2 adds the sindex, windex, and verb fields.
+    """
+    iterator = tqdm.tqdm(wkr.lines(jsonfile),
+                         unit='clause',
+                         total=wkr.io.count_lines(jsonfile))
+    for idx, line in enumerate(iterator, 1):
+        # recover the object dump from the line
+        item = json.loads(line.strip())
+        # get the clause from the DB
+        clause = Clause.query.filter(Clause.id == idx).first()
+        # double-check that we have the right one
+        assert clause.verb_index == item['windex']
+        assert clause.prefix_index == item['pwindex']
+        assert clause.text == u' '.join(item['words'])
+        u' '.join(item['words'])
+        # add .sindex and .windex fields
+        clause.sindex = item['sindex']
+        clause.windex = item['orig_windex']
+        clause.verb = item['verb']
+        # save
+        clause.save()
+        postfix = {'Cl.:': clause.id}
+        iterator.set_postfix(**postfix)
+
+
+@click.command()
 @with_appcontext
 def export():
     """
@@ -196,7 +228,8 @@ def export():
         csvwriter = csv.writer(csvfile, dialect='excel', quoting=csv.QUOTE_MINIMAL)
         # header
         csvwriter.writerow(['id',
-                            'clause_id',
+                            'clause_sindex',
+                            'clause_windex',
                             'user_email',
                             'invalid',
                             'stative',
@@ -217,7 +250,8 @@ def export():
                                          .join(User)
                                          .order_by(Annotation.clause_id).all()):
             csvwriter.writerow([annotation.id,
-                                clause.id,
+                                clause.sindex,
+                                clause.windex,
                                 user.email,
                                 annotation.invalid.name,
                                 annotation.stative.name,

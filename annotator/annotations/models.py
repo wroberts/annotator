@@ -96,6 +96,9 @@ class Clause(SurrogatePK, Model):
     """A clause to be annotated."""
 
     __tablename__ = 'clauses'
+    sindex = Column(db.Integer, nullable=True)  # sdewac sentence index
+    windex = Column(db.Integer, nullable=True)  # original windex, != verb_index
+    verb = Column(db.Unicode(64), nullable=True)  # verb lemma
     text = Column(db.Unicode(1000), nullable=True)  # space-separated UTF-8
     verb_index = Column(db.Integer, nullable=True)  # index of verb in sentence
     prefix_index = Column(db.Integer, nullable=True)  # index of verb prefix in sentence
