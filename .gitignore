@@ -45,10 +45,25 @@ docs/_build
 # Virtualenvs
 env/
 
+# Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.fdb_latexmk
 
+*~
 /annotator/static
 /annotator/webpack
 /dev.db
-*~
+/guidelines.pdf
+/guidelines.tex
 /node_modules/
 /passenger_wsgi.py

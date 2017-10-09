@@ -1,0 +1,92 @@
+#+STARTUP: content hidestars odd
+
+* Annotation Guidelines
+
+*** Aspectual class
+
+    An /event/ is composed of a verb and its complements.
+    Prototypically, the direct object of the verb represents the
+    entity that is affected or changed by the verb's action; the
+    nature of this entity is important to the event's aspectual class.
+    For instance, the number of the direct object can determine the
+    aspectual class of the event:
+
+    - /Ich aß einen Apfel./ (dynamic, bounded, durative,
+      change-of-state)
+
+    - /Ich aß viele Äpfel./ (dynamic, unbounded)
+
+    The grammatical subjects of /unaccusative verbs/ are semantic
+    patients, affected by the expressed action, and must also be taken
+    into consideration when determining the aspectual class of a verb.
+
+    - consider resultative adjuncts
+    - ignore aspectual coercion via adjuncts, except as far as these
+      provide cues to the /fundamental aspectual class/
+
+*** Valid
+
+    Verbs should be tagged as invalid if they cannot reasonably be
+    assigned an aspectual class.  Because the pre-processing of the
+    annotation corpus is done automatically, the corpus may contain
+    verbs which are not appropriate to the primary task.  Examples
+    include:
+
+    - Mis-tagged verbs (e.g., auxiliaries which have been falsely
+      classified as a main verb.
+
+    - Sentence fragments, where the complements to a verb needed for
+      the assessment of lexical aspect are not shown.
+
+*** Stative
+
+    Stative verbs describe a state of being, rather than an action
+    (process or event).  Stative verbs express that a property obtains
+    at a particular moment in time, and imply that this property holds
+    over a (usually unspecified) duration.  Unlike dynamic verbs,
+    stative verbs cannot denote temporally bounded activities, and
+    they do not directly express changes of state.
+
+    Stative verbs are frequently incompatible with the imperative
+    mood.
+
+    - /Geh nach Hause!/
+    - ? /Weiß die Antwort!/
+
+    Stative verbs cannot be the complement of the verb /to force/:
+
+    - /Ich habe sie gezwungen, nach Hause zu gehen./
+    - ? /Ich habe sie gezwungen, die Antwort zu wissen./
+
+*** Bounded
+
+    Bounded events have a natural conclusion, a point in time at which
+    the expressed action is *finished* and cannot continue any longer:
+
+    - /Ich habe einen Apfel gegessen./
+    - /Ich habe eine Sonata gespielt./
+    - /Ich lese ein Buch./
+
+    Unbounded events cannot be finished, although they may *stop*:
+
+    - /Ich habe Äpfel gegessen./
+    - /Ich habe Klavier gespielt./
+    - /Ich habe gelesen./
+
+
+    - Adverbials of time (/für eine halbe Stunde/in einer halben Stunde/)
+
+*** Punctual vs. Durative
+
+    - iterative interpretation when combined with durative adverbials
+      - /Ich habe (für zehn Minuten/zehn Minuten lang) geschlafen./
+      - /Ich habe (für zehn Minuten/zehn Minuten lang) geniesst./
+      - /Ich habe (den ganzen Nachmittag) mein Zimmer geputzt./
+      - /Ich habe (den ganzen Nachmittag) meine Schlüssel gefunden./
+
+*** Change of State
+
+    - lasting change effected in the patient of the verb
+      - /Ich habe den Film geschaut./ (?)
+      - /Ich habe den Film gezeigt./ (no change of state)
+      - /Ich habe den Studenten den Film gezeigt./ (change of state)
