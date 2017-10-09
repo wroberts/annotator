@@ -43,6 +43,7 @@ class AnnoSchema(Schema):
                                required=True, validate=validate_booleanunsure)
     change = fields.Function(lambda annotation: annotation.change.name,
                              required=True, validate=validate_booleanunsure)
+    notes = fields.Str()
 
     @post_load
     def convert_to_enums(self, data):

@@ -161,7 +161,8 @@ def test_rest_auth_put(testapp, dummies):
                             u'invalid': u'false',
                             u'extended': u'uncertain',
                             u'change': u'uncertain',
-                            u'stative': u'false'},
+                            u'stative': u'false',
+                            u'notes': u''},
                            expect_errors=True)
     assert res.status_code == 401
 
@@ -203,7 +204,8 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
                         u'invalid': u'false',
                         u'extended': u'false',
                         u'change': u'false',
-                        u'stative': u'false'},
+                        u'stative': u'false',
+                        u'notes': u''},
         u'last': False}
 
 
@@ -246,7 +248,8 @@ def test_rest_validation_ok():
                     'invalid': BooleanUnsure.false,
                     'extended': BooleanUnsure.uncertain,
                     'change': BooleanUnsure.uncertain,
-                    'stative': BooleanUnsure.false}
+                    'stative': BooleanUnsure.false,
+                    'notes': u''}
 
 
 def test_rest_validation_missing():
@@ -254,7 +257,8 @@ def test_rest_validation_missing():
     data, errors = AnnoSchema().load({u'bounded': u'false',
                                       u'invalid': u'false',
                                       u'extended': u'false',
-                                      u'change': u'false'})
+                                      u'change': u'false',
+                                      u'notes': u''})
     assert errors
     assert 'stative' in errors
 
@@ -265,7 +269,8 @@ def test_rest_validation_invalid():
                                       u'invalid': u'false',
                                       u'extended': u'true',
                                       u'change': u'true',
-                                      u'stative': u'unsure'})
+                                      u'stative': u'unsure',
+                                      u'notes': u''})
     assert errors
     assert 'stative' in errors
 
@@ -280,7 +285,8 @@ def test_rest_put_ok_1(testapp, dummies, logged_in_user):
                       u'invalid': u'false',
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
-                      u'stative': u'false'}
+                      u'stative': u'false',
+                      u'notes': u''}
     res = testapp.put_json('/api/clauses/3',
                            new_annotation)
     assert res.status_code == 200
@@ -299,12 +305,14 @@ def test_rest_put_ok_2(testapp, dummies, logged_in_user):
                                       u'invalid': u'false',
                                       u'extended': u'false',
                                       u'change': u'false',
-                                      u'stative': u'false'}
+                                      u'stative': u'false',
+                                      u'notes': u''}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
-                      u'stative': u'false'}
+                      u'stative': u'false',
+                      u'notes': u''}
     assert new_annotation != response['annotation']
     res = testapp.put_json('/api/clauses/2',
                            new_annotation)
@@ -325,12 +333,14 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
                               u'invalid': u'false',
                               u'extended': u'false',
                               u'change': u'false',
-                              u'stative': u'false'}
+                              u'stative': u'false',
+                              u'notes': u''}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'unsure',
                       u'change': u'unsure',
-                      u'stative': u'false'}
+                      u'stative': u'false',
+                      u'notes': u''}
     assert new_annotation != old_annotation
     res = testapp.put_json('/api/clauses/2',
                            new_annotation,

@@ -65,6 +65,7 @@ function initAnnotation(clause, $scope) {
       bounded: 'uncertain',
       extended: 'uncertain',
       change: 'uncertain',
+      notes: '',
     };
   }
   $scope.annotation = clause.annotation;

@@ -239,7 +239,8 @@ def export():
                             'stative',
                             'bounded',
                             'extended',
-                            'change'])
+                            'change',
+                            'notes'])
         # https://stackoverflow.com/a/1313140/1062499
         #
         # subquery: find the largest (most recent) annotations for each clause
@@ -262,4 +263,5 @@ def export():
                                 annotation.stative.name,
                                 annotation.bounded.name,
                                 annotation.extended.name,
-                                annotation.change.name])
+                                annotation.change.name,
+                                annotation.notes])
