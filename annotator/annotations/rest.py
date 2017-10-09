@@ -43,13 +43,16 @@ class AnnoSchema(Schema):
                                required=True, validate=validate_booleanunsure)
     change = fields.Function(lambda annotation: annotation.change.name,
                              required=True, validate=validate_booleanunsure)
-    notes = fields.Str()
+    notes = fields.Str(allow_none=True)
 
     @post_load
     def convert_to_enums(self, data):
         """Convert strings into BooleanUnsure values."""
-        return dict((key, BooleanUnsure.__members__[value])
-                    for (key, value) in data.items())
+        retval = dict((key, BooleanUnsure.__members__[value])
+                      for (key, value) in data.items() if key != 'notes')
+        if 'notes' in data:
+            retval['notes'] = data['notes']
+        return retval
 
 
 class ClauseSchema(Schema):

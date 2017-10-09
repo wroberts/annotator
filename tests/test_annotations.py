@@ -83,7 +83,8 @@ def dummies(db, user):
                            BooleanUnsure.false,
                            BooleanUnsure.false,
                            BooleanUnsure.false,
-                           BooleanUnsure.false)
+                           BooleanUnsure.false,
+                           notes=u'something goes here')
     bunch.an4.save()
     return bunch
 
@@ -205,7 +206,7 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
                         u'extended': u'false',
                         u'change': u'false',
                         u'stative': u'false',
-                        u'notes': u''},
+                        u'notes': u'something goes here'},
         u'last': False}
 
 
@@ -242,14 +243,15 @@ def test_rest_validation_ok():
                                       u'invalid': u'false',
                                       u'extended': u'uncertain',
                                       u'change': u'uncertain',
-                                      u'stative': u'false'})
+                                      u'stative': u'false',
+                                      u'notes': u'something'})
     assert not errors
     assert data == {'bounded': BooleanUnsure.true,
                     'invalid': BooleanUnsure.false,
                     'extended': BooleanUnsure.uncertain,
                     'change': BooleanUnsure.uncertain,
                     'stative': BooleanUnsure.false,
-                    'notes': u''}
+                    'notes': u'something'}
 
 
 def test_rest_validation_missing():
@@ -286,7 +288,7 @@ def test_rest_put_ok_1(testapp, dummies, logged_in_user):
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false',
-                      u'notes': u''}
+                      u'notes': u'a note'}
     res = testapp.put_json('/api/clauses/3',
                            new_annotation)
     assert res.status_code == 200
@@ -306,13 +308,13 @@ def test_rest_put_ok_2(testapp, dummies, logged_in_user):
                                       u'extended': u'false',
                                       u'change': u'false',
                                       u'stative': u'false',
-                                      u'notes': u''}
+                                      u'notes': u'something goes here'}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false',
-                      u'notes': u''}
+                      u'notes': None}
     assert new_annotation != response['annotation']
     res = testapp.put_json('/api/clauses/2',
                            new_annotation)
@@ -334,7 +336,7 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
                               u'extended': u'false',
                               u'change': u'false',
                               u'stative': u'false',
-                              u'notes': u''}
+                              u'notes': u'something goes here'}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'unsure',
