@@ -7,7 +7,7 @@
     - [[https://github.com/nickjj/demo-for-chattanooga-python-user-group/blob/master/webpack.config.js][demo-for-chattanooga-python-user-group/webpack.config.js at master · nickjj/demo-for-chattanooga-python-user-group]]
 *** DONE angular
     - [[https://realpython.com/blog/python/flask-by-example-custom-angular-directive-with-D3/][Flask by Example - Custom Angular Directive with D3 - Real Python]]
-*** TODO frontend
+*** DONE frontend
 *** DONE swap out flask-login for flask-security
-*** TODO deploy
+*** DONE deploy
     - [[https://help.dreamhost.com/hc/en-us/articles/216128557-Guidelines-for-setting-up-a-Python-file-at-DreamHost][Guidelines for setting up a Python file at DreamHost – DreamHost]]
