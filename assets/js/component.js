@@ -217,7 +217,9 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   this.keyDown = (event) => {
     // console.log('keyDown');
     // console.log(event); /* key event is here */
-    if (Clauses.cache.clause && $scope.annotation && !$scope.textFocus && !event.altKey && !event.metaKey) {
+    if (Clauses.cache.clause && $scope.annotation &&
+        !$scope.textFocus &&
+        !event.altKey && !event.metaKey) {
       if (event.which === 37) {
         $scope.left();   // left
       }
