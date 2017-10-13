@@ -5,6 +5,7 @@ from flask import Blueprint, request
 from flask_restful import Api, Resource, abort
 from flask_security.core import current_user
 from marshmallow import Schema, ValidationError, fields, post_load
+from sqlalchemy.sql import func
 
 from annotator.annotations.models import Annotation, BooleanUnsure, Clause
 from annotator.compat import text_type
@@ -33,6 +34,7 @@ def validate_booleanunsure(value):
 class AnnoSchema(Schema):
     """Marshmallow schema for Annotation objects."""
 
+    annotation_idx = fields.Int(default=0, missing=0)
     invalid = fields.Function(lambda annotation: annotation.invalid.name,
                               required=True, validate=validate_booleanunsure)
     stative = fields.Function(lambda annotation: annotation.stative.name,
@@ -49,7 +51,10 @@ class AnnoSchema(Schema):
     def convert_to_enums(self, data):
         """Convert strings into BooleanUnsure values."""
         retval = dict((key, BooleanUnsure.__members__[value])
-                      for (key, value) in data.items() if key != 'notes')
+                      for (key, value) in data.items() if key not in ['annotation_idx',
+                                                                      'notes'])
+        if 'annotation_idx' in data:
+            retval['annotation_idx'] = data['annotation_idx']
         if 'notes' in data:
             retval['notes'] = data['notes']
         return retval
@@ -69,17 +74,18 @@ class ClauseSchema(Schema):
     last_annotation_date = fields.DateTime(format='iso', missing=None,
                                            load_from='last-annotation-date',
                                            dump_to='last-annotation-date')
-    annotation = fields.Nested(AnnoSchema, missing=None)
+    annotations = fields.List(fields.Nested(AnnoSchema, missing=None))
     last = fields.Boolean()
 
 
-def marshal(clause, max_id, annotation):
+def marshal(clause, max_id, annotations):
     """Generate JSON for a clause-annotation pair for a given user."""
     clause.last = (clause.id == max_id)
-    clause.annotation = annotation
+    clause.annotations = annotations
     clause.last_annotation_date = None
-    if annotation is not None:
-        clause.last_annotation_date = annotation.created_at
+    if annotations is not None and len(annotations) > 0:
+        clause.last_annotation_date = max(annotation.created_at
+                                          for annotation in annotations)
     return ClauseSchema().dump(clause)
 
 
@@ -97,17 +103,20 @@ class ClauseRsc(Resource):
             abort(401)
         # get the clause
         try:
+            subq = (db.session.query(func.max(Annotation.id).label('max_id'))
+                    .group_by(Annotation.clause_id, Annotation.user_id, Annotation.annotation_idx)
+                    .subquery())
             clause = Clause.query.filter(Clause.id == clause_id).one()
             max_id = db.session.query(Clause.id).order_by(Clause.id.desc()).first()
             max_id = max_id[0] if max_id else -1
-            annotation = (Annotation.query
-                          .filter(Annotation.clause_id == clause_id)
-                          .filter(Annotation.user_id == current_user.id)
-                          .order_by(Annotation.created_at.desc())
-                          .first())
+            annotations = (Annotation.query
+                           .filter(Annotation.clause_id == clause_id)
+                           .filter(Annotation.user_id == current_user.id)
+                           .join(subq, Annotation.id == subq.c.max_id)
+                           .order_by(Annotation.annotation_idx).all())
         except sqlalchemy.orm.exc.NoResultFound:
             abort(404, message='Clause {} not found'.format(clause_id))
-        return marshal(clause, max_id, annotation)
+        return marshal(clause, max_id, annotations)
 
     def put(self, clause_id):
         """
@@ -120,8 +129,6 @@ class ClauseRsc(Resource):
         # get the clause
         try:
             clause = Clause.query.filter(Clause.id == clause_id).one()
-            max_id = db.session.query(Clause.id).order_by(Clause.id.desc()).first()
-            max_id = max_id[0] if max_id else -1
         except sqlalchemy.orm.exc.NoResultFound:
             abort(404, message='Clause {} not found'.format(clause_id))
         try:
@@ -132,7 +139,7 @@ class ClauseRsc(Resource):
         new_record = Annotation(clause, current_user, **data)
         new_record.save()
         # return to user
-        return marshal(clause, max_id, new_record)
+        return self.get(clause_id)
 
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')

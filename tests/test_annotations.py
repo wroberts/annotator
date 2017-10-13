@@ -201,12 +201,13 @@ def test_rest_get_1(testapp, dummies, logged_in_user):
                       u'"', u'driver', u'scripts', u'"', u'.'],
         u'id': 2,
         u'aspectual-indicators': [],
-        u'annotation': {u'bounded': u'false',
-                        u'invalid': u'false',
-                        u'extended': u'false',
-                        u'change': u'false',
-                        u'stative': u'false',
-                        u'notes': u'something goes here'},
+        u'annotations': [{u'bounded': u'false',
+                          u'invalid': u'false',
+                          u'extended': u'false',
+                          u'change': u'false',
+                          u'stative': u'false',
+                          u'notes': u'something goes here',
+                          u'annotation_idx': 0}],
         u'last': False}
 
 
@@ -233,7 +234,7 @@ def test_rest_get_2(testapp, dummies, logged_in_user):
                                    u'begin': 4,
                                    u'end': 7}],
         u'last-annotation-date': None,
-        u'annotation': None,
+        u'annotations': [],
         u'last': False}
 
 
@@ -251,7 +252,8 @@ def test_rest_validation_ok():
                     'extended': BooleanUnsure.uncertain,
                     'change': BooleanUnsure.uncertain,
                     'stative': BooleanUnsure.false,
-                    'notes': u'something'}
+                    'notes': u'something',
+                    'annotation_idx': 0}
 
 
 def test_rest_validation_missing():
@@ -282,20 +284,21 @@ def test_rest_put_ok_1(testapp, dummies, logged_in_user):
     res = testapp.get('/api/clauses/3')
     assert res.status_code == 200
     response = res.json
-    assert response['annotation'] is None
+    assert response['annotations'] == []
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false',
-                      u'notes': u'a note'}
+                      u'notes': u'a note',
+                      u'annotation_idx': 0}
     res = testapp.put_json('/api/clauses/3',
                            new_annotation)
     assert res.status_code == 200
     res = testapp.get('/api/clauses/3')
     assert res.status_code == 200
     response = res.json
-    assert response['annotation'] == new_annotation
+    assert response['annotations'] == [new_annotation]
 
 
 def test_rest_put_ok_2(testapp, dummies, logged_in_user):
@@ -303,26 +306,28 @@ def test_rest_put_ok_2(testapp, dummies, logged_in_user):
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
     response = res.json
-    assert response['annotation'] == {u'bounded': u'false',
-                                      u'invalid': u'false',
-                                      u'extended': u'false',
-                                      u'change': u'false',
-                                      u'stative': u'false',
-                                      u'notes': u'something goes here'}
+    assert response['annotations'][0] == {u'bounded': u'false',
+                                          u'invalid': u'false',
+                                          u'extended': u'false',
+                                          u'change': u'false',
+                                          u'stative': u'false',
+                                          u'notes': u'something goes here',
+                                          u'annotation_idx': 0}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'uncertain',
                       u'change': u'uncertain',
                       u'stative': u'false',
-                      u'notes': None}
-    assert new_annotation != response['annotation']
+                      u'notes': None,
+                      u'annotation_idx': 0}
+    assert new_annotation != response['annotations'][0]
     res = testapp.put_json('/api/clauses/2',
                            new_annotation)
     assert res.status_code == 200
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
     response = res.json
-    assert response['annotation'] == new_annotation
+    assert response['annotations'] == [new_annotation]
 
 
 def test_rest_put_invalid(testapp, dummies, logged_in_user):
@@ -330,13 +335,14 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
     response = res.json
-    old_annotation = response['annotation']
+    old_annotation = response['annotations'][0]
     assert old_annotation == {u'bounded': u'false',
                               u'invalid': u'false',
                               u'extended': u'false',
                               u'change': u'false',
                               u'stative': u'false',
-                              u'notes': u'something goes here'}
+                              u'notes': u'something goes here',
+                              u'annotation_idx': 0}
     new_annotation = {u'bounded': u'true',
                       u'invalid': u'false',
                       u'extended': u'unsure',
@@ -351,4 +357,36 @@ def test_rest_put_invalid(testapp, dummies, logged_in_user):
     res = testapp.get('/api/clauses/2')
     assert res.status_code == 200
     response = res.json
-    assert response['annotation'] == old_annotation
+    assert response['annotations'] == [old_annotation]
+
+
+def test_rest_put_second_annotation(testapp, dummies, logged_in_user):
+    """Test the REST PUT verb's ability to add a second annotation record."""
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = res.json
+    assert len(response['annotations']) == 1
+    old_annotation = response['annotations'][0]
+    assert old_annotation == {u'bounded': u'false',
+                              u'invalid': u'false',
+                              u'extended': u'false',
+                              u'change': u'false',
+                              u'stative': u'false',
+                              u'notes': u'something goes here',
+                              u'annotation_idx': 0}
+    new_annotation = {u'bounded': u'true',
+                      u'invalid': u'false',
+                      u'extended': u'uncertain',
+                      u'change': u'uncertain',
+                      u'stative': u'false',
+                      u'notes': None,
+                      u'annotation_idx': 1}
+    assert new_annotation != old_annotation
+    res = testapp.put_json('/api/clauses/2',
+                           new_annotation)
+    assert res.status_code == 200
+    res = testapp.get('/api/clauses/2')
+    assert res.status_code == 200
+    response = res.json
+    assert len(response['annotations']) == 2
+    assert response['annotations'] == [old_annotation, new_annotation]

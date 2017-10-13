@@ -11,3 +11,31 @@
 *** DONE swap out flask-login for flask-security
 *** DONE deploy
     - [[https://help.dreamhost.com/hc/en-us/articles/216128557-Guidelines-for-setting-up-a-Python-file-at-DreamHost][Guidelines for setting up a Python file at DreamHost – DreamHost]]
+*** DONE allow multiple annotations of the same sentence
+    Idea: add another column to the annotations table which will form
+    another part of the "primary key", along with the clause_id and user_id.
+
+    tasks:
+    - [X] add to Annotation model
+    - [X] add to CSV export (commands.py)
+    - [X] add to REST
+    - [X] add to angular component
+    - [X] add to interface
+    - [X] modify existing tests to pass
+    - [X] add new tests for new functionality
+
+    questions:
+    - [X] how does the interface address the multiple annotations?
+      right now, we just ask for a clause, which includes a single
+      annotation (optional)
+
+      it seems likely that the REST should return an array of
+      annotation objects instead of just a single object
+    - [X] how does the interface save multiple annotations?
+
+      right now, we PUT a single annotation to the URL that represents
+      a clause
+
+      it seems like we should manage this, so that if we PUT an
+      annotation with a new annotation_idx, the backend will do the
+      right thing with this

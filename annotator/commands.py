@@ -231,6 +231,8 @@ def export():
         csvwriter = csv.writer(csvfile, dialect='excel', quoting=csv.QUOTE_MINIMAL)
         # header
         csvwriter.writerow(['id',
+                            'clause_id',
+                            'annotation_idx',
                             'verb',
                             'clause_sindex',
                             'clause_windex',
@@ -246,7 +248,7 @@ def export():
         # subquery: find the largest (most recent) annotations for each clause
         # and user combination
         subq = (session.query(func.max(Annotation.id).label('max_id'))
-                .group_by(Annotation.clause_id, Annotation.user_id)
+                .group_by(Annotation.clause_id, Annotation.user_id, Annotation.annotation_idx)
                 .subquery())
         # inner join Annotation on these id values
         for annotation, clause, user in (session.query(Annotation, Clause, User)
@@ -255,6 +257,8 @@ def export():
                                          .join(User)
                                          .order_by(Annotation.clause_id).all()):
             csvwriter.writerow([annotation.id,
+                                clause.id,
+                                annotation.annotation_idx,
                                 clause.verb,
                                 clause.sindex,
                                 clause.windex,

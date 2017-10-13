@@ -24,6 +24,7 @@ class Annotation(SurrogatePK, Model):
     clause = relationship('Clause', backref=backref('annotations', order_by='Annotation.created_at.desc()'))
     user_id = reference_col('users', nullable=True)
     user = relationship('User', backref=backref('annotations', order_by='Annotation.created_at.desc()'))
+    annotation_idx = Column(db.Integer, nullable=False, default=0)
     created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     invalid = Column(db.Enum(BooleanUnsure), nullable=True, default=BooleanUnsure.false)
     stative = Column(db.Enum(BooleanUnsure), nullable=True)
@@ -46,9 +47,10 @@ class Annotation(SurrogatePK, Model):
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return '<Annotation (sentence {clause_id}, user {user_id})>'.format(
+        return '<Annotation (sentence {clause_id}, user {user_id}, idx {annotation_idx})>'.format(
             clause_id=self.clause_id,
-            user_id=self.user_id)
+            user_id=self.user_id,
+            annotation_idx=self.annotation_idx)
 
 
 class SynArg(SurrogatePK, Model):

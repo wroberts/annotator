@@ -56,15 +56,15 @@
         <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">
           <label class="btn btn-default"
                  ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
+                 ng-change="invalidChanged()"
                  uib-btn-radio="'true'">Invalid</label>
           <label class="btn btn-default"
                  ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
+                 ng-change="invalidChanged()"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.invalid"
-                 ng-change="$ctrl.invalidChanged()"
+                 ng-change="invalidChanged()"
                  uib-btn-radio="'false'">Valid</label>
         </div>
       </div>
@@ -72,17 +72,17 @@
         <div class="btn-group btn-group-lg" aria-label="stative vs. dynamic">
           <label class="btn btn-default"
                  ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
+                 ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
                  uib-btn-radio="'true'">Stative</label>
           <label class="btn btn-default"
                  ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
+                 ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.stative"
-                 ng-change="$ctrl.stativeChanged()"
+                 ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
                  uib-btn-radio="'false'">Dynamic</label>
         </div>
@@ -91,17 +91,17 @@
         <div class="btn-group btn-group-lg" aria-label="bounded vs. unbounded">
           <label class="btn btn-default"
                  ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
+                 ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
                  uib-btn-radio="'false'">Unbounded</label>
           <label class="btn btn-default"
                  ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
+                 ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.bounded"
-                 ng-change="$ctrl.boundedChanged()"
+                 ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
                  uib-btn-radio="'true'">Bounded</label>
         </div>
@@ -110,17 +110,17 @@
         <div class="btn-group btn-group-lg" aria-label="extended vs. punctual">
           <label class="btn btn-default"
                  ng-model="annotation.extended"
-                 ng-change="$ctrl.extendedChanged()"
+                 ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'false'">Punctual</label>
           <label class="btn btn-default"
                  ng-model="annotation.extended"
-                 ng-change="$ctrl.extendedChanged()"
+                 ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.extended"
-                 ng-change="$ctrl.extendedChanged()"
+                 ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'true'">Extended</label>
         </div>
@@ -129,17 +129,17 @@
         <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
           <label class="btn btn-default"
                  ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
+                 ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'true'">Change of State</label>
           <label class="btn btn-default"
                  ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
+                 ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
           <label class="btn btn-default"
                  ng-model="annotation.change"
-                 ng-change="$ctrl.changeChanged()"
+                 ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'false'">No
             Change</label>
@@ -147,7 +147,21 @@
       </div>
       <div>
         <div class="form-group" style="padding-top: 1em;">
-          <input type="text" class="form-control" ng-model="annotation.notes" placeholder="Notes">
+          <input type="text"
+                 class="form-control"
+                 ng-focus="textFocus=true"
+                 ng-blur="textFocus=false"
+                 ng-model="annotation.notes"
+                 placeholder="Notes">
+        </div>
+      </div>
+      <div>
+        <div class="btn-group btn-group-lg" aria-label="multiple annotations">
+          <label ng-repeat="annotationButton in annotationButtons"
+                 class="btn btn-default"
+                 ng-model="currentAnnotation"
+                 ng-change="annotationButton.onChange()"
+                 uib-btn-radio="annotationButton.value">{{annotationButton.label}}</label>
         </div>
       </div>
       <a data-toggle="modal" data-target="#kbd-modal"><i class="fa fa-keyboard-o" aria-hidden="true"></i> <i>Show keyboard shortcuts</i></a>
@@ -155,12 +169,12 @@
   </div>
   <div class="col-md-3 text-left col-md-pull-6 col-xs-6">
     <button class="btn btn-default btn-lg"
-            ng-click="$ctrl.left()"
+            ng-click="left()"
             ng-disabled="cached.clause.id == 1">&laquo; Previous clause</button>
   </div>
   <div class="col-md-3 text-right col-xs-6">
     <button class="btn btn-default btn-lg"
-            ng-click="$ctrl.right()"
+            ng-click="right()"
             ng-disabled="cached.clause.last">Next clause &raquo;</button>
   </div>
 </div>
