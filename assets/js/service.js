@@ -61,8 +61,9 @@ export default ($resource) => {
   };
 
   ClauseService.isClean = () => (
-    ClauseService.cache.original && angular.equals(ClauseService.cache.original,
-                                                   ClauseService.cache.clause)
+    ClauseService.cache.original && angular.equals(
+      ClauseService.cache.original,
+      ClauseService.cache.clause)
   );
 
   return ClauseService;

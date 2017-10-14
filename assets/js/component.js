@@ -81,12 +81,13 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   $scope.textFocus = false;
 
   // make the call to the REST API to fetch the clause object
-  Clauses.get({ id: $routeParams.clauseId },
-              (clause) => {
-                $scope.spans = getSpans(clause);
-                this.initAnnotation();
-              },
-              () => { $location.url('/annotations/'); });
+  Clauses.get(
+    { id: $routeParams.clauseId },
+    (clause) => {
+      $scope.spans = getSpans(clause);
+      this.initAnnotation();
+    },
+    () => { $location.url('/annotations/'); });
 
   this.initAnnotation = () => {
     // $scope holds a pointer to the current annotation object being
@@ -221,13 +222,13 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
         !$scope.textFocus &&
         !event.altKey && !event.metaKey) {
       if (event.which === 37) {
-        $scope.left();   // left
+        $scope.left(); // left
       }
       if (event.which === 39) {
-        $scope.right();  // right
+        $scope.right(); // right
       }
       if (event.which === 27) {
-        $scope.reset();  // ESCAPE
+        $scope.reset(); // ESCAPE
       }
       if (event.which === 73) {
         // i
@@ -281,10 +282,11 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       }
     }
   };
-  $rootScope.$on('bodySendsKeyDown',
-                 (broadcastEvt, keyEvt) => {
-                   $rootScope.$evalAsync(() => { this.keyDown(keyEvt); });
-                 });
+  $rootScope.$on(
+    'bodySendsKeyDown',
+    (broadcastEvt, keyEvt) => {
+      $rootScope.$evalAsync(() => { this.keyDown(keyEvt); });
+    });
 }
 
 export default {
