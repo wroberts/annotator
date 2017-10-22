@@ -4,8 +4,8 @@
 <div class="body-content">
   <h1>Welcome to Aspectual Annotator!</h1>
 
-  <p>You have annotated {{ number_annotated_clauses }} of
-    {{ number_total_clauses }} clauses.</p>
+  <h4>You have annotated {{ number_annotated_clauses }} of
+    {{ number_total_clauses }} clauses.</h4>
 
   {% if number_total_clauses %}
   <p>
@@ -34,6 +34,28 @@
     last logged in on {{ current_user.last_login_at.strftime('%d %B,
     %Y at %H:%M:%S') }} from {{
     current_user.last_login_ip }}.</p>
+
+  {% if user_info %}
+  <h4 style="margin-top: 3em;">Leader Board</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Number of annotated clauses</th>
+        <th>Last change made</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in user_info %}
+      <tr>
+        <td>{{ row.user.full_name }}</td>
+        <td>{{ row.num_annotated_clauses }}</td>
+        <td>{{ row.last_annotation_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
 
   <!--
   <div class="row">
