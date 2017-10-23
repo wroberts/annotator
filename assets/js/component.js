@@ -205,6 +205,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       this.saveIfNeeded(() => {
         $location.url(newUrl);
       });
+      Clauses.disable();
     }
   };
   $scope.right = () => {
@@ -213,6 +214,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
       this.saveIfNeeded(() => {
         $location.url(newUrl);
       });
+      Clauses.disable();
     }
   };
   this.keyDown = (event) => {

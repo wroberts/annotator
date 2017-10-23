@@ -30,6 +30,11 @@ export default ($resource) => {
     notes: '',
   });
 
+  ClauseService.disable = () => {
+    ClauseService.cache.clause = undefined;
+    ClauseService.cache.original = undefined;
+  };
+
   ClauseService.reset = () => {
     ClauseService.cache.clause = angular.copy(ClauseService.cache.original);
     if (!ClauseService.cache.clause.annotations.length) {
@@ -47,6 +52,7 @@ export default ($resource) => {
       const original = ClauseService.cache.original;
       angular.extend(original, ClauseService.cache.clause);
       const currentAnnotation = original.annotations[ClauseService.cache.annotationIndex];
+      ClauseService.disable();
       return ClauseService.update(
         { id: original.id },
         currentAnnotation,
