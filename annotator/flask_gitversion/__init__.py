@@ -9,11 +9,28 @@ flask_gitversion/__init__.py
 
 import os
 import subprocess
+from contextlib import contextmanager
+
+
+@contextmanager
+def temp_chdir(path):
+    """
+    Context manager to temporarily change the working directory.
+
+    :param str path:
+    """
+    # record starting PWD
+    oldpwd = os.getcwd()
+    # change dir
+    os.chdir(path)
+    yield
+    # go back
+    os.chdir(oldpwd)
 
 
 # https://stackoverflow.com/a/40170206/1062499
 # Return the git revision as a string
-def git_version():
+def get_git_version(basepath=None):
     """Get the git hash."""
     def _minimal_ext_cmd(cmd):
         # construct minimal environment
@@ -30,15 +47,16 @@ def git_version():
         return out
 
     try:
-        out = _minimal_ext_cmd(['git', 'rev-parse', '--short', 'HEAD'])
+        if basepath is not None:
+            with temp_chdir(basepath):
+                out = _minimal_ext_cmd(['git', 'rev-parse', '--short', 'HEAD'])
+        else:
+            out = _minimal_ext_cmd(['git', 'rev-parse', '--short', 'HEAD'])
         git_revision = out.strip().decode('ascii')
     except OSError:
         git_revision = 'Unknown'
 
     return git_revision
-
-
-GIT_VERSION = git_version()
 
 
 class GitVersion(object):
@@ -52,6 +70,8 @@ class GitVersion(object):
 
     def init_app(self, app):
         """Initialse extension on the given app."""
+        git_version = get_git_version(app.root_path)
+
         @app.context_processor
         def gitversion_processor():
-            return dict(git_version=GIT_VERSION)
+            return dict(git_version=git_version)
