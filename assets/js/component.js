@@ -66,7 +66,7 @@ function getSpans(clause) {
   return spans;
 }
 
-function controller($scope, $rootScope, $routeParams, $location, Clauses) {
+function controller($scope, $rootScope, $routeParams, $location, $window, Clauses) {
   $scope.spans = [];
   $scope.annotation = {};
   $scope.annotationButtons = [];
@@ -105,6 +105,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
           }
         },
       }));
+    // button to allow the user to create a new annotation
     $scope.annotationButtons.push({
       value: 'new',
       label: 'New annotation',
@@ -208,18 +209,16 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
       this.saveIfNeeded(false, () => {
-        $location.url(newUrl);
+        $location.url(newUrl); $window.location.reload();
       });
-      Clauses.disable();
     }
   };
   $scope.right = () => {
     if (Clauses.cache.clause && !Clauses.cache.clause.last) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
       this.saveIfNeeded(false, () => {
-        $location.url(newUrl);
+        $location.url(newUrl); $window.location.reload();
       });
-      Clauses.disable();
     }
   };
   this.keyDown = (event) => {

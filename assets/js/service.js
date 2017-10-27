@@ -8,8 +8,7 @@ export default ($resource) => {
 
   const oldGet = ClauseService.get;
   ClauseService.get = (params, success, error) => {
-    ClauseService.cache.clause = undefined;
-    ClauseService.cache.original = undefined;
+    ClauseService.disable();
     ClauseService.cache.annotationIndex = undefined;
     return oldGet(params, (clause, ...args) => {
       ClauseService.cache.original = clause;
@@ -57,7 +56,7 @@ export default ($resource) => {
         { id: original.id },
         currentAnnotation,
         (response, ...args) => {
-          if (resetAfter) {
+          if (resetAfter && response && response.id === original.id) {
             ClauseService.cache.original = response;
             ClauseService.reset();
           }
