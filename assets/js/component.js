@@ -115,7 +115,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   };
   this.addAnnotation = () => {
     if (Clauses.cache.clause) {
-      this.saveIfNeeded(() => {
+      this.saveIfNeeded(true, () => {
         const newAnnotation = Clauses.newAnnotation();
         // set to 1 more than the biggest value found in Clauses.cache.clause
         newAnnotation.annotation_idx = Clauses.cache.clause.annotations
@@ -131,7 +131,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
     if (Clauses.cache.clause &&
         index >= 0 &&
         index < Clauses.cache.clause.annotations.length) {
-      this.saveIfNeeded(() => {
+      this.saveIfNeeded(true, () => {
         Clauses.cache.annotationIndex = index;
         this.initAnnotation();
       });
@@ -192,17 +192,22 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
        $scope.annotation.extended === 'uncertain' &&
        $scope.annotation.change === 'uncertain' &&
        $scope.annotation.notes === ''));
-  this.saveIfNeeded = (cb) => {
+  this.saveIfNeeded = (resetAfter, success, error) => {
     if ($scope.shouldSave()) {
-      Clauses.save(() => { this.initAnnotation(); cb(); });
+      Clauses.save(resetAfter, () => {
+        if (resetAfter) {
+          this.initAnnotation();
+        }
+        success();
+      }, error);
     } else {
-      cb();
+      success();
     }
   };
   $scope.left = () => {
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
-      this.saveIfNeeded(() => {
+      this.saveIfNeeded(false, () => {
         $location.url(newUrl);
       });
       Clauses.disable();
@@ -211,7 +216,7 @@ function controller($scope, $rootScope, $routeParams, $location, Clauses) {
   $scope.right = () => {
     if (Clauses.cache.clause && !Clauses.cache.clause.last) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
-      this.saveIfNeeded(() => {
+      this.saveIfNeeded(false, () => {
         $location.url(newUrl);
       });
       Clauses.disable();

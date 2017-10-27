@@ -47,7 +47,7 @@ export default ($resource) => {
     }
   };
 
-  ClauseService.save = (cb) => {
+  ClauseService.save = (resetAfter, success, error) => {
     if (ClauseService.cache.original) {
       const original = ClauseService.cache.original;
       angular.extend(original, ClauseService.cache.clause);
@@ -57,12 +57,15 @@ export default ($resource) => {
         { id: original.id },
         currentAnnotation,
         (response) => {
-          ClauseService.cache.original = response;
-          ClauseService.reset();
-          if (cb) {
-            cb(response);
+          if (resetAfter) {
+            ClauseService.cache.original = response;
+            ClauseService.reset();
           }
-        });
+          if (success) {
+            success(response);
+          }
+        },
+        error);
     }
   };
 
