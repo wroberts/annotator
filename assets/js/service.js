@@ -7,17 +7,17 @@ export default ($resource) => {
   ClauseService.cache = { clause: undefined, original: undefined, annotationIndex: undefined };
 
   const oldGet = ClauseService.get;
-  ClauseService.get = (params, cb, cb2) => {
+  ClauseService.get = (params, success, error) => {
     ClauseService.cache.clause = undefined;
     ClauseService.cache.original = undefined;
     ClauseService.cache.annotationIndex = undefined;
-    return oldGet(params, (clause) => {
+    return oldGet(params, (clause, ...args) => {
       ClauseService.cache.original = clause;
       ClauseService.reset();
-      if (cb) {
-        cb(clause);
+      if (success) {
+        success(clause, ...args);
       }
-    }, (args) => { if (cb2) { cb2(args); } });
+    }, error);
   };
 
   ClauseService.newAnnotation = () => ({
@@ -53,16 +53,16 @@ export default ($resource) => {
       angular.extend(original, ClauseService.cache.clause);
       const currentAnnotation = original.annotations[ClauseService.cache.annotationIndex];
       ClauseService.disable();
-      return ClauseService.update(
+      ClauseService.update(
         { id: original.id },
         currentAnnotation,
-        (response) => {
+        (response, ...args) => {
           if (resetAfter) {
             ClauseService.cache.original = response;
             ClauseService.reset();
           }
           if (success) {
-            success(response);
+            success(response, ...args);
           }
         },
         error);
