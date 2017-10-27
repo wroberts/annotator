@@ -4,8 +4,8 @@ from flask import Flask, render_template
 from flask_security import SQLAlchemyUserDatastore
 
 from annotator import annotations, commands, public, user
-from annotator.extensions import (babel, cache, compress, csrf_protect, db, debug_toolbar, mail, migrate, security,
-                                  webpack)
+from annotator.extensions import (babel, cache, compress, csrf_protect, db, debug_toolbar, gitversion, mail, migrate,
+                                  security, webpack)
 from annotator.settings import ProdConfig
 from annotator.user.forms import ExtendedConfirmRegisterForm, ExtendedRegisterForm
 from annotator.user.models import Role, User
@@ -38,6 +38,7 @@ def register_extensions(app):
                       confirm_register_form=ExtendedConfirmRegisterForm,
                       register_form=ExtendedRegisterForm)
     debug_toolbar.init_app(app)
+    gitversion.init_app(app)
     mail.init_app(app)
     migrate.init_app(app, db)
     webpack.init_app(app)
