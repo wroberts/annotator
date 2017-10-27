@@ -295,6 +295,8 @@ function controller($scope, $rootScope, $routeParams, $location, $window, Clause
     });
 }
 
+controller.$inject = ['$scope', '$rootScope', '$routeParams', '$location', '$window', 'Clauses'];
+
 export default {
   restrict: 'E',
   controller,

@@ -8,20 +8,20 @@ import InterfaceComponent from './component';
 
 angular.module('Annotator', ['ngRoute', 'ngResource', 'ui.bootstrap'])
 
-  .directive('keyHandler', $rootScope => (
-    (scope, element) => {
+  .directive('keyHandler', ['$rootScope', ($rootScope) => {
+    return (scope, element) => {
       element.bind('keydown', (event) => { $rootScope.$broadcast('bodySendsKeyDown', event); });
-    }
-  ))
+    };
+  }])
 
-  .factory('Clauses', ClauseService)
+  .factory('Clauses', ['$resource', ClauseService])
 
   .component('interface', InterfaceComponent)
 
-  .config(($locationProvider, $routeProvider) => {
+  .config(['$locationProvider', '$routeProvider', ($locationProvider, $routeProvider) => {
     $locationProvider
       .html5Mode(false)
       .hashPrefix('!');
     $routeProvider
       .when('/:clauseId', { template: '<interface></interface>' });
-  });
+  }]);
