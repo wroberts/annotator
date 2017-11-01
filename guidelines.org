@@ -1,10 +1,12 @@
 #+STARTUP: content hidestars odd
+# export to ODT with:
+# pandoc -o guidelines.odt guidelines.org
 
 * Annotation Guidelines
 
 *** Aspectual class
 
-    An /event/ is composed of a verb and its complements.
+    An /event/ is characterised by a verb and its complements.
     Prototypically, the direct object of the verb represents the
     entity that is affected or changed by the verb's action; the
     nature of this entity is important to the event's aspectual class.
@@ -42,7 +44,7 @@
 
     Stative verbs describe a state of being, rather than an action
     (process or event).  Stative verbs express that a property obtains
-    at a particular moment in time, and imply that this property holds
+    at a particular point or interval in time, and imply that this property holds
     over a (usually unspecified) duration.  Unlike dynamic verbs,
     stative verbs cannot denote temporally bounded activities, and
     they do not directly express changes of state.
@@ -61,7 +63,8 @@
 *** Bounded
 
     Bounded events have a natural conclusion, a point in time at which
-    the expressed action is *finished* and cannot continue any longer:
+    the expressed action is *finished* and cannot continue any
+    longer.  The use of the past tense implies a sense of culmination:
 
     - /Ich habe einen Apfel gegessen./
     - /Ich habe eine Sonata gespielt./
@@ -73,8 +76,7 @@
     - /Ich habe Klavier gespielt./
     - /Ich habe gelesen./
 
-
-    - Adverbials of time (/für eine halbe Stunde/in einer halben Stunde/)
+    Adverbials of time (/für eine halbe Stunde/in einer halben Stunde/)
 
 *** Punctual vs. Durative
 
@@ -87,6 +89,40 @@
 *** Change of State
 
     - lasting change effected in the patient of the verb
-      - /Ich habe den Film geschaut./ (?)
-      - /Ich habe den Film gezeigt./ (no change of state)
-      - /Ich habe den Studenten den Film gezeigt./ (change of state)
+      - /Ich habe das Buch gelesen./ (?)
+      - /Ich habe das Buch vorgelesen./ (no change of state)
+      - /Ich habe den Studenten das Buch vorgelesen./ (change of state)
+
+* Appendix: Construction of the verb corpus
+
+  We begin by collecting 60 verbs to annotate; 20 verbs are drawn at
+  random from each of three groups: high frequency verbs (the first 65
+  verbs, with counts of over 10^5 in sdewac); medium frequency verbs
+  (the next 602 verbs, with counts of over 10^4 in sdewac); and low
+  frequency verbs (some 2100 more verbs, with counts between 10^3 and
+  10^4 in sdewac).
+
+  Polysemy of these verbs can be estimated by taking the number of
+  senses listed in GermaNet for a particular verb.
+
+  [INSERT FIGURE]
+
+  We can see that the estimated polysemy is higher for the high
+  frequency verbs, while the medium and low frequency verbs don’t seem
+  to differ from each other very much.  The high frequency group still
+  contains one verb with only a single synset (/entstehen/), so this
+  verb should be examined in detail to see what an unambiguous high
+  frequency verb does.  The distribution of fraction of instances
+  co-occurring with aspectual indicators also resembles the distribution
+  of the whole corpus.  All this suggests that the sample is at least
+  representative of the corpus.
+
+  We then collect 50 clauses for each of the 60 verbs (for a total of
+  3000 clauses), which contain the verb.  We work with only clauses, so
+  that there are examples in the corpus such as:
+
+  ~["die", "die", "Kommission", "an", "das", "Parlament", "gemacht", "hat", ".”].~
+
+  In choosing these clauses, we select only from those where number of
+  words per clause (sentence?) is less than (or equal to?) 50, and where
+  there is no negation; we do not filter out non-finite verb forms.
