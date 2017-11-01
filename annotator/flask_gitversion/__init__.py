@@ -9,23 +9,8 @@ flask_gitversion/__init__.py
 
 import os
 import subprocess
-from contextlib import contextmanager
 
-
-@contextmanager
-def temp_chdir(path):
-    """
-    Context manager to temporarily change the working directory.
-
-    :param str path:
-    """
-    # record starting PWD
-    oldpwd = os.getcwd()
-    # change dir
-    os.chdir(path)
-    yield
-    # go back
-    os.chdir(oldpwd)
+import wkr
 
 
 # https://stackoverflow.com/a/40170206/1062499
@@ -48,7 +33,7 @@ def get_git_version(basepath=None):
 
     try:
         if basepath is not None:
-            with temp_chdir(basepath):
+            with wkr.os.momentary_chdir(basepath):
                 out = _minimal_ext_cmd(['git', 'rev-parse', '--short', 'HEAD'])
         else:
             out = _minimal_ext_cmd(['git', 'rev-parse', '--short', 'HEAD'])
