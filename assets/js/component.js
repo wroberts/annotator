@@ -209,7 +209,7 @@ function controller($scope, $rootScope, $routeParams, $location, $window, Clause
     if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
       const newUrl = `/${Clauses.cache.clause.id - 1}`;
       this.saveIfNeeded(false, () => {
-        $location.url(newUrl); $window.location.reload();
+        $location.url(newUrl);
       });
     }
   };
@@ -217,7 +217,7 @@ function controller($scope, $rootScope, $routeParams, $location, $window, Clause
     if (Clauses.cache.clause && !Clauses.cache.clause.last) {
       const newUrl = `/${Clauses.cache.clause.id + 1}`;
       this.saveIfNeeded(false, () => {
-        $location.url(newUrl); $window.location.reload();
+        $location.url(newUrl);
       });
     }
   };
