@@ -44,7 +44,7 @@
     "css-loader": "^0.28.4",
     "eslint": "^4.1.1",
     "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-angular": "^2.4.2",
+    "eslint-plugin-angular": "^3.2.0",
     "eslint-plugin-import": "^2.3.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
