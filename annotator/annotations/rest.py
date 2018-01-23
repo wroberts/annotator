@@ -143,3 +143,28 @@ class ClauseRsc(Resource):
 
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
+
+
+class SearchOnText(Resource):
+    """RESTful search on the text of a clause."""
+
+    def get(self, text):
+        """Gets the results of a search."""
+        query = '%' + text + '%'
+        results = [clause.id for clause in
+                   Clause.query.filter(Clause.text.ilike(query)).all()]
+        return marshal(results, fields.List(fields.Int))
+
+
+class SearchForVerb(Resource):
+    """RESTful search for a main verb of a clause."""
+
+    def get(self, verb):
+        """Gets the results of a search."""
+        results = [clause.id for clause in
+                   Clause.query.filter(Clause.verb == verb).all()]
+        return marshal(results, fields.List(fields.Int))
+
+
+api.add_resource(SearchOnText, '/search/text/<text>')
+api.add_resource(SearchForVerb, '/search/verb/<verb>')
