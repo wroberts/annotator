@@ -66,11 +66,13 @@ function getSpans(clause) {
   return spans;
 }
 
-function controller($scope, $rootScope, $routeParams, $location, $window, Clauses) {
+function controller($scope, $rootScope, $routeParams, $location, $window, Clauses, $http) {
   $scope.spans = [];
   $scope.annotation = {};
   $scope.annotationButtons = [];
   $scope.currentAnnotation = '';
+
+  const self = this;
 
   // we use the Clause service's cache to access the clause
   // object in the page
@@ -205,22 +207,103 @@ function controller($scope, $rootScope, $routeParams, $location, $window, Clause
       success();
     }
   };
+  this.hasSearchResults = () =>
+    self.searchResults !== undefined &&
+    self.searchResults != null &&
+    self.searchResults.length > 0;
+  $scope.hasLeft = () => {
+    if (!Clauses.cache.clause) return false;
+    if (self.hasSearchResults()) {
+      const result = self.searchResults.slice().reverse().find(i => i < Clauses.cache.clause.id);
+      return result !== undefined && result !== -1;
+    }
+    return Clauses.cache.clause.id !== 1;
+  };
+  this.getLeft = () => {
+    if (self.hasSearchResults()) {
+      return self.searchResults.slice().reverse().find(i => i < Clauses.cache.clause.id);
+    }
+    return Clauses.cache.clause.id - 1;
+  };
   $scope.left = () => {
-    if (Clauses.cache.clause && Clauses.cache.clause.id !== 1) {
-      const newUrl = `/${Clauses.cache.clause.id - 1}`;
-      this.saveIfNeeded(false, () => {
+    if ($scope.hasLeft()) {
+      const newUrl = `/${self.getLeft()}`;
+      self.saveIfNeeded(false, () => {
         $location.url(newUrl);
       });
     }
+  };
+  $scope.hasRight = () => {
+    if (!Clauses.cache.clause) return false;
+    if (self.hasSearchResults()) {
+      const result = self.searchResults.find(i => i > Clauses.cache.clause.id);
+      return result !== undefined && result !== -1;
+    }
+    return !Clauses.cache.clause.last;
+  };
+  this.getRight = () => {
+    if (self.hasSearchResults()) {
+      return self.searchResults.find(i => i > Clauses.cache.clause.id);
+    }
+    return Clauses.cache.clause.id + 1;
   };
   $scope.right = () => {
-    if (Clauses.cache.clause && !Clauses.cache.clause.last) {
-      const newUrl = `/${Clauses.cache.clause.id + 1}`;
-      this.saveIfNeeded(false, () => {
+    if ($scope.hasRight()) {
+      const newUrl = `/${self.getRight()}`;
+      self.saveIfNeeded(false, () => {
         $location.url(newUrl);
       });
     }
   };
+  $scope.clearSearch = () => {
+    $scope.searchQuery = '';
+    $scope.searchType = null;
+    self.searchResults = [];
+  };
+  this.initSearch = () => {
+    $scope.clearSearch();
+    if ($window.localStorage) {
+      try {
+        $scope.searchQuery = JSON.parse($window.localStorage.getItem('searchQuery') || '""');
+        $scope.searchType = JSON.parse($window.localStorage.getItem('searchType') || 'null');
+        self.searchResults = JSON.parse($window.localStorage.getItem('searchResults') || '[]');
+      } catch (e) {
+        // do nothing
+      }
+    }
+  };
+  this.initSearch();
+  this.persistSearch = () => {
+    if ($window.localStorage) {
+      try {
+        $window.localStorage.setItem('searchQuery', JSON.stringify($scope.searchQuery));
+        $window.localStorage.setItem('searchType', JSON.stringify($scope.searchType));
+        $window.localStorage.setItem('searchResults', JSON.stringify(self.searchResults));
+      } catch (e) {
+        // do nothing
+      }
+    }
+  };
+  this.updateSearch = () => {
+    const dropdownButton = angular.element(document.querySelector('#dropdown-button'));
+    const caret = '<span class="caret">';
+    if ($scope.searchType === 'verb') dropdownButton.html(`Verb&nbsp;${caret}`);
+    else if ($scope.searchType === 'text') dropdownButton.html(`Text&nbsp;${caret}`);
+    else dropdownButton.html(`Search By&nbsp;${caret}`);
+
+    self.searchResults = [];
+    if ($scope.searchQuery && $scope.searchType !== null) {
+      $http.get(`/api/search/${$scope.searchType}/${$scope.searchQuery}`)
+        .then(res => res.data)
+        .then((matchingIds) => { self.searchResults = matchingIds; self.persistSearch(); })
+        .catch(() => { self.persistSearch(); });
+    } else {
+      self.persistSearch();
+    }
+  };
+  // use a watch method to update search
+  $scope.$watch('searchQuery', (newValue, oldValue) => { if (newValue !== oldValue) { self.updateSearch(); } });
+  $scope.$watch('searchType', (newValue, oldValue) => { if (newValue !== oldValue) { self.updateSearch(); } });
   this.keyDown = (event) => {
     // console.log('keyDown');
     // console.log(event); /* key event is here */
@@ -295,7 +378,7 @@ function controller($scope, $rootScope, $routeParams, $location, $window, Clause
     });
 }
 
-controller.$inject = ['$scope', '$rootScope', '$routeParams', '$location', '$window', 'Clauses'];
+controller.$inject = ['$scope', '$rootScope', '$routeParams', '$location', '$window', 'Clauses', '$http'];
 
 export default {
   restrict: 'E',

@@ -170,11 +170,41 @@
   <div class="col-md-3 text-left col-md-pull-6 col-xs-6">
     <button class="btn btn-default btn-lg"
             ng-click="left()"
-            ng-disabled="cached.clause.id == 1">&laquo; Previous clause</button>
+            ng-disabled="!hasLeft()">&laquo; Previous clause</button>
   </div>
   <div class="col-md-3 text-right col-xs-6">
     <button class="btn btn-default btn-lg"
             ng-click="right()"
-            ng-disabled="cached.clause.last">Next clause &raquo;</button>
+            ng-disabled="!hasRight()">Next clause &raquo;</button>
   </div>
+</div>
+<div class="row">
+  <div class="input-group">
+    <input type="text"
+           class="form-control"
+           aria-label="Search query"
+           placeholder="Search"
+           ng-focus="textFocus=true"
+           ng-blur="textFocus=false"
+           ng-model="searchQuery"
+           ng-model-options="{ debounce: 500 }">
+    <div class="input-group-btn">
+      <button type="button"
+              id="dropdown-button"
+              class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">Search By <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a ng-click="searchType = 'verb'">Verb</a></li>
+        <li><a ng-click="searchType = 'text'">Text</a></li>
+      </ul>
+      <button type="button"
+              id="dropdown-button"
+              title="Clear"
+              ng-click="clearSearch()"
+              class="btn btn-default"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div><!-- /btn-group -->
+  </div><!-- /input-group -->
 </div>
