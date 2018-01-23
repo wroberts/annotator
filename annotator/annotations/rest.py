@@ -153,7 +153,7 @@ class SearchOnText(Resource):
         query = '%' + text + '%'
         results = [clause.id for clause in
                    Clause.query.filter(Clause.text.ilike(query)).all()]
-        return marshal(results, fields.List(fields.Int))
+        return results
 
 
 class SearchForVerb(Resource):
@@ -163,7 +163,7 @@ class SearchForVerb(Resource):
         """Gets the results of a search."""
         results = [clause.id for clause in
                    Clause.query.filter(Clause.verb == verb).all()]
-        return marshal(results, fields.List(fields.Int))
+        return results
 
 
 api.add_resource(SearchOnText, '/search/text/<text>')
