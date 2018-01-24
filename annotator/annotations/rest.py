@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """User views."""
+
+import urllib.parse
+
 import sqlalchemy.orm
 from flask import Blueprint, request
 from flask_restful import Api, Resource, abort
@@ -150,6 +153,9 @@ class SearchOnText(Resource):
 
     def get(self, text):
         """Gets the results of a search."""
+        # wsgi on deploy doesn't unescape get arguments somehow
+        # this should be idempotent, and not matter on dev
+        text = urllib.parse.unquote(text)
         query = '%' + text + '%'
         results = [clause.id for clause in
                    Clause.query.filter(Clause.text.ilike(query)).all()]
@@ -161,6 +167,9 @@ class SearchForVerb(Resource):
 
     def get(self, verb):
         """Gets the results of a search."""
+        # wsgi on deploy doesn't unescape get arguments somehow
+        # this should be idempotent, and not matter on dev
+        verb = urllib.parse.unquote(verb)
         results = [clause.id for clause in
                    Clause.query.filter(Clause.verb == verb).all()]
         return results
