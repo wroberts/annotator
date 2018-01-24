@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 """User views."""
 
-import urllib.parse
+try:
+    from urllib.parse import unquote
+except ImportError:
+    # py2
+    from urllib import unquote
 
 import sqlalchemy.orm
 from flask import Blueprint, request
@@ -155,7 +159,7 @@ class SearchOnText(Resource):
         """Gets the results of a search."""
         # wsgi on deploy doesn't unescape get arguments somehow
         # this should be idempotent, and not matter on dev
-        text = urllib.parse.unquote(text)
+        text = unquote(text)
         query = '%' + text + '%'
         results = [clause.id for clause in
                    Clause.query.filter(Clause.text.ilike(query)).all()]
@@ -169,7 +173,7 @@ class SearchForVerb(Resource):
         """Gets the results of a search."""
         # wsgi on deploy doesn't unescape get arguments somehow
         # this should be idempotent, and not matter on dev
-        verb = urllib.parse.unquote(verb)
+        verb = unquote(verb)
         results = [clause.id for clause in
                    Clause.query.filter(Clause.verb == verb).all()]
         return results
