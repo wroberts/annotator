@@ -188,23 +188,23 @@
            ng-blur="textFocus=false"
            ng-model="searchQuery"
            ng-model-options="{ debounce: 500 }">
-    <div class="input-group-btn">
+    <div class="input-group-append">
       <button type="button"
               id="dropdown-button"
-              class="btn btn-default dropdown-toggle"
+              class="btn btn-outline-info dropdown-toggle"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">Search By <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a ng-click="searchType = 'verb'">Verb</a></li>
-        <li><a ng-click="searchType = 'text'">Text</a></li>
-      </ul>
       <button type="button"
               id="dropdown-button"
               title="Clear"
               ng-click="clearSearch()"
-              class="btn btn-default"><i class="fa fa-times" aria-hidden="true"></i></button>
+              class="btn btn-outline-info"><i class="fa fa-times" aria-hidden="true"></i></button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" ng-click="searchType = 'verb'">Verb</a>
+        <a class="dropdown-item" ng-click="searchType = 'text'">Text</a>
+      </div>
     </div><!-- /btn-group -->
   </div><!-- /input-group -->
 </div>
