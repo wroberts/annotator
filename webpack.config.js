@@ -39,6 +39,7 @@ module.exports = {
   devServer: {
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
+  mode: debug ? 'development' : 'production',
   module: {
     rules: [
       { test: /\.html$/, use: 'raw-loader' },
