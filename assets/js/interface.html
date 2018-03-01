@@ -54,15 +54,15 @@
     <form>
       <div>
         <div class="btn-group btn-group-lg" aria-label="invalid vs. valid">
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.invalid"
                  ng-change="invalidChanged()"
                  uib-btn-radio="'true'">Invalid</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.invalid"
                  ng-change="invalidChanged()"
                  uib-btn-radio="'uncertain'">?</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.invalid"
                  ng-change="invalidChanged()"
                  uib-btn-radio="'false'">Valid</label>
@@ -70,17 +70,17 @@
       </div>
       <div>
         <div class="btn-group btn-group-lg" aria-label="stative vs. dynamic">
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.stative"
                  ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
                  uib-btn-radio="'true'">Stative</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.stative"
                  ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
                  uib-btn-radio="'uncertain'">?</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.stative"
                  ng-change="stativeChanged()"
                  ng-disabled="annotation.invalid == 'true'"
@@ -89,17 +89,17 @@
       </div>
       <div>
         <div class="btn-group btn-group-lg" aria-label="bounded vs. unbounded">
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.bounded"
                  ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
                  uib-btn-radio="'false'">Unbounded</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.bounded"
                  ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
                  uib-btn-radio="'uncertain'">?</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.bounded"
                  ng-change="boundedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true'"
@@ -108,17 +108,17 @@
       </div>
       <div>
         <div class="btn-group btn-group-lg" aria-label="extended vs. punctual">
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.extended"
                  ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'false'">Punctual</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.extended"
                  ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.extended"
                  ng-change="extendedChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
@@ -127,17 +127,17 @@
       </div>
       <div>
         <div class="btn-group btn-group-lg" aria-label="change-of-state vs. no change-of-state">
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.change"
                  ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'true'">Change of State</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.change"
                  ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
                  uib-btn-radio="'uncertain'">?</label>
-          <label class="btn btn-info"
+          <label class="btn btn-outline-secondary"
                  ng-model="annotation.change"
                  ng-change="changeChanged()"
                  ng-disabled="annotation.invalid == 'true' || annotation.stative == 'true' || annotation.bounded == 'false'"
@@ -158,7 +158,7 @@
       <div>
         <div class="btn-group btn-group-lg" aria-label="multiple annotations">
           <label ng-repeat="annotationButton in annotationButtons"
-                 class="btn btn-info"
+                 class="btn btn-outline-secondary"
                  ng-model="currentAnnotation"
                  ng-change="annotationButton.onChange()"
                  uib-btn-radio="annotationButton.value">{{annotationButton.label}}</label>
@@ -168,12 +168,12 @@
     </form>
   </div>
   <div class="col-md-3 text-left order-md-first col-xs-6">
-    <button class="btn btn-info btn-lg"
+    <button class="btn btn-outline-secondary btn-lg"
             ng-click="left()"
             ng-disabled="!hasLeft()">&laquo; Previous clause</button>
   </div>
   <div class="col-md-3 text-right col-xs-6">
-    <button class="btn btn-info btn-lg"
+    <button class="btn btn-outline-secondary btn-lg"
             ng-click="right()"
             ng-disabled="!hasRight()">Next clause &raquo;</button>
   </div>
@@ -191,7 +191,7 @@
     <div class="input-group-append">
       <button type="button"
               id="dropdown-button"
-              class="btn btn-outline-info dropdown-toggle"
+              class="btn btn-outline-secondary dropdown-toggle"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">Search By <span class="caret"></span>
@@ -200,7 +200,7 @@
               id="dropdown-button"
               title="Clear"
               ng-click="clearSearch()"
-              class="btn btn-outline-info"><i class="fa fa-times" aria-hidden="true"></i></button>
+              class="btn btn-outline-secondary"><i class="fa fa-times" aria-hidden="true"></i></button>
       <div class="dropdown-menu">
         <a class="dropdown-item" ng-click="searchType = 'verb'">Verb</a>
         <a class="dropdown-item" ng-click="searchType = 'text'">Text</a>
