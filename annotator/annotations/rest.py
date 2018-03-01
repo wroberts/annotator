@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """User views."""
+
+try:
+    from urllib.parse import unquote
+except ImportError:
+    # py2
+    from urllib import unquote
+
 import sqlalchemy.orm
 from flask import Blueprint, request
 from flask_restful import Api, Resource, abort
@@ -143,3 +150,34 @@ class ClauseRsc(Resource):
 
 
 api.add_resource(ClauseRsc, '/clauses/<int:clause_id>')
+
+
+class SearchOnText(Resource):
+    """RESTful search on the text of a clause."""
+
+    def get(self, text):
+        """Gets the results of a search."""
+        # wsgi on deploy doesn't unescape get arguments somehow
+        # this should be idempotent, and not matter on dev
+        text = unquote(text)
+        query = '%' + text + '%'
+        results = [clause.id for clause in
+                   Clause.query.filter(Clause.text.ilike(query)).all()]
+        return results
+
+
+class SearchForVerb(Resource):
+    """RESTful search for a main verb of a clause."""
+
+    def get(self, verb):
+        """Gets the results of a search."""
+        # wsgi on deploy doesn't unescape get arguments somehow
+        # this should be idempotent, and not matter on dev
+        verb = unquote(verb)
+        results = [clause.id for clause in
+                   Clause.query.filter(Clause.verb == verb).all()]
+        return results
+
+
+api.add_resource(SearchOnText, '/search/text/<text>')
+api.add_resource(SearchForVerb, '/search/verb/<verb>')

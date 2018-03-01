@@ -2,5 +2,5 @@
 
 // JS modules
 require('jquery');
-require('font-awesome-webpack');
+require('font-awesome/css/font-awesome.css');
 require('bootstrap');
