@@ -15,7 +15,7 @@ Final Resource
 --------------
 
 The annotated corpus and  annotation guidelines can be downloaded in
-the file `aspectual-corpus.zip <blob/master/aspectual-corpus.zip>`_.
+the file `aspectual-corpus.zip <aspectual-corpus.zip>`_.
 
 
 Quickstart
